@@ -22,6 +22,9 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
     <style>
+      :root {
+        --primary-color: #EE2D7A;
+      }
       .form-check {
         padding-left: 0 !important;
         margin-top: 15px !important;
@@ -34,14 +37,29 @@
         position: static !important;
         width: 18px !important;
         height: 18px !important;
-        border: 2px solid #1F3BB3 !important;
+        border: 2px solid var(--primary-color) !important;
         cursor: pointer;
+      }
+      .form-check .form-check-input:checked {
+        background-color: var(--primary-color) !important;
       }
       .form-check label {
         margin-bottom: 0 !important;
         cursor: pointer;
         font-weight: 500;
         color: #333;
+      }
+      .btn-primary, .btn-primary:hover, .btn-primary:focus {
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+      }
+      .text-primary {
+        color: var(--primary-color) !important;
+      }
+      .auth-form-light {
+        border-top: 4px solid var(--primary-color);
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
       }
     </style>
   </head>
@@ -53,7 +71,7 @@
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo">
-                  <img src="{{ asset('assets/images/logo.svg') }}" alt="logo">
+                  <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo">
                 </div>
                 <h4>New here?</h4>
                 <h6 class="fw-light">Signing up is easy. It only takes a few steps</h6>

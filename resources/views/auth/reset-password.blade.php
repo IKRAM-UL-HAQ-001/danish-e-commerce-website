@@ -13,6 +13,23 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    <style>
+      :root {
+        --primary-color: #EE2D7A;
+      }
+      .btn-primary, .btn-primary:hover, .btn-primary:focus {
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+      }
+      .text-primary {
+        color: var(--primary-color) !important;
+      }
+      .auth-form-light {
+        border-top: 4px solid var(--primary-color);
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      }
+    </style>
   </head>
   <body>
     <div class="container-scroller">
@@ -22,7 +39,7 @@
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo">
-                  <img src="{{ asset('assets/images/logo.svg') }}" alt="logo">
+                  <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo">
                 </div>
                 <h4>Reset Password</h4>
                 <h6 class="fw-light mb-4">Please choose a new password.</h6>

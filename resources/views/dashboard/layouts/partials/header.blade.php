@@ -38,6 +38,65 @@
             background-size: 16px 12px !important;
             padding-right: 2.25rem !important;
         }
+
+        /* Theme Overrides */
+        :root {
+            --primary-pink: #EE2D7A;
+            --primary-pink-hover: #d12469;
+        }
+
+        .sidebar .nav .nav-item.active > .nav-link {
+            background: var(--primary-pink) !important;
+        }
+        .sidebar .nav.sub-menu .nav-item .nav-link.active {
+            color: var(--primary-pink) !important;
+        }
+        .sidebar .nav.sub-menu .nav-item .nav-link:before {
+            border-color: var(--primary-pink) !important;
+        }
+        
+        .btn-primary, .btn-info, .badge-primary, .badge-info {
+            background-color: var(--primary-pink) !important;
+            border-color: var(--primary-pink) !important;
+            color: #fff !important;
+        }
+        .btn-outline-primary {
+            color: var(--primary-pink) !important;
+            border-color: var(--primary-pink) !important;
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary-pink) !important;
+            color: #fff !important;
+        }
+
+        .text-primary, .text-info {
+            color: var(--primary-pink) !important;
+        }
+
+        .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .count-indicator .count {
+            background: var(--primary-pink) !important;
+        }
+
+        .dropdown-item i.text-primary {
+            color: var(--primary-pink) !important;
+        }
+
+        .page-link {
+            color: var(--primary-pink) !important;
+        }
+        .page-item.active .page-link {
+            background-color: var(--primary-pink) !important;
+            border-color: var(--primary-pink) !important;
+        }
+
+        .progress .progress-bar {
+            background-color: var(--primary-pink) !important;
+        }
+
+        .nav-tabs .nav-link.active {
+            border-bottom: 2px solid var(--primary-pink) !important;
+            color: var(--primary-pink) !important;
+        }
     </style>
 
     {{-- Extra page CSS --}}

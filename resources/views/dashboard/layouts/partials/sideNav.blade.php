@@ -2,7 +2,7 @@
   <div class="sidebar-profile-box p-3 border-bottom mb-2 text-center">
     <div class="position-relative d-inline-block">
         @if(Auth::user()->profile_picture)
-            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" class="rounded-circle mb-2" style="width: 60px; height: 60px; object-fit: cover; border: 2px solid #4B49AC;">
+            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" class="rounded-circle mb-2" style="width: 60px; height: 60px; object-fit: cover; border: 2px solid #EE2D7A;">
         @else
             <img src="{{ asset('assets/images/faces/face8.jpg') }}" class="rounded-circle mb-2" style="width: 60px; height: 60px;">
         @endif

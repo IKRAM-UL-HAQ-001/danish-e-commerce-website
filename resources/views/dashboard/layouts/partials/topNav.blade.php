@@ -8,10 +8,10 @@
           </div>
           <div>
             <a class="navbar-brand brand-logo" href="{{ route('dashboard') }}">
-              <img src="{{ asset('assets/images/logo.svg') }}" alt="logo" />
+              <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo" />
             </a>
             <a class="navbar-brand brand-logo-mini" href="{{ route('dashboard') }}">
-              <img src="{{ asset('assets/images/logo-mini.svg') }}" alt="logo" />
+              <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo" style="width: 40px; height: auto;"/>
             </a>
           </div>
         </div>
