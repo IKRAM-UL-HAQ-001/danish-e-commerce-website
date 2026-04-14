@@ -55,8 +55,9 @@
                                         data-bs-toggle="modal" data-bs-target="#editCouponModal">
                                         <i class="mdi mdi-pencil text-primary"></i>
                                     </button>
-                                    <form action="{{ route('coupons.destroy', $coupon->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('coupons.destroy') }}" method="POST" style="display:inline;">
                                         @csrf
+                                        <input type="hidden" name="code" value="{{ $coupon->code }}">
                                         <button type="submit" class="btn btn-sm btn-icon" onclick="return confirm('Delete this coupon?')">
                                             <i class="mdi mdi-delete text-danger"></i>
                                         </button>
@@ -130,8 +131,9 @@
 <!-- Edit Coupon Modal -->
 <div class="modal fade" id="editCouponModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form id="editCouponForm" method="POST" class="modal-content">
+        <form id="editCouponForm" action="{{ route('coupons.update') }}" method="POST" class="modal-content">
             @csrf
+            <input type="hidden" name="code" id="edit_code_identifier">
             <div class="modal-header">
                 <h5 class="modal-title">Edit Coupon</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -188,8 +190,8 @@
         $('#couponsTable').DataTable();
 
         $('.edit-btn').on('click', function() {
-            var id = $(this).data('id');
-            $('#editCouponForm').attr('action', '/dashboard/coupons/' + id + '/update');
+            var code = $(this).data('code');
+            $('#edit_code_identifier').val(code);
             $('#edit_code').val($(this).data('code'));
             $('#edit_type').val($(this).data('type'));
             $('#edit_value').val($(this).data('value'));

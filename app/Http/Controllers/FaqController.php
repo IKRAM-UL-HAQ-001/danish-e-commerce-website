@@ -26,8 +26,9 @@ class FaqController extends Controller
         return back()->with('success', 'FAQ created successfully.');
     }
 
-    public function update(Request $request, Faq $faq)
+    public function update(Request $request)
     {
+        $faq = Faq::where('slug', $request->slug)->firstOrFail();
         $request->validate([
             'question' => 'required|string|max:255',
             'answer' => 'required|string',
@@ -39,8 +40,9 @@ class FaqController extends Controller
         return back()->with('success', 'FAQ updated successfully.');
     }
 
-    public function destroy(Faq $faq)
+    public function destroy(Request $request)
     {
+        $faq = Faq::where('slug', $request->slug)->firstOrFail();
         $faq->delete();
         return back()->with('success', 'FAQ deleted successfully.');
     }

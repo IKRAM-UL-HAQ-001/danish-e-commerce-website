@@ -13,16 +13,18 @@ class ContactMessageController extends Controller
         return view('dashboard.messages.index', compact('messages'));
     }
 
-    public function show(ContactMessage $message)
+    public function show(Request $request)
     {
+        $message = ContactMessage::where('slug', $request->slug)->firstOrFail();
         if (!$message->is_read) {
             $message->update(['is_read' => true]);
         }
         return view('dashboard.messages.show', compact('message'));
     }
 
-    public function destroy(ContactMessage $message)
+    public function destroy(Request $request)
     {
+        $message = ContactMessage::where('slug', $request->slug)->firstOrFail();
         $message->delete();
         return redirect()->route('messages.index')->with('success', 'Message deleted successfully.');
     }

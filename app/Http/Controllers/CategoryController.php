@@ -61,8 +61,9 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request)
     {
+        $category = Category::where('slug', $request->slug)->firstOrFail();
         $request->validate([
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
@@ -82,8 +83,9 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request)
     {
+        $category = Category::where('slug', $request->slug)->firstOrFail();
         $category->delete();
         return back()->with('success', 'Category deleted successfully.');
     }

@@ -42,8 +42,9 @@ class SliderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Slider $slider)
+    public function update(Request $request)
     {
+        $slider = Slider::where('slug', $request->slug)->firstOrFail();
         $request->validate([
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:15360',
             'status' => 'required|boolean',
@@ -69,8 +70,9 @@ class SliderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Slider $slider)
+    public function destroy(Request $request)
     {
+        $slider = Slider::where('slug', $request->slug)->firstOrFail();
         if ($slider->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($slider->image)) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($slider->image);
         }

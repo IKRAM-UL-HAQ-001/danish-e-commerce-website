@@ -43,27 +43,29 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-info text-white" data-bs-toggle="modal" data-bs-target="#editFaqModal{{ $faq->id }}">
+                                    <button type="button" class="btn btn-sm btn-info text-white" data-bs-toggle="modal" data-bs-target="#editFaqModal{{ $faq->slug }}">
                                         Edit
                                     </button>
-                                    <form action="{{ route('faqs.destroy', $faq) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this FAQ?');">
+                                    <form action="{{ route('faqs.destroy') }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this FAQ?');">
                                         @csrf
+                                        <input type="hidden" name="slug" value="{{ $faq->slug }}">
                                         <button type="submit" class="btn btn-sm btn-danger text-white">Delete</button>
                                     </form>
                                 </td>
                             </tr>
 
                             <!-- Edit Modal -->
-                            <div class="modal fade" id="editFaqModal{{ $faq->id }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal fade" id="editFaqModal{{ $faq->slug }}" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Edit FAQ</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form action="{{ route('faqs.update', $faq) }}" method="POST">
-                                            @csrf
-                                            <div class="modal-body">
+                                        <form action="{{ route('faqs.update') }}" method="POST">
+                                             @csrf
+                                             <input type="hidden" name="slug" value="{{ $faq->slug }}">
+                                             <div class="modal-body">
                                                 <div class="form-group mb-3">
                                                     <label for="question">Question</label>
                                                     <input type="text" name="question" class="form-control" value="{{ $faq->question }}" required>

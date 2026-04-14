@@ -19,8 +19,9 @@ class OrderController extends Controller
     /**
      * Update the order status.
      */
-    public function updateStatus(Request $request, Order $order)
+    public function updateStatus(Request $request)
     {
+        $order = Order::where('order_number', $request->order_number)->firstOrFail();
         $request->validate([
             'status' => 'required|string|in:pending,processing,completed,cancelled'
         ]);
@@ -29,14 +30,15 @@ class OrderController extends Controller
             'status' => $request->status
         ]);
 
-        return back()->with('success', "Order #{$order->id} status updated to {$request->status}.");
+        return back()->with('success', "Order #{$order->order_number} status updated to {$request->status}.");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(Request $request)
     {
+        $order = Order::where('order_number', $request->order_number)->firstOrFail();
         $order->delete();
         return back()->with('success', 'Order deleted successfully.');
     }

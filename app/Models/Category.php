@@ -11,6 +11,11 @@ class Category extends Model
 
     protected $fillable = ['name', 'slug', 'image', 'status', 'parent_id'];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     /**
      * Get parent category.
      */

@@ -51,11 +51,16 @@
                                 <td>{{ $backup['size'] }}</td>
                                 <td>{{ $backup['date'] }}</td>
                                 <td>
-                                    <a href="{{ route('backups.download', $backup['name']) }}" class="btn btn-sm btn-icon btn-success text-white" title="Download">
-                                        <i class="mdi mdi-download"></i>
-                                    </a>
-                                    <form action="{{ route('backups.destroy', $backup['name']) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('backups.download') }}" method="POST" style="display:inline;">
                                         @csrf
+                                        <input type="hidden" name="file_name" value="{{ $backup['name'] }}">
+                                        <button type="submit" class="btn btn-sm btn-icon btn-success text-white" title="Download">
+                                            <i class="mdi mdi-download"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('backups.destroy') }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <input type="hidden" name="file_name" value="{{ $backup['name'] }}">
                                         <button type="submit" class="btn btn-sm btn-icon btn-danger text-white" onclick="return confirm('Are you sure you want to delete this backup file?')" title="Delete">
                                             <i class="mdi mdi-delete"></i>
                                         </button>

@@ -16,4 +16,9 @@ class Coupon extends Model
         'used_count', 
         'status'
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'code';
+    }
 }

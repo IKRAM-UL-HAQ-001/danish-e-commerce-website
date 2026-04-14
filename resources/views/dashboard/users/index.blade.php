@@ -40,15 +40,17 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <form action="{{ route('users.toggleStatus', $user->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('users.toggleStatus') }}" method="POST" style="display:inline;">
                                         @csrf
+                                        <input type="hidden" name="slug" value="{{ $user->slug }}">
                                         <button type="submit" class="btn btn-sm btn-icon" title="{{ $user->status ? 'Deactivate' : 'Activate' }}">
                                             <i class="mdi {{ $user->status ? 'mdi-account-off text-warning' : 'mdi-account-check text-success' }}"></i>
                                         </button>
                                     </form>
                                     @if($user->id !== auth()->id())
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('users.destroy') }}" method="POST" style="display:inline;">
                                         @csrf
+                                        <input type="hidden" name="slug" value="{{ $user->slug }}">
                                         <button type="submit" class="btn btn-sm btn-icon" onclick="return confirm('Are you sure you want to delete this user?')" title="Delete User">
                                             <i class="mdi mdi-delete text-danger"></i>
                                         </button>

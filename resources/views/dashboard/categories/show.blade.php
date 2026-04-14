@@ -47,15 +47,16 @@
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-icon edit-btn" 
-                                        data-id="{{ $category->id }}" 
+                                        data-slug="{{ $category->slug }}" 
                                         data-name="{{ $category->name }}"
                                         data-parent="{{ $category->parent_id ?? '' }}"
                                         data-status="{{ $category->status }}"
                                         data-bs-toggle="modal" data-bs-target="#editCategoryModal">
                                         <i class="mdi mdi-pencil text-primary"></i>
                                     </button>
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('categories.destroy') }}" method="POST" style="display:inline;">
                                         @csrf
+                                        <input type="hidden" name="slug" value="{{ $category->slug }}">
                                         <button type="submit" class="btn btn-sm btn-icon" onclick="return confirm('Are you sure?')">
                                             <i class="mdi mdi-delete text-danger"></i>
                                         </button>
@@ -114,8 +115,9 @@
 <!-- Edit Category Modal -->
 <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form id="editCategoryForm" method="POST" class="modal-content">
+        <form id="editCategoryForm" action="{{ route('categories.update') }}" method="POST" class="modal-content">
             @csrf
+            <input type="hidden" name="slug" id="edit_slug">
             <div class="modal-header">
                 <h5 class="modal-title">Edit Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -160,13 +162,14 @@
 
         // Handle Edit Button Click
         $('.edit-btn').on('click', function() {
-            var id = $(this).data('id');
+            var slug = $(this).data('slug');
             var name = $(this).data('name');
             var parent = $(this).data('parent');
             var status = $(this).data('status');
 
             // Set form action dynamically
-            $('#editCategoryForm').attr('action', '/dashboard/categories/' + id + '/update');
+            // No longer needed to set action with slug, but we populate the hidden slug field
+            $('#edit_slug').val(slug);
 
             // Populate fields
             $('#edit_name').val(name);

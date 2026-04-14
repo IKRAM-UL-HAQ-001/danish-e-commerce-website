@@ -69,8 +69,9 @@ class DatabaseBackupController extends Controller
         }
     }
 
-    public function download($file)
+    public function download(Request $request)
     {
+        $file = $request->file_name;
         $filePath = storage_path('app/backups/' . $file);
         if (File::exists($filePath)) {
             return Response::download($filePath);
@@ -78,8 +79,9 @@ class DatabaseBackupController extends Controller
         return back()->with('error', 'Backup file not found.');
     }
 
-    public function destroy($file)
+    public function destroy(Request $request)
     {
+        $file = $request->file_name;
         $filePath = storage_path('app/backups/' . $file);
         if (File::exists($filePath)) {
             File::delete($filePath);

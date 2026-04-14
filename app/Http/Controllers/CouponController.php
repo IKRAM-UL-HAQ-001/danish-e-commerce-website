@@ -27,8 +27,9 @@ class CouponController extends Controller
         return back()->with('success', 'Coupon created successfully.');
     }
 
-    public function update(Request $request, Coupon $coupon)
+    public function update(Request $request)
     {
+        $coupon = Coupon::where('code', $request->code)->firstOrFail();
         $request->validate([
             'code' => 'required|string|unique:coupons,code,' . $coupon->id,
             'type' => 'required|in:fixed,percent',
@@ -41,8 +42,9 @@ class CouponController extends Controller
         return back()->with('success', 'Coupon updated successfully.');
     }
 
-    public function destroy(Coupon $coupon)
+    public function destroy(Request $request)
     {
+        $coupon = Coupon::where('code', $request->code)->firstOrFail();
         $coupon->delete();
         return back()->with('success', 'Coupon deleted successfully.');
     }

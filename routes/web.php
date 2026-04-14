@@ -4,18 +4,34 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CouponController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\DatabaseBackupController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\ActivityController;
 
 
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/analytics', [\App\Http\Controllers\ChartController::class, 'index'])->name('analytics.index');
+    Route::get('/analytics', [ChartController::class, 'index'])->name('analytics.index');
     
     // Profile Management
-    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
-    Route::post('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Buyer Specific
     Route::get('/my-orders', [DashboardController::class, 'myOrders'])->name('my-orders');
@@ -25,79 +41,80 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
         // Product Routes
         Route::get('products', [ProductController::class, 'index'])->name('products.index');
         Route::post('products', [ProductController::class, 'store'])->name('products.store');
-        Route::post('products/{product}/update', [ProductController::class, 'update'])->name('products.update');
-        Route::post('products/{product}/delete', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::post('products/update', [ProductController::class, 'update'])->name('products.update');
+        Route::post('products/delete', [ProductController::class, 'destroy'])->name('products.destroy');
         
         // Category Routes (Using POST for mutations)
         Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
         Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
-        Route::post('categories/{category}/update', [CategoryController::class, 'update'])->name('categories.update');
-        Route::post('categories/{category}/delete', [CategoryController::class, 'destroy'])->name('categories.destroy');
+        Route::post('categories/update', [CategoryController::class, 'update'])->name('categories.update');
+        Route::post('categories/delete', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+        // Brand Routes
+        Route::get('brands', [BrandController::class, 'index'])->name('brands.index');
+        Route::post('brands', [BrandController::class, 'store'])->name('brands.store');
+        Route::post('brands/update', [BrandController::class, 'update'])->name('brands.update');
+        Route::post('brands/delete', [BrandController::class, 'destroy'])->name('brands.destroy');
 
         // Coupon Routes
-        Route::get('coupons', [\App\Http\Controllers\CouponController::class, 'index'])->name('coupons.index');
-        Route::post('coupons', [\App\Http\Controllers\CouponController::class, 'store'])->name('coupons.store');
-        Route::post('coupons/{coupon}/update', [\App\Http\Controllers\CouponController::class, 'update'])->name('coupons.update');
-        Route::post('coupons/{coupon}/delete', [\App\Http\Controllers\CouponController::class, 'destroy'])->name('coupons.destroy');
+        Route::get('coupons', [CouponController::class, 'index'])->name('coupons.index');
+        Route::post('coupons', [CouponController::class, 'store'])->name('coupons.store');
+        Route::post('coupons/update', [CouponController::class, 'update'])->name('coupons.update');
+        Route::post('coupons/delete', [CouponController::class, 'destroy'])->name('coupons.destroy');
 
         // Slider Routes
         Route::get('sliders', [SliderController::class, 'index'])->name('sliders.index');
         Route::post('sliders', [SliderController::class, 'store'])->name('sliders.store');
-        Route::post('sliders/{slider}/update', [SliderController::class, 'update'])->name('sliders.update');
-        Route::post('sliders/{slider}/delete', [SliderController::class, 'destroy'])->name('sliders.destroy');
+        Route::post('sliders/update', [SliderController::class, 'update'])->name('sliders.update');
+        Route::post('sliders/delete', [SliderController::class, 'destroy'])->name('sliders.destroy');
         
         // Order Routes
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-        Route::post('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-        Route::post('orders/{order}/delete', [OrderController::class, 'destroy'])->name('orders.destroy');
+        Route::post('orders/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+        Route::post('orders/delete', [OrderController::class, 'destroy'])->name('orders.destroy');
 
         // User Management
-        Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-        Route::post('users/{user}/toggle-status', [\App\Http\Controllers\UserController::class, 'toggleStatus'])->name('users.toggleStatus');
-        Route::post('users/{user}/delete', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::post('users/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
+        Route::post('users/delete', [UserController::class, 'destroy'])->name('users.destroy');
 
         // Site Settings
-        Route::get('settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
-        Route::post('settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
+        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::post('settings', [SettingController::class, 'update'])->name('settings.update');
 
         // Database Backup
-        Route::get('backups', [\App\Http\Controllers\DatabaseBackupController::class, 'index'])->name('backups.index');
-        Route::post('backups', [\App\Http\Controllers\DatabaseBackupController::class, 'create'])->name('backups.create');
-        Route::get('backups/{file}/download', [\App\Http\Controllers\DatabaseBackupController::class, 'download'])->name('backups.download');
-        Route::post('backups/{file}/delete', [\App\Http\Controllers\DatabaseBackupController::class, 'destroy'])->name('backups.destroy');
+        Route::get('backups', [DatabaseBackupController::class, 'index'])->name('backups.index');
+        Route::post('backups', [DatabaseBackupController::class, 'create'])->name('backups.create');
+        Route::post('backups/download', [DatabaseBackupController::class, 'download'])->name('backups.download');
+        Route::post('backups/delete', [DatabaseBackupController::class, 'destroy'])->name('backups.destroy');
 
 
         // Dynamic Pages
-        Route::get('pages/about', [\App\Http\Controllers\PageController::class, 'editAbout'])->name('pages.about');
-        Route::post('pages/about', [\App\Http\Controllers\PageController::class, 'updateAbout'])->name('pages.about.update');
-        Route::get('pages/contact', [\App\Http\Controllers\PageController::class, 'editContact'])->name('pages.contact');
-        Route::post('pages/contact', [\App\Http\Controllers\PageController::class, 'updateContact'])->name('pages.contact.update');
-        Route::get('pages/terms', [\App\Http\Controllers\PageController::class, 'editTerms'])->name('pages.terms');
-        Route::post('pages/terms', [\App\Http\Controllers\PageController::class, 'updateTerms'])->name('pages.terms.update');
+        Route::get('pages/about', [PageController::class, 'editAbout'])->name('pages.about');
+        Route::post('pages/about', [PageController::class, 'updateAbout'])->name('pages.about.update');
+        Route::get('pages/contact', [PageController::class, 'editContact'])->name('pages.contact');
+        Route::post('pages/contact', [PageController::class, 'updateContact'])->name('pages.contact.update');
+        Route::get('pages/terms', [PageController::class, 'editTerms'])->name('pages.terms');
+        Route::post('pages/terms', [PageController::class, 'updateTerms'])->name('pages.terms.update');
         // Contact Messages
-        Route::get('messages', [\App\Http\Controllers\ContactMessageController::class, 'index'])->name('messages.index');
-        Route::get('messages/{message}', [\App\Http\Controllers\ContactMessageController::class, 'show'])->name('messages.show');
-        Route::post('messages/{message}/delete', [\App\Http\Controllers\ContactMessageController::class, 'destroy'])->name('messages.destroy');
+        Route::get('messages', [ContactMessageController::class, 'index'])->name('messages.index');
+        Route::post('messages/show', [ContactMessageController::class, 'show'])->name('messages.show');
+        Route::post('messages/delete', [ContactMessageController::class, 'destroy'])->name('messages.destroy');
         
         // FAQs
-        Route::get('faqs', [\App\Http\Controllers\FaqController::class, 'index'])->name('faqs.index');
-        Route::post('faqs', [\App\Http\Controllers\FaqController::class, 'store'])->name('faqs.store');
-        Route::post('faqs/{faq}/update', [\App\Http\Controllers\FaqController::class, 'update'])->name('faqs.update');
-        Route::post('faqs/{faq}/delete', [\App\Http\Controllers\FaqController::class, 'destroy'])->name('faqs.destroy');
+        Route::get('faqs', [FaqController::class, 'index'])->name('faqs.index');
+        Route::post('faqs', [FaqController::class, 'store'])->name('faqs.store');
+        Route::post('faqs/update', [FaqController::class, 'update'])->name('faqs.update');
+        Route::post('faqs/delete', [FaqController::class, 'destroy'])->name('faqs.destroy');
         // Activities
-        Route::get('activities', [\App\Http\Controllers\ActivityController::class, 'index'])->name('activities.index');
+        Route::get('activities', [ActivityController::class, 'index'])->name('activities.index');
     });
 });
 
 require __DIR__.'/auth.php';
 
 // Public Contact Form Submission
-Route::post('/contact/submit', [\App\Http\Controllers\ContactMessageController::class, 'store'])->name('public.contact.submit');
-
-require __DIR__.'/auth.php';
+Route::post('/contact/submit', [ContactMessageController::class, 'store'])->name('public.contact.submit');
 
 // Public Terms View
-Route::get('/terms-and-conditions', function() {
-    $content = \App\Models\Setting::where('key', 'terms_content')->first();
-    return view('pages.terms_view', compact('content'));
-})->name('public.terms');
+Route::get('/terms-and-conditions', [HomeController::class, 'terms'])->name('public.terms');

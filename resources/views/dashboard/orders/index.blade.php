@@ -26,7 +26,7 @@
                         <tbody>
                             @foreach($orders as $order)
                             <tr>
-                                <td>#{{ $order->id }}</td>
+                                <td>#{{ $order->order_number }}</td>
                                 <td>
                                     <strong>{{ $order->user->name ?? 'Deleted User' }}</strong><br>
                                     <small class="text-muted">{{ $order->user->email ?? '' }}</small>
@@ -56,9 +56,10 @@
                                             @foreach(['pending', 'processing', 'completed', 'cancelled'] as $status)
                                                 @if($status !== $order->status)
                                                 <li>
-                                                    <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="status" value="{{ $status }}">
+                                                    <form action="{{ route('orders.updateStatus') }}" method="POST">
+                                                         @csrf
+                                                         <input type="hidden" name="order_number" value="{{ $order->order_number }}">
+                                                         <input type="hidden" name="status" value="{{ $status }}">
                                                         <button type="submit" class="dropdown-item">{{ ucfirst($status) }}</button>
                                                     </form>
                                                 </li>
@@ -66,10 +67,11 @@
                                             @endforeach
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
-                                                <form action="{{ route('orders.destroy', $order->id) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Delete this order?')">Delete Order</button>
-                                                </form>
+                                                <form action="{{ route('orders.destroy') }}" method="POST">
+                                                     @csrf
+                                                     <input type="hidden" name="order_number" value="{{ $order->order_number }}">
+                                                     <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Delete this order?')">Delete Order</button>
+                                                 </form>
                                             </li>
                                         </ul>
                                     </div>

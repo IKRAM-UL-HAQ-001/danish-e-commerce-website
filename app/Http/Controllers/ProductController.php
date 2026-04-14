@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -13,9 +14,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::with(['category', 'brand'])->get();
         $categories = Category::all();
-        return view('dashboard.products.index', compact('products', 'categories'));
+        $brands = Brand::where('status', 1)->get();
+        return view('dashboard.products.index', compact('products', 'categories', 'brands'));
     }
 
     /**
@@ -34,6 +36,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:15360',
@@ -53,6 +56,7 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'image' => $imagePath,
             'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
             'status' => $request->status,
         ]);
         \App\Http\Controllers\ActivityController::log('Product Created', "Added a new product: {$request->name}");
@@ -79,11 +83,13 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request)
     {
+        $product = Product::where('slug', $request->slug)->firstOrFail();
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:15360',
@@ -105,6 +111,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
             'status' => $request->status,
         ]);
         \App\Http\Controllers\ActivityController::log('Product Updated', "Modified product details for: {$request->name}");
@@ -115,8 +122,9 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Request $request)
     {
+        $product = Product::where('slug', $request->slug)->firstOrFail();
         if ($product->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image)) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image);
         }

@@ -39,9 +39,14 @@
                                 <td>{{ Str::limit($message->subject ?? 'No Subject', 50) }}</td>
                                 <td>{{ $message->created_at->format('M d, Y h:i A') }}</td>
                                 <td>
-                                    <a href="{{ route('messages.show', $message) }}" class="btn btn-sm btn-info text-white">View</a>
-                                    <form action="{{ route('messages.destroy', $message) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                                    <form action="{{ route('messages.show') }}" method="POST" class="d-inline">
                                         @csrf
+                                        <input type="hidden" name="slug" value="{{ $message->slug }}">
+                                        <button type="submit" class="btn btn-sm btn-info text-white">View</button>
+                                    </form>
+                                    <form action="{{ route('messages.destroy') }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                                        @csrf
+                                        <input type="hidden" name="slug" value="{{ $message->slug }}">
                                         <button type="submit" class="btn btn-sm btn-danger text-white">Delete</button>
                                     </form>
                                 </td>

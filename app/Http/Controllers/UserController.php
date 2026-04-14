@@ -13,8 +13,9 @@ class UserController extends Controller
         return view('dashboard.users.index', compact('users'));
     }
 
-    public function toggleStatus(Request $request, User $user)
+    public function toggleStatus(Request $request)
     {
+        $user = User::where('slug', $request->slug)->firstOrFail();
         $user->update([
             'status' => !$user->status
         ]);
@@ -23,8 +24,9 @@ class UserController extends Controller
         return back()->with('success', "User account {$statusText} successfully.");
     }
 
-    public function destroy(User $user)
+    public function destroy(Request $request)
     {
+        $user = User::where('slug', $request->slug)->firstOrFail();
         if ($user->id === auth()->id()) {
             return back()->with('error', 'You cannot delete yourself.');
         }

@@ -17,11 +17,22 @@ class Product extends Model
         'stock',
         'image',
         'category_id',
+        'brand_id',
         'status'
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 }

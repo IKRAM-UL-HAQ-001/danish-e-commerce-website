@@ -36,6 +36,20 @@
         </ul>
       </div>
     </li>
+    
+    <!-- Brands -->
+    <li class="nav-item {{ Route::is('brands.*') ? 'active' : '' }}">
+      <a class="nav-link {{ Route::is('brands.*') ? '' : 'collapsed' }}" data-bs-toggle="collapse" href="#brand-menu" aria-expanded="{{ Route::is('brands.*') ? 'true' : 'false' }}" aria-controls="brand-menu">
+        <i class="menu-icon mdi mdi-star"></i>
+        <span class="menu-title">Brands</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse {{ Route::is('brands.*') ? 'show' : '' }}" id="brand-menu">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link {{ Route::is('brands.index') ? 'active' : '' }}" href="{{ route('brands.index') }}">Brands List</a></li>
+        </ul>
+      </div>
+    </li>
 
     <!-- Products -->
     <li class="nav-item {{ Route::is('products.*') ? 'active' : '' }}">

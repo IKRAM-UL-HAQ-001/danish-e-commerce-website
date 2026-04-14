@@ -40,7 +40,7 @@
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-icon edit-btn" 
-                                        data-id="{{ $slider->id }}" 
+                                        data-slug="{{ $slider->slug }}" 
                                         data-title="{{ $slider->title }}"
                                         data-description="{{ $slider->description }}"
                                         data-url="{{ $slider->url }}"
@@ -48,8 +48,9 @@
                                         data-bs-toggle="modal" data-bs-target="#editSliderModal">
                                         <i class="mdi mdi-pencil text-primary"></i>
                                     </button>
-                                    <form action="{{ route('sliders.destroy', $slider->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('sliders.destroy') }}" method="POST" style="display:inline;">
                                         @csrf
+                                        <input type="hidden" name="slug" value="{{ $slider->slug }}">
                                         <button type="submit" class="btn btn-sm btn-icon" onclick="return confirm('Delete this slider?')">
                                             <i class="mdi mdi-delete text-danger"></i>
                                         </button>
@@ -110,8 +111,9 @@
 <!-- Edit Slider Modal -->
 <div class="modal fade" id="editSliderModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form id="editSliderForm" method="POST" enctype="multipart/form-data" class="modal-content">
+        <form id="editSliderForm" action="{{ route('sliders.update') }}" method="POST" enctype="multipart/form-data" class="modal-content">
             @csrf
+            <input type="hidden" name="slug" id="edit_slider_slug">
             <div class="modal-header">
                 <h5 class="modal-title">Edit Slider</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -155,8 +157,8 @@
         $('#slidersTable').DataTable();
 
         $('.edit-btn').on('click', function() {
-            var id = $(this).data('id');
-            $('#editSliderForm').attr('action', '/dashboard/sliders/' + id + '/update');
+            var slug = $(this).data('slug');
+            $('#edit_slider_slug').val(slug);
             $('#edit_title').val($(this).data('title'));
             $('#edit_description').val($(this).data('description'));
             $('#edit_url').val($(this).data('url'));
