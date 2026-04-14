@@ -83,7 +83,7 @@
                   <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('about') }}">About Us</a></li>
-                    <li class="menu-item-has-children">
+                    <!-- <li class="menu-item-has-children">
                       <a href="#">Shop</a>
                       <ul class="dp-menu">
                         <li><a href="#">Shop Sidebar</a></li>
@@ -92,8 +92,8 @@
                         <li><a href="#">Cart</a></li>
                         <li><a href="#">Checkout</a></li>
                       </ul>
-                    </li>
-                    <li><a href="#">Blog</a></li>
+                    </li> -->
+                    <!-- <li><a href="#">Blog</a></li> -->
                     <li><a href="{{ route('contact') }}">Contact</a></li>
                   </ul>
                 </nav>
