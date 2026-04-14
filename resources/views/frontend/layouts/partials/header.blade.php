@@ -83,16 +83,13 @@
                   <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ route('about') }}">About Us</a></li>
-                    <!-- <li class="menu-item-has-children">
-                      <a href="#">Shop</a>
+                    <li class="menu-item-has-children">
+                      <a href="{{ route('public.shop') }}">Shop</a>
                       <ul class="dp-menu">
-                        <li><a href="#">Shop Sidebar</a></li>
-                        <li><a href="#">Shop List</a></li>
-                        <li><a href="#">Product Details</a></li>
-                        <li><a href="#">Cart</a></li>
-                        <li><a href="#">Checkout</a></li>
+                        <li><a href="{{ route('public.shop') }}">Shop Grid</a></li>
+                        <li><a href="{{ route('public.shop.list') }}">Shop List</a></li>
                       </ul>
-                    </li> -->
+                    </li>
                     <!-- <li><a href="#">Blog</a></li> -->
                     <li><a href="{{ route('contact') }}">Contact</a></li>
                   </ul>

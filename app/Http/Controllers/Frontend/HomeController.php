@@ -53,7 +53,17 @@ class HomeController extends Controller
     public function shop()
     {
         $products = Product::where('status', 1)->paginate(12);
-        return view('frontend.shop', compact('products'));
+        $categories = \App\Models\Category::all();
+        $brands = \App\Models\Brand::all();
+        return view('frontend.shop', compact('products', 'categories', 'brands'));
+    }
+
+    public function shopList()
+    {
+        $products = Product::where('status', 1)->paginate(10);
+        $categories = \App\Models\Category::all();
+        $brands = \App\Models\Brand::all();
+        return view('frontend.shop-list', compact('products', 'categories', 'brands'));
     }
 
     public function productDetails(Product $product)

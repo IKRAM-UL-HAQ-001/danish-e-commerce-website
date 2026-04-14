@@ -25,6 +25,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/shop', [HomeController::class, 'shop'])->name('public.shop');
+Route::get('/shop-list', [HomeController::class, 'shopList'])->name('public.shop.list');
 Route::get('/product/{product:slug}', [HomeController::class, 'productDetails'])->name('public.product.details');
 
 Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function () {
