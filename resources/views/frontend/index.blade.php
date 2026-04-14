@@ -17,7 +17,7 @@
                   <p class="intro1__content-desc">Clean, cruelty-free, and glow-boosting products for every shade of
                     beauty. Clean, boosting products.</p>
                   <div class="intro1__content-button">
-                    <a href="shop.html" class="rr-btn-button">
+                    <a href="{{ route('public.shop') }}" class="rr-btn-button">
                       <span class="text">Explore Collection</span>
                       <span class="icon">
                         <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -172,7 +172,7 @@
               <div class="col-xl-6">
                 <div class="trending-product__button d-flex justify-content-xl-end wow fadeInUp" data-wow-delay=".5s"
                   style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
-                  <a href="shop.html" class="rr-btn-button">
+                  <a href="{{ route('public.shop') }}" class="rr-btn-button">
                     <span class="text">View All Featured</span>
                     <span class="icon">
                       <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -211,7 +211,7 @@
                     </div>
                     <div class="trending-product-card__content">
                       <h3 class="trending-product-card__content-title">
-                        <a href="#">{{ $product->name }}</a>
+                        <a href="{{ route('public.product.details', $product->slug) }}">{{ $product->name }}</a>
                       </h3>
                       <ul class="trending-product-card__content-list">
                         <li class="trending-product-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
@@ -241,7 +241,7 @@
                     <p class="offer1__content-subtext">Pamper your skin with our nourishing cosmetic creams — crafted
                       for radiant, silky-smooth results. Enjoy 25% off today </p>
                     <div class="offer1__content-button">
-                      <a href="shop.html" class="rr-btn-button2">
+                      <a href="{{ route('public.shop') }}" class="rr-btn-button2">
                         <span class="text">Browse product</span>
                         <span class="icon">
                           <svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -273,7 +273,7 @@
               </div>
               <div class="col-xl-6 wow fadeInUp" data-wow-delay=".3s">
                 <div class="best-selling-product__button d-flex justify-content-xl-end">
-                  <a href="shop.html" class="rr-btn-button">
+                  <a href="{{ route('public.shop') }}" class="rr-btn-button">
                     <span class="text">View All Featured</span>
                     <span class="icon">
                       <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -317,7 +317,7 @@
                           <img src="{{ asset('frontend-assets/imgs/best-selling-products/best-selling-products1_1.jpg') }}" alt="thumb">
                         </div>
                         <div class="best-selling-product-card__content1">
-                          <h3 class="best-selling-product-card__content1-title"><a href="product-details.html">Velvet
+                          <h3 class="best-selling-product-card__content1-title"><a href="{{ route('public.shop') }}">Velvet
                               Dew Cushion Compact</a></h3>
                           <ul class="best-selling-product-card__content1-list">
                             <li class="best-selling-product-card__content1-list-start"><i
@@ -339,7 +339,7 @@
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title"><a
-                                  href="product-details.html">Radiant Pearl Foundation</a></h3>
+                                  href="{{ route('public.shop') }}">Radiant Pearl Foundation</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
                                   <i class="fa-solid fa-star fa-fw"></i>
@@ -358,7 +358,7 @@
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title"><a
-                                  href="product-details.html">PureBloom Lip Balm</a></h3>
+                                  href="{{ route('public.shop') }}">PureBloom Lip Balm</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
                                   <i class="fa-solid fa-star fa-fw"></i>
@@ -376,7 +376,7 @@
                               <img src="{{ asset('frontend-assets/imgs/best-selling-products/best-selling-products1_4.jpg') }}" alt="thumb">
                             </div>
                             <div class="best-selling-product-card__content2">
-                              <h3 class="best-selling-product-card__content2-title"><a href="product-details.html">Brow
+                              <h3 class="best-selling-product-card__content2-title"><a href="{{ route('public.shop') }}">Brow
                                   setter shaping</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
@@ -396,7 +396,7 @@
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title"><a
-                                  href="product-details.html">Beauty Bloom Skin Perfector</a></h3>
+                                  href="{{ route('public.shop') }}">Beauty Bloom Skin Perfector</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
                                   <i class="fa-solid fa-star fa-fw"></i>
@@ -422,7 +422,7 @@
                           <img src="{{ asset('frontend-assets/imgs/best-selling-products/best-selling-products1_1.jpg') }}" alt="thumb">
                         </div>
                         <div class="best-selling-product-card__content1">
-                          <h3 class="best-selling-product-card__content1-title"><a href="product-details.html">Velvet
+                          <h3 class="best-selling-product-card__content1-title"><a href="{{ route('public.shop') }}">Velvet
                               Dew Cushion Compact</a></h3>
                           <ul class="best-selling-product-card__content1-list">
                             <li class="best-selling-product-card__content1-list-start"><i
@@ -444,7 +444,7 @@
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title"><a
-                                  href="product-details.html">Radiant Pearl Foundation</a></h3>
+                                  href="{{ route('public.shop') }}">Radiant Pearl Foundation</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
                                   <i class="fa-solid fa-star fa-fw"></i>
@@ -463,7 +463,7 @@
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title"><a
-                                  href="product-details.html">PureBloom Lip Balm</a></h3>
+                                  href="{{ route('public.shop') }}">PureBloom Lip Balm</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
                                   <i class="fa-solid fa-star fa-fw"></i>
@@ -481,7 +481,7 @@
                               <img src="{{ asset('frontend-assets/imgs/best-selling-products/best-selling-products1_4.jpg') }}" alt="thumb">
                             </div>
                             <div class="best-selling-product-card__content2">
-                              <h3 class="best-selling-product-card__content2-title"><a href="product-details.html">Brow
+                              <h3 class="best-selling-product-card__content2-title"><a href="{{ route('public.shop') }}">Brow
                                   setter shaping</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
@@ -501,7 +501,7 @@
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title"><a
-                                  href="product-details.html">Beauty Bloom Skin Perfector</a></h3>
+                                  href="{{ route('public.shop') }}">Beauty Bloom Skin Perfector</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
                                   <i class="fa-solid fa-star fa-fw"></i>
@@ -527,7 +527,7 @@
                           <img src="{{ asset('frontend-assets/imgs/best-selling-products/best-selling-products1_1.jpg') }}" alt="thumb">
                         </div>
                         <div class="best-selling-product-card__content1">
-                          <h3 class="best-selling-product-card__content1-title"><a href="product-details.html">Velvet
+                          <h3 class="best-selling-product-card__content1-title"><a href="{{ route('public.shop') }}">Velvet
                               Dew Cushion Compact</a></h3>
                           <ul class="best-selling-product-card__content1-list">
                             <li class="best-selling-product-card__content1-list-start"><i
@@ -549,7 +549,7 @@
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title"><a
-                                  href="product-details.html">Radiant Pearl Foundation</a></h3>
+                                  href="{{ route('public.shop') }}">Radiant Pearl Foundation</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
                                   <i class="fa-solid fa-star fa-fw"></i>
@@ -568,7 +568,7 @@
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title"><a
-                                  href="product-details.html">PureBloom Lip Balm</a></h3>
+                                  href="{{ route('public.shop') }}">PureBloom Lip Balm</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
                                   <i class="fa-solid fa-star fa-fw"></i>
@@ -586,7 +586,7 @@
                               <img src="{{ asset('frontend-assets/imgs/best-selling-products/best-selling-products1_4.jpg') }}" alt="thumb">
                             </div>
                             <div class="best-selling-product-card__content2">
-                              <h3 class="best-selling-product-card__content2-title"><a href="product-details.html">Brow
+                              <h3 class="best-selling-product-card__content2-title"><a href="{{ route('public.shop') }}">Brow
                                   setter shaping</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
@@ -606,7 +606,7 @@
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title"><a
-                                  href="product-details.html">Beauty Bloom Skin Perfector</a></h3>
+                                  href="{{ route('public.shop') }}">Beauty Bloom Skin Perfector</a></h3>
                               <ul class="best-selling-product-card__content2-list">
                                 <li class="best-selling-product-card__content2-list-start">
                                   <i class="fa-solid fa-star fa-fw"></i>

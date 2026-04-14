@@ -16,7 +16,7 @@
                   <i class="fa-regular fa-chevron-right"></i>
                 </li>
                 <li class="breadcumb2-wrapper__items-list">
-                  <a href="shop.html" class="breadcumb2-wrapper__items-list-title">
+                  <a href="{{ route('public.shop') }}" class="breadcumb2-wrapper__items-list-title">
                     Category
                   </a>
                 </li>
@@ -24,7 +24,7 @@
                   <i class="fa-regular fa-chevron-right"></i>
                 </li>
                 <li class="breadcumb2-wrapper__items-list">
-                  <a href="product-details.html" class="breadcumb2-wrapper__items-list-title2">
+                  <a href="{{ route('public.product.details', $product->slug) }}" class="breadcumb2-wrapper__items-list-title2">
                     Product Details
                   </a>
                 </li>
@@ -44,8 +44,8 @@
                       <div id="thumb-one" class="tab-pane fade show active" role="tabpanel">
                         <div class="product-details-thumb">
                           <div class="thumb">
-                            <img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-thumb1_1.jpg') }}"
-                              alt="shop-details">
+                            <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('frontend-assets/imgs/inner/product-details/product-details-thumb1_1.jpg') }}"
+                              alt="{{ $product->name }}">
                           </div>
                           <div class="content">
                             <span class="sale">In stock</span>
@@ -128,13 +128,12 @@
                 </div>
                 <div class="col-xl-6 col-lg-6">
                   <div class="product-details-content">
-                    <p class="product-details-content__text">Pelican</p>
-                    <h1 class="product-details-content__title mb-2"> M1xe <span class="title-light">Matte
-                        Lipstick</span></h1>
+                    <p class="product-details-content__text">{{ $product->brand->name ?? 'AenumLuxe' }}</p>
+                    <h1 class="product-details-content__title mb-2"> {{ $product->name }}</h1>
                     <div class="product-details-content-items d-flex flex-wrap align-items-center gap-3">
                       <div class="product-details-content__price d-flex align-items-baseline gap-2">
-                        <span class="price-now">$112</span>
-                        <span class="price-was">$225</span>
+                        <span class="price-now">${{ $product->price }}</span>
+                        <span class="price-was">${{ $product->price * 1.5 }}</span>
                         <span class="price-currency">USD</span>
                       </div>
                       <span class="product-details-content__badge-pill">60% OFF</span>
@@ -149,8 +148,7 @@
                       </div>
                     </div>
                     <p class="product-details-content__desc">
-                      There are many variations of passages of Lorem Ipsum available, but the majority have suffered
-                      alteration in some form, by injected humour.
+                      {{ $product->description ?? 'No description available for this product.' }}
                     </p>
                     <div class="product-details-content__color-items mb-4">
                       <div class="d-flex align-items-center gap-2 mb-4">
@@ -195,9 +193,8 @@
                       </button>
                     </div>
                     <div class="product-details-content__meta mb-4">
-                      <div class="meta-row"><span class="k">SKU:</span> <span class="v">NTB7SDVX44</span></div>
-                      <div class="meta-row"><span class="k">Category:</span> <span class="v">Beauty &amp;
-                          Cosmetics</span></div>
+                      <div class="meta-row"><span class="k">SKU:</span> <span class="v">{{ strtoupper(substr($product->slug, 0, 8)) }}</span></div>
+                      <div class="meta-row"><span class="k">Category:</span> <span class="v">{{ $product->category->name ?? 'Beauty' }}</span></div>
                       <div class="meta-row"><span class="k">Tag:</span> <span class="v">Cream</span></div>
                     </div>
                     <div class="product-details-content__checkout">
@@ -445,79 +442,25 @@
             <div class="featured-products2-wrapper">
               <div class="swiper featured-products2-slider">
                 <div class="swiper-wrapper">
+                  @foreach($featuredProducts as $featured)
                   <div class="swiper-slide">
                     <div class="featured-products2-card">
                       <div class="featured-products2-card__thumb">
-                        <img src="{{ asset('frontend-assets/imgs/inner/featured-products/featured-products-thumb1_1.jpg') }}" alt="thumb">
+                        <img src="{{ $featured->image ? asset('storage/' . $featured->image) : asset('frontend-assets/imgs/inner/featured-products/featured-products-thumb1_1.jpg') }}" alt="{{ $featured->name }}">
                       </div>
                       <div class="featured-products2-card__content">
-                        <div class="featured-products2-card__content-title"><a href="product-details.html">ClayPurify
-                            Detox Mask</a></div>
+                        <div class="featured-products2-card__content-title"><a href="{{ route('public.product.details', $featured->slug) }}">{{ $featured->name }}</a></div>
                         <ul class="featured-products2-card__content-list">
                           <li class="featured-products2-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i>
                           </li>
                           <li class="featured-products2-card__content-list-point">5.0</li>
                           <li class="featured-products2-card__content-list-text">(135 Reviews)</li>
                         </ul>
-                        <div class="featured-products2-card__content-dollar">$12.00</div>
+                        <div class="featured-products2-card__content-dollar">${{ $featured->price }}</div>
                       </div>
                     </div>
                   </div>
-                  <div class="swiper-slide">
-                    <div class="featured-products2-card">
-                      <div class="featured-products2-card__thumb">
-                        <img src="{{ asset('frontend-assets/imgs/inner/featured-products/featured-products-thumb1_2.jpg') }}" alt="thumb">
-                      </div>
-                      <div class="featured-products2-card__content">
-                        <div class="featured-products2-card__content-title"><a href="product-details.html">Hydraluxe
-                            Body
-                            Lotion</a></div>
-                        <ul class="featured-products2-card__content-list">
-                          <li class="featured-products2-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i>
-                          </li>
-                          <li class="featured-products2-card__content-list-point">5.0</li>
-                          <li class="featured-products2-card__content-list-text">(135 Reviews)</li>
-                        </ul>
-                        <div class="featured-products2-card__content-dollar">$12.00</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="swiper-slide">
-                    <div class="featured-products2-card">
-                      <div class="featured-products2-card__thumb">
-                        <img src="{{ asset('frontend-assets/imgs/inner/featured-products/featured-products-thumb1_3.jpg') }}" alt="thumb">
-                      </div>
-                      <div class="featured-products2-card__content">
-                        <div class="featured-products2-card__content-title"><a href="product-details.html">Crystal Peel
-                            Polish</a></div>
-                        <ul class="featured-products2-card__content-list">
-                          <li class="featured-products2-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i>
-                          </li>
-                          <li class="featured-products2-card__content-list-point">5.0</li>
-                          <li class="featured-products2-card__content-list-text">(135 Reviews)</li>
-                        </ul>
-                        <div class="featured-products2-card__content-dollar">$12.00</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="swiper-slide">
-                    <div class="featured-products2-card">
-                      <div class="featured-products2-card__thumb">
-                        <img src="{{ asset('frontend-assets/imgs/inner/featured-products/featured-products-thumb1_4.jpg') }}" alt="thumb">
-                      </div>
-                      <div class="featured-products2-card__content">
-                        <div class="featured-products2-card__content-title"><a href="product-details.html">SilkSkin
-                            Repair Oil</a></div>
-                        <ul class="featured-products2-card__content-list">
-                          <li class="featured-products2-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i>
-                          </li>
-                          <li class="featured-products2-card__content-list-point">5.0</li>
-                          <li class="featured-products2-card__content-list-text">(135 Reviews)</li>
-                        </ul>
-                        <div class="featured-products2-card__content-dollar">$12.00</div>
-                      </div>
-                    </div>
-                  </div>
+                  @endforeach
                 </div>
               </div>
             </div>

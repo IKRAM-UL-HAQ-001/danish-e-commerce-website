@@ -49,4 +49,16 @@ class HomeController extends Controller
         $content = Setting::where('key', 'terms_content')->first();
         return view('pages.terms_view', compact('content'));
     }
+
+    public function shop()
+    {
+        $products = Product::where('status', 1)->paginate(12);
+        return view('frontend.shop', compact('products'));
+    }
+
+    public function productDetails(Product $product)
+    {
+        $featuredProducts = Product::where('status', 1)->where('id', '!=', $product->id)->latest()->take(6)->get();
+        return view('frontend.product-details', compact('product', 'featuredProducts'));
+    }
 }
