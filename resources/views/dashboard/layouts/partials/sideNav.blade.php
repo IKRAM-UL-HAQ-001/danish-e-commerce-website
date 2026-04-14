@@ -153,6 +153,15 @@
         </ul>
       </div>
     </li>
+
+    <!-- Backups -->
+    <li class="nav-item {{ Route::is('backups.*') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('backups.index') }}">
+        <i class="menu-icon mdi mdi-database"></i>
+        <span class="menu-title">Database Backups</span>
+      </a>
+    </li>
+
     @endif
 
     @if(Auth::user()->isBuyer())

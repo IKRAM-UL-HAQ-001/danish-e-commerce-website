@@ -60,6 +60,13 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
         Route::get('settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
         Route::post('settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
 
+        // Database Backup
+        Route::get('backups', [\App\Http\Controllers\DatabaseBackupController::class, 'index'])->name('backups.index');
+        Route::post('backups', [\App\Http\Controllers\DatabaseBackupController::class, 'create'])->name('backups.create');
+        Route::get('backups/{file}/download', [\App\Http\Controllers\DatabaseBackupController::class, 'download'])->name('backups.download');
+        Route::post('backups/{file}/delete', [\App\Http\Controllers\DatabaseBackupController::class, 'destroy'])->name('backups.destroy');
+
+
         // Dynamic Pages
         Route::get('pages/about', [\App\Http\Controllers\PageController::class, 'editAbout'])->name('pages.about');
         Route::post('pages/about', [\App\Http\Controllers\PageController::class, 'updateAbout'])->name('pages.about.update');

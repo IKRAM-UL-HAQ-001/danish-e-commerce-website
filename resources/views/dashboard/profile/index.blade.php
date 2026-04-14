@@ -28,8 +28,18 @@
                     <hr>
                     <h4 class="card-title mt-4">Security</h4>
                     <div class="form-group mb-3">
+                        <label for="current_password">Current Password (<small class="text-muted">Required to change password</small>)</label>
+                        <input type="password" name="current_password" class="form-control" id="current_password">
+                        @error('current_password')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="password">New Password (Leave blank to keep current)</label>
                         <input type="password" name="password" class="form-control" id="password">
+                        @error('password')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group mb-3">
                         <label for="password_confirmation">Confirm New Password</label>

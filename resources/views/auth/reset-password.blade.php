@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Star Admin2 </title>
-    <!-- plugins:css -->
+    <title>Reset Password - Star Admin2</title>
     <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
@@ -13,13 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/typicons/typicons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/simple-line-icons/css/simple-line-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
   </head>
   <body>
@@ -32,8 +24,8 @@
                 <div class="brand-logo">
                   <img src="{{ asset('assets/images/logo.svg') }}" alt="logo">
                 </div>
-                <h4>New here?</h4>
-                <h6 class="fw-light">Signing up is easy. It only takes a few steps</h6>
+                <h4>Reset Password</h4>
+                <h6 class="fw-light mb-4">Please choose a new password.</h6>
 
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -45,55 +37,35 @@
                     </div>
                 @endif
 
-                <form class="pt-3" method="POST" action="{{ route('register') }}">
+                <form class="pt-3" method="POST" action="{{ route('password.update') }}">
                   @csrf
+                  <!-- Password Reset Token -->
+                  <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
                   <div class="form-group">
-                    <input type="text" name="name" class="form-control form-control-lg" id="exampleInputUsername1" placeholder="Full Name" value="{{ old('name') }}" required>
+                    <input type="email" name="email" class="form-control form-control-lg" id="email" placeholder="Email" value="{{ old('email', $request->email) }}" required autofocus>
                   </div>
                   <div class="form-group">
-                    <input type="email" name="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email" value="{{ old('email') }}" required>
+                    <input type="password" name="password" class="form-control form-control-lg" id="password" placeholder="New Password" required>
                   </div>
                   <div class="form-group">
-                    <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password" required>
-                  </div>
-                  <div class="form-group">
-                    <input type="password" name="password_confirmation" class="form-control form-control-lg" id="exampleInputPassword2" placeholder="Confirm Password" required>
-                  </div>
-                  <div class="mb-4">
-                    <div class="form-check form-check-flat form-check-primary">
-                      <label class="form-check-label text-muted">
-                        <input type="checkbox" name="terms" class="form-check-input" required>
-                        I agree to all <a href="{{ route('public.terms') }}" target="_blank">Terms & Conditions</a>
-                      </label>
-                    </div>
+                    <input type="password" name="password_confirmation" class="form-control form-control-lg" id="password_confirmation" placeholder="Confirm New Password" required>
                   </div>
                   <div class="mt-3 d-grid gap-2">
-                    <button type="submit" class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn">SIGN UP</button>
-                  </div>
-                  <div class="text-center mt-4 fw-light"> Already have an account? <a href="{{ route('login') }}" class="text-primary">Login</a>
+                    <button type="submit" class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn">Reset Password</button>
                   </div>
                 </form>
               </div>
             </div>
           </div>
         </div>
-        <!-- content-wrapper ends -->
       </div>
-      <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
     <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
-    <script src="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
     <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
     <script src="{{ asset('assets/js/template.js') }}"></script>
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
     <script src="{{ asset('assets/js/todolist.js') }}"></script>
-    <!-- endinject -->
   </body>
 </html>
