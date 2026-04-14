@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Star Admin2 </title>
+    <title>{{ config('app.name') }}</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
@@ -21,6 +21,29 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    <style>
+      .form-check {
+        padding-left: 0 !important;
+        margin-top: 15px !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+      .form-check .form-check-input {
+        margin-left: 0 !important;
+        margin-right: 12px !important;
+        position: static !important;
+        width: 18px !important;
+        height: 18px !important;
+        border: 2px solid #1F3BB3 !important;
+        cursor: pointer;
+      }
+      .form-check label {
+        margin-bottom: 0 !important;
+        cursor: pointer;
+        font-weight: 500;
+        color: #333;
+      }
+    </style>
   </head>
   <body>
     <div class="container-scroller">
@@ -60,8 +83,8 @@
                     <input type="password" name="password_confirmation" class="form-control form-control-lg" id="exampleInputPassword2" placeholder="Confirm Password" required>
                   </div>
                   <div class="mb-4">
-                    <div class="form-check form-check-flat form-check-primary">
-                      <label class="form-check-label text-muted">
+                    <div class="form-check">
+                      <label class="text-muted">
                         <input type="checkbox" name="terms" class="form-check-input" required>
                         I agree to all <a href="{{ route('public.terms') }}" target="_blank">Terms & Conditions</a>
                       </label>
