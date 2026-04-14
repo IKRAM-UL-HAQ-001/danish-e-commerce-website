@@ -82,7 +82,6 @@
                 <nav class="main-menu">
                   <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>
                     <li class="menu-item-has-children">
                       <a href="{{ route('public.shop') }}">Shop</a>
                       <ul class="dp-menu">
@@ -90,7 +89,7 @@
                         <li><a href="{{ route('public.shop.list') }}">Shop List</a></li>
                       </ul>
                     </li>
-                    <!-- <li><a href="#">Blog</a></li> -->
+                    <li><a href="{{ route('about') }}">About Us</a></li>                    <!-- <li><a href="#">Blog</a></li> -->
                     <li><a href="{{ route('contact') }}">Contact</a></li>
                   </ul>
                 </nav>
