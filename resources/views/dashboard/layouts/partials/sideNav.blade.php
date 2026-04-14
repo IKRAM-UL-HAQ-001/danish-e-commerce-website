@@ -107,6 +107,14 @@
       </div>
     </li>
 
+    <!-- Contact Messages -->
+    <li class="nav-item {{ Route::is('messages.*') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('messages.index') }}">
+        <i class="menu-icon mdi mdi-email-outline"></i>
+        <span class="menu-title">Customer Inquiries</span>
+      </a>
+    </li>
+
     <!-- Analytics -->
     <li class="nav-item {{ Route::is('analytics.*') ? 'active' : '' }}">
       <a class="nav-link {{ Route::is('analytics.*') ? '' : 'collapsed' }}" data-bs-toggle="collapse" href="#chart-menu" aria-expanded="{{ Route::is('analytics.*') ? 'true' : 'false' }}" aria-controls="chart-menu">
@@ -173,6 +181,14 @@
       <a class="nav-link" href="{{ route('backups.index') }}">
         <i class="menu-icon mdi mdi-database"></i>
         <span class="menu-title">Database Backups</span>
+      </a>
+    </li>
+
+    <!-- Activity Log -->
+    <li class="nav-item {{ Route::is('activities.*') ? 'active' : '' }}">
+      <a class="nav-link" href="{{ route('activities.index') }}">
+        <i class="menu-icon mdi mdi-history"></i>
+        <span class="menu-title">Activity Log</span>
       </a>
     </li>
 

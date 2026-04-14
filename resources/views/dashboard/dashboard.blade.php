@@ -72,8 +72,7 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
+    <div class="col-md-6 grid-margin stretch-card">
         <div class="card card-rounded">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -88,7 +87,6 @@
                                 <th>Customer</th>
                                 <th>Price</th>
                                 <th>Status</th>
-                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,11 +100,44 @@
                                         {{ ucfirst($order->status) }}
                                     </label>
                                 </td>
-                                <td>{{ $order->created_at->diffForHumans() }}</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center py-4">No recent orders.</td>
+                                <td colspan="4" class="text-center py-4">No recent orders.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card card-rounded">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title">Latest Inquiries</h4>
+                    <a href="{{ route('messages.index') }}" class="btn btn-primary btn-sm text-white">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse(\App\Models\ContactMessage::latest()->take(5)->get() as $message)
+                            <tr>
+                                <td>{{ $message->name }}</td>
+                                <td>{{ Str::limit($message->subject ?? 'Generic Inquiry', 20) }}</td>
+                                <td>{{ $message->created_at->diffForHumans() }}</td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-4">No new messages.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -130,8 +161,8 @@
                 datasets: [{
                     label: 'Revenue',
                     data: {!! json_encode($chartData->pluck('total')) !!},
-                    borderColor: '#1F3BB3',
-                    backgroundColor: 'rgba(31, 59, 179, 0.1)',
+                    borderColor: '#EE2D7A',
+                    backgroundColor: 'rgba(238, 45, 122, 0.1)',
                     fill: true,
                     tension: 0.3
                 }]
