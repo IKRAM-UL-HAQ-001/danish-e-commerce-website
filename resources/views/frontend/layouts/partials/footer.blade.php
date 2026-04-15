@@ -47,10 +47,9 @@
                   </div>
                   <p class="footer1-widget__text">Leading e-commerce beauty store providing the best-curated skin care and cosmetics products worldwide.</p>
                   <div class="footer1-widget__social-link">
-                    <a href="#"> <span><i class="fa-brands fa-facebook-f"></i></span> </a>
-                    <a href="#"> <span><i class="fa-brands fa-twitter"></i></span> </a>
-                    <a href="#"> <span><i class="fa-brands fa-linkedin-in"></i></span> </a>
-                    <a href="#"> <span><i class="fa-brands fa-instagram"></i></span> </a>
+                    <a href="https://www.facebook.com/share/1akN9wgZ8X/"> <span><i class="fa-brands fa-facebook-f"></i></span> </a>
+                    <a href="https://www.tiktok.com/@aenum.luxe?_r=1&_t=ZN-95TrGjnkFp0"> <span><i class="fa-brands  fa-tiktok"></i></span> </a>
+                    <a href="https://www.instagram.com/aenum_luxe_style?igsh=eGt1aXpkOW1wZG9u&utm_source=qr"> <span><i class="fa-brands fa-instagram"></i></span> </a>
                   </div>
                 </div>
               </div>
