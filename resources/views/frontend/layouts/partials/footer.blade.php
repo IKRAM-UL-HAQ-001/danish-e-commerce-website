@@ -29,13 +29,13 @@
                   <div class="footer1-widget__title">Get in touch</div>
                   <div class="footer1-widget__contact">
                     <a class="footer1-widget__contact-link" href="tel:89(09)23461894">
-                      <i class="fa-solid fa-phone me-2"></i> 89 (09) 2346 1894
+                      <i class="fa-solid fa-phone me-2"></i> 07 383 828937
                     </a>
-                    <a class="footer1-widget__contact-link" href="mailto:exmplor@gmail.com">
-                      <i class="fa-solid fa-envelope me-2"></i> exmplor@gmail.com
+                    <a class="footer1-widget__contact-link" href="mailto:aenumluxe@gmail.com">
+                      <i class="fa-solid fa-envelope me-2"></i> aenumluxe@gmail.com 
                     </a>
                     <a class="footer1-widget__contact-link" href="#">
-                      <i class="fa-solid fa-location-dot me-2"></i> Holy Rad Park, USA
+                      <i class="fa-solid fa-location-dot me-2"></i> London, UK
                     </a>
                   </div>
                 </div>
