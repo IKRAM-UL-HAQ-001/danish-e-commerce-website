@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="description" content="{{ config('app.name') }} - Beauty & Cosmetic Store">
 
   <title>@yield('title') | {{ config('app.name') }}</title>
@@ -19,7 +20,6 @@
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/nice-select/nice-select.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/wow/animate.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/odometer/odometer-theme-default.css') }}">
-
   <link rel="stylesheet" href="{{ asset('frontend-assets/css/style.css') }}">
   @stack('styles')
 </head>
@@ -39,11 +39,6 @@
         <div class="side-info">
           <div class="side-info-content">
             <div class="offset-widget offset-header">
-              <div class="offset-logo">
-                <a href="{{ route('home') }}">
-                  <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="{{ config('app.name') }} Logo" />
-                </a>
-              </div>
               <button id="side-info-close" class="side-info-close">
                 <i class="fas fa-times"></i>
               </button>
@@ -83,13 +78,30 @@
                   <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li class="menu-item-has-children">
-                      <a href="{{ route('public.shop') }}">Shop</a>
+                      <a href="javascript:void(0)">Categories</a>
                       <ul class="dp-menu">
-                        <li><a href="{{ route('public.shop') }}">Shop Grid</a></li>
-                        <li><a href="{{ route('public.shop.list') }}">Shop List</a></li>
+                        @foreach($headerCategories as $category)
+                          <li>
+                            <a href="{{ route('public.shop', ['category' => $category->slug]) }}" class="d-flex align-items-center">
+                              @if($category->image)
+                                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 25px; height: 25px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
+                              @endif
+                              {{ $category->name }}
+                            </a>
+                          </li>
+                        @endforeach
                       </ul>
                     </li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>                    <!-- <li><a href="#">Blog</a></li> -->
+                    <li class="menu-item-has-children">
+                      <a href="{{ route('public.shop') }}">Shop</a>
+                      <ul class="dp-menu">
+                        <li><a href="{{ route('public.shop') }}">Shop Sidebar</a></li>
+                        <li><a href="{{ route('public.shop.list') }}">Shop List</a></li>
+                        <li><a href="{{ route('public.cart') }}">Cart</a></li>
+                        <li><a href="{{ route('public.checkout') }}">Checkout</a></li>
+                      </ul>
+                    </li>
+                    <li><a href="{{ route('about') }}">About Us</a></li>
                     <li><a href="{{ route('contact') }}">Contact</a></li>
                   </ul>
                 </nav>
@@ -141,12 +153,13 @@
                   </a>
 
                   <!-- Cart Icon with Badge -->
-                  <a href="#" class="action-btn position-relative" aria-label="Cart">
+                  <a href="{{ route('public.cart') }}" class="action-btn position-relative" aria-label="Cart">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span
+                      id="cart-badge"
                       class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light"
                       style="font-size: 10px; padding: 4px 6px;">
-                      0
+                      {{ count(session('cart', [])) }}
                     </span>
                   </a>
 

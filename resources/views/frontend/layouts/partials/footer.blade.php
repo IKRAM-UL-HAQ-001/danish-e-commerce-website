@@ -42,9 +42,6 @@
               </div>
               <div class="col-xl-6 col-md-6 wow fadeInUp" data-wow-delay=".9s">
                 <div class="footer1-widget ps-xl-5 ms-xl-5">
-                  <div class="footer1-widget__logo">
-                    <img src="{{ asset('frontend-assets/imgs/logo/footer-logo.png') }}" alt="logo">
-                  </div>
                   <p class="footer1-widget__text">Leading e-commerce beauty store providing the best-curated skin care and cosmetics products worldwide.</p>
                   <div class="footer1-widget__social-link">
                     <a href="https://www.facebook.com/share/1akN9wgZ8X/"> <span><i class="fa-brands fa-facebook-f"></i></span> </a>

@@ -5,8 +5,16 @@
 @section('content')
 <div class="breadcumb">
     <div class="container rr-container-1895">
-        <div class="breadcumb-wrapper section-spacing-120 fix" data-bg-src="{{ asset('frontend-assets/imgs/breadcumbBg.jpg') }}">
-            <div class="breadcumb-wrapper__title">Shop</div>
+        <div class="breadcumb-wrapper section-spacing-120 fix" data-bg-src="{{ ($selectedCategory && $selectedCategory->image) ? asset('storage/' . $selectedCategory->image) : asset('frontend-assets/imgs/breadcumbBg.jpg') }}">
+            <div class="breadcumb-wrapper__title">
+                @if($selectedCategory)
+                    {{ $selectedCategory->name }}
+                @elseif($selectedBrand)
+                    {{ $selectedBrand->name }}
+                @else
+                    Shop
+                @endif
+            </div>
             <ul class="breadcumb-wrapper__items">
                 <li class="breadcumb-wrapper__items-list">
                     <i class="fa-regular fa-house"></i>
@@ -24,7 +32,13 @@
                 </li>
                 <li class="breadcumb-wrapper__items-list">
                     <a href="{{ route('public.shop') }}" class="breadcumb-wrapper__items-list-title2">
-                        Shop
+                        @if($selectedCategory)
+                            {{ $selectedCategory->name }}
+                        @elseif($selectedBrand)
+                            {{ $selectedBrand->name }}
+                        @else
+                            Shop
+                        @endif
                     </a>
                 </li>
             </ul>
@@ -57,24 +71,39 @@
                             <h3 class="shop-sidebar__widget-title">Price</h3>
                         </div>
                         <div class="shop-sidebar__price">
-                            <div class="shop-sidebar__price-info">
-                                <p class="shop-sidebar__price-info-text">The highest price is <span id="shop-max-price-display">$500.00</span></p>
-                                <a href="#" class="shop-sidebar__price-reset" id="shop-price-reset">Reset</a>
-                            </div>
-                            <div class="shop-sidebar__price-slider">
-                                <input type="range" id="shop-price-range" class="shop-sidebar__price-range" min="0" max="500" value="500">
-                            </div>
-                            <div class="shop-sidebar__price-inputs">
-                                <div class="shop-sidebar__price-input-group">
-                                    <label class="shop-sidebar__price-input-label">From:</label>
-                                    <input type="number" class="shop-sidebar__price-input" id="shop-price-from" value="0" min="0" max="500">
+                            <form action="{{ route('public.shop') }}" method="GET" id="price-filter-form">
+                                @if(request('category'))
+                                    <input type="hidden" name="category" value="{{ request('category') }}">
+                                @endif
+                                @if(request('brand'))
+                                    <input type="hidden" name="brand" value="{{ request('brand') }}">
+                                @endif
+                                <div class="shop-sidebar__price-info">
+                                    <p class="shop-sidebar__price-info-text">Range: <span>${{ $minPriceRange }} - ${{ $maxPriceRange }}</span></p>
+                                    <a href="{{ route('public.shop', request()->only(['category', 'brand'])) }}" class="shop-sidebar__price-reset">Reset</a>
                                 </div>
-                                <span class="shop-sidebar__price-input-separator">-</span>
-                                <div class="shop-sidebar__price-input-group">
-                                    <label class="shop-sidebar__price-input-label">To:</label>
-                                    <input type="number" class="shop-sidebar__price-input" id="shop-price-to" value="500" min="0" max="500">
+                                <div class="shop-sidebar__price-slider">
+                                    <input type="range" id="shop-price-range" class="shop-sidebar__price-range" 
+                                           min="{{ $minPriceRange }}" max="{{ $maxPriceRange }}" 
+                                           value="{{ request('max_price', $maxPriceRange) }}">
                                 </div>
-                            </div>
+                                <div class="shop-sidebar__price-inputs">
+                                    <div class="shop-sidebar__price-input-group">
+                                        <label class="shop-sidebar__price-input-label">From:</label>
+                                        <input type="number" name="min_price" class="shop-sidebar__price-input" id="shop-price-from" 
+                                               value="{{ request('min_price', $minPriceRange) }}" min="{{ $minPriceRange }}" max="{{ $maxPriceRange }}">
+                                    </div>
+                                    <span class="shop-sidebar__price-input-separator">-</span>
+                                    <div class="shop-sidebar__price-input-group">
+                                        <label class="shop-sidebar__price-input-label">To:</label>
+                                        <input type="number" name="max_price" class="shop-sidebar__price-input" id="shop-price-to" 
+                                               value="{{ request('max_price', $maxPriceRange) }}" min="{{ $minPriceRange }}" max="{{ $maxPriceRange }}">
+                                    </div>
+                                </div>
+                                <button type="submit" class="rr-btn-button mt-3 w-100" style="padding: 10px;">
+                                    <span class="text">Apply Filter</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
 
@@ -86,8 +115,13 @@
                             <ul class="shop-sidebar__categories-list">
                                 @foreach($categories as $category)
                                 <li class="shop-sidebar__categories-item">
-                                    <a href="#" class="shop-sidebar__categories-link" data-category="{{ $category->slug }}">
-                                        <i class="fa-solid fa-chevron-right"></i>{{ $category->name }}
+                                    <a href="{{ route('public.shop', ['category' => $category->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $category->slug ? 'active' : '' }} d-flex align-items-center">
+                                        @if($category->image)
+                                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
+                                        @else
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        @endif
+                                        {{ $category->name }}
                                     </a>
                                 </li>
                                 @endforeach
@@ -103,7 +137,7 @@
                             <ul class="shop-sidebar__brand-list">
                                 @foreach($brands as $brand)
                                 <li class="shop-sidebar__brand-item">
-                                    <a href="#" class="shop-sidebar__brand-link" data-brand="{{ $brand->slug }}">
+                                    <a href="{{ route('public.shop', ['brand' => $brand->slug]) }}" class="shop-sidebar__brand-link {{ request('brand') == $brand->slug ? 'active' : '' }}">
                                         <i class="fa-solid fa-chevron-right"></i>{{ $brand->name }}
                                     </a>
                                 </li>
@@ -146,14 +180,14 @@
                                     <div class="shop-card__thumb-offer">New</div>
                                     @endif
                                     <div class="shop-card__thumb-btn-wrapper">
-                                        <a href="#" class="rr-btn-button4">
+                                        <button class="rr-btn-button4 add-to-cart" data-id="{{ $product->id }}">
                                             <span class="text">Add to Cart</span>
                                             <span class="icon">
                                                 <svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M0.419678 3.21674H10.2098M10.2098 3.21674L7.41265 6.01393M10.2098 3.21674L7.41265 0.419556" stroke="#0C0C0C" stroke-width="0.839157" stroke-linecap="round" stroke-linejoin="round"></path>
                                                 </svg>
                                             </span>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="shop-card__content">
@@ -163,7 +197,12 @@
                                         <li class="shop-card__content-list-point">5.0</li>
                                         <li class="shop-card__content-list-text">(135 Reviews)</li>
                                     </ul>
-                                    <h4 class="shop-card__content-dollar">${{ number_format($product->price, 2) }}</h4>
+                                    <h4 class="shop-card__content-dollar">
+                                        ${{ number_format($product->price, 2) }}
+                                        @if($product->old_price)
+                                        <span style="text-decoration: line-through; color: #888; font-size: 0.8em; margin-left: 5px;">${{ number_format($product->old_price, 2) }}</span>
+                                        @endif
+                                    </h4>
                                 </div>
                             </div>
                         </div>

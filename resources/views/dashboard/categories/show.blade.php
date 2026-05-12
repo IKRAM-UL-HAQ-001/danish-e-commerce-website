@@ -18,6 +18,7 @@
                     <table class="table" id="categoriesTable">
                         <thead>
                             <tr>
+                                <th>Image</th>
                                 <th>Category Name</th>
                                 <th>Parent Category</th>
                                 <th>Status</th>
@@ -27,6 +28,13 @@
                         <tbody>
                             @foreach($categories as $category)
                             <tr>
+                                <td>
+                                    @if($category->image)
+                                        <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                                    @else
+                                        <span class="text-muted">No Image</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if($category->parent_id) 
                                         <span class="text-muted">—</span> 
@@ -51,6 +59,7 @@
                                         data-name="{{ $category->name }}"
                                         data-parent="{{ $category->parent_id ?? '' }}"
                                         data-status="{{ $category->status }}"
+                                        data-image="{{ $category->image ? asset('storage/' . $category->image) : '' }}"
                                         data-bs-toggle="modal" data-bs-target="#editCategoryModal">
                                         <i class="mdi mdi-pencil text-primary"></i>
                                     </button>
@@ -75,7 +84,7 @@
 <!-- Add Category Modal -->
 <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="{{ route('categories.store') }}" method="POST" class="modal-content">
+        <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data" class="modal-content">
             @csrf
             <div class="modal-header">
                 <h5 class="modal-title">Add New Category</h5>
@@ -103,6 +112,11 @@
                         <option value="0">Inactive</option>
                     </select>
                 </div>
+                <div class="form-group mb-3">
+                    <label for="image">Category Image</label>
+                    <input type="file" name="image" class="form-control">
+                    <small class="text-muted">Recommended size: 300x300px.</small>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -115,7 +129,7 @@
 <!-- Edit Category Modal -->
 <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form id="editCategoryForm" action="{{ route('categories.update') }}" method="POST" class="modal-content">
+        <form id="editCategoryForm" action="{{ route('categories.update') }}" method="POST" enctype="multipart/form-data" class="modal-content">
             @csrf
             <input type="hidden" name="slug" id="edit_slug">
             <div class="modal-header">
@@ -143,6 +157,11 @@
                         <option value="0">Inactive</option>
                     </select>
                 </div>
+                <div class="form-group mb-3">
+                    <label for="edit_image">Category Image (Leave blank to keep current)</label>
+                    <input type="file" name="image" id="edit_image" class="form-control">
+                    <div id="current_image_preview" class="mt-2"></div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -166,6 +185,7 @@
             var name = $(this).data('name');
             var parent = $(this).data('parent');
             var status = $(this).data('status');
+            var image = $(this).data('image');
 
             // Set form action dynamically
             // No longer needed to set action with slug, but we populate the hidden slug field
@@ -175,6 +195,13 @@
             $('#edit_name').val(name);
             $('#edit_parent_id').val(parent);
             $('#edit_status').val(status);
+
+            // Preview current image
+            if (image) {
+                $('#current_image_preview').html('<img src="' + image + '" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">');
+            } else {
+                $('#current_image_preview').html('');
+            }
         });
     });
 </script>

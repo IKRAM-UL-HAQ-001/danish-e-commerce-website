@@ -27,6 +27,16 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/shop', [HomeController::class, 'shop'])->name('public.shop');
 Route::get('/shop-list', [HomeController::class, 'shopList'])->name('public.shop.list');
 Route::get('/product/{product:slug}', [HomeController::class, 'productDetails'])->name('public.product.details');
+Route::get('/cart', [HomeController::class, 'cart'])->name('public.cart');
+Route::get('/checkout', [HomeController::class, 'checkout'])->name('public.checkout');
+
+// Cart AJAX Routes
+Route::post('/cart/add', [\App\Http\Controllers\Frontend\CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update', [\App\Http\Controllers\Frontend\CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove', [\App\Http\Controllers\Frontend\CartController::class, 'remove'])->name('cart.remove');
+
+// Product Review Route
+Route::post('/product/{product}/review', [\App\Http\Controllers\Frontend\ProductReviewController::class, 'store'])->name('product.review');
 
 Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

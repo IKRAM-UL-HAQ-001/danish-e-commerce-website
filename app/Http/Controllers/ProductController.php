@@ -51,7 +51,9 @@ class ProductController extends Controller
         Product::create([
             'name' => $request->name,
             'slug' => \Illuminate\Support\Str::slug($request->name),
+            'sku' => $request->sku,
             'description' => $request->description,
+            'tags' => $request->tags,
             'price' => $request->price,
             'stock' => $request->stock,
             'image' => $imagePath,
@@ -107,7 +109,9 @@ class ProductController extends Controller
         $product->update([
             'name' => $request->name,
             'slug' => \Illuminate\Support\Str::slug($request->name),
+            'sku' => $request->sku,
             'description' => $request->description,
+            'tags' => $request->tags,
             'price' => $request->price,
             'stock' => $request->stock,
             'category_id' => $request->category_id,

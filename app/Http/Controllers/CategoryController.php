@@ -29,12 +29,19 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|boolean',
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('categories', 'public');
+        }
 
         Category::create([
             'name' => $request->name,
             'slug' => \Illuminate\Support\Str::slug($request->name),
+            'image' => $imagePath,
             'parent_id' => $request->parent_id,
             'status' => $request->status,
         ]);
@@ -67,8 +74,18 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|boolean',
         ]);
+
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($category->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image);
+            }
+            $category->image = $request->file('image')->store('categories', 'public');
+            $category->save();
+        }
 
         $category->update([
             'name' => $request->name,
@@ -86,6 +103,12 @@ class CategoryController extends Controller
     public function destroy(Request $request)
     {
         $category = Category::where('slug', $request->slug)->firstOrFail();
+        
+        // Delete image if exists
+        if ($category->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image);
+        }
+
         $category->delete();
         return back()->with('success', 'Category deleted successfully.');
     }

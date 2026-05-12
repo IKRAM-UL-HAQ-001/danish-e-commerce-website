@@ -69,6 +69,21 @@
   --border-color2: #DADADA;
 }
 
+.section-spacing-120 {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.section-spacing-100 {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.section-spacing-80 {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
 /* === Font Family variable scss === */
 /* === Responsive variable scss  === */
 /* === For Box Layout scss  === */
@@ -6570,12 +6585,12 @@ input.main-search-input::placeholder {
   background-color: #FAF9F6;
   position: relative;
   z-index: 1;
-  padding: 90px 0 0;
+  padding: 40px 0 0;
 }
 .intro1__bg-text {
   position: absolute;
   top: 15%;
-  left: 50%;
+  left: 45%;
   transform: translate(-50%, -15%);
   font-size: 300px;
   font-family: var(--font_Playfair);
@@ -6637,7 +6652,7 @@ input.main-search-input::placeholder {
   font-size: 16px;
   color: var(--text-color-two);
   line-height: 1.6;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   max-width: 450px;
 }
 .intro1__thumb {
@@ -7401,18 +7416,21 @@ input.main-search-input::placeholder {
   text-align: center;
 }
 .best-selling-product-card__thumb1 img {
+  height: 480px;
+  object-fit: cover;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   width: 100%;
 }
 .best-selling-product-card__thumb img {
-  height: 240px;
+  height: 200px;
+  object-fit: cover;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   width: 100%;
 }
 .best-selling-product-card__content1 {
-  padding: 14px 24px 30px;
+  padding: 12px 20px 20px;
   background: var(--white);
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
@@ -7509,7 +7527,7 @@ input.main-search-input::placeholder {
   text-transform: capitalize;
 }
 .best-selling-product-card__content2 {
-  padding: 14px 24px 30px;
+  padding: 10px 16px 15px;
   background: var(--white);
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;

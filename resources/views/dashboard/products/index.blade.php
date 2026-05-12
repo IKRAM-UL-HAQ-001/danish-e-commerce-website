@@ -70,6 +70,8 @@
                                         data-brand="{{ $product->brand_id }}"
                                         data-price="{{ $product->price }}"
                                         data-stock="{{ $product->stock }}"
+                                        data-sku="{{ $product->sku }}"
+                                        data-tags="{{ $product->tags }}"
                                         data-description="{{ $product->description }}"
                                         data-status="{{ $product->status }}"
                                         data-bs-toggle="modal" data-bs-target="#editProductModal">
@@ -131,12 +133,20 @@
                         <input type="number" step="0.01" name="price" class="form-control" required>
                     </div>
                     <div class="col-md-6 mb-3">
+                        <label for="sku">SKU</label>
+                        <input type="text" name="sku" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
                         <label for="stock">Stock</label>
                         <input type="number" name="stock" class="form-control" required>
                     </div>
                     <div class="col-12 mb-3">
                         <label for="description">Description</label>
-                        <textarea name="description" class="form-control" rows="3"></textarea>
+                        <textarea name="description" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="tags">Tags (Comma separated)</label>
+                        <input type="text" name="tags" class="form-control" placeholder="Cream, Beauty, Skin">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="image">Product Image</label>
@@ -197,12 +207,20 @@
                         <input type="number" step="0.01" name="price" id="edit_price" class="form-control" required>
                     </div>
                     <div class="col-md-6 mb-3">
+                        <label for="edit_sku">SKU</label>
+                        <input type="text" name="sku" id="edit_sku" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
                         <label for="edit_stock">Stock</label>
                         <input type="number" name="stock" id="edit_stock" class="form-control" required>
                     </div>
                     <div class="col-12 mb-3">
                         <label for="edit_description">Description</label>
-                        <textarea name="description" id="edit_description" class="form-control" rows="3"></textarea>
+                        <textarea name="description" id="edit_description" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="edit_tags">Tags</label>
+                        <input type="text" name="tags" id="edit_tags" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="image">Update Image (Leave blank to keep current)</label>
@@ -241,6 +259,8 @@
             var brand = $(this).data('brand');
             var price = $(this).data('price');
             var stock = $(this).data('stock');
+            var sku = $(this).data('sku');
+            var tags = $(this).data('tags');
             var description = $(this).data('description');
             var status = $(this).data('status');
 
@@ -254,6 +274,8 @@
             $('#edit_brand_id').val(brand);
             $('#edit_price').val(price);
             $('#edit_stock').val(stock);
+            $('#edit_sku').val(sku);
+            $('#edit_tags').val(tags);
             $('#edit_description').val(description);
             $('#edit_status').val(status);
         });

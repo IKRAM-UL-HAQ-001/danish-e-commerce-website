@@ -5,8 +5,16 @@
 @section('content')
 <div class="breadcumb">
     <div class="container rr-container-1895">
-        <div class="breadcumb-wrapper section-spacing-120 fix" data-bg-src="{{ asset('frontend-assets/imgs/breadcumbBg.jpg') }}">
-            <div class="breadcumb-wrapper__title">Shop List</div>
+        <div class="breadcumb-wrapper section-spacing-120 fix" data-bg-src="{{ ($selectedCategory && $selectedCategory->image) ? asset('storage/' . $selectedCategory->image) : asset('frontend-assets/imgs/breadcumbBg.jpg') }}">
+            <div class="breadcumb-wrapper__title">
+                @if($selectedCategory)
+                    {{ $selectedCategory->name }}
+                @elseif($selectedBrand)
+                    {{ $selectedBrand->name }}
+                @else
+                    Shop List
+                @endif
+            </div>
             <ul class="breadcumb-wrapper__items">
                 <li class="breadcumb-wrapper__items-list">
                     <i class="fa-regular fa-house"></i>
@@ -15,13 +23,21 @@
                     <i class="fa-regular fa-chevron-right"></i>
                 </li>
                 <li class="breadcumb-wrapper__items-list">
-                    <a href="{{ route('home') }}" class="breadcumb-wrapper__items-list-title">Category</a>
+                    <a href="{{ route('home') }}" class="breadcumb-wrapper__items-list-title">Home</a>
                 </li>
                 <li class="breadcumb-wrapper__items-list">
                     <i class="fa-regular fa-chevron-right"></i>
                 </li>
                 <li class="breadcumb-wrapper__items-list">
-                    <a href="{{ route('public.shop.list') }}" class="breadcumb-wrapper__items-list-title2">Shop List</a>
+                    <a href="{{ route('public.shop.list') }}" class="breadcumb-wrapper__items-list-title2">
+                        @if($selectedCategory)
+                            {{ $selectedCategory->name }}
+                        @elseif($selectedBrand)
+                            {{ $selectedBrand->name }}
+                        @else
+                            Shop List
+                        @endif
+                    </a>
                 </li>
             </ul>
         </div>
@@ -53,24 +69,39 @@
                             <h3 class="shop-sidebar__widget-title">Price</h3>
                         </div>
                         <div class="shop-sidebar__price">
-                            <div class="shop-sidebar__price-info">
-                                <p class="shop-sidebar__price-info-text">The highest price is <span id="shop-max-price-display-list">$500.00</span></p>
-                                <a href="#" class="shop-sidebar__price-reset" id="shop-price-reset-list">Reset</a>
-                            </div>
-                            <div class="shop-sidebar__price-slider">
-                                <input type="range" id="shop-price-range-list" class="shop-sidebar__price-range" min="0" max="500" value="500">
-                            </div>
-                            <div class="shop-sidebar__price-inputs">
-                                <div class="shop-sidebar__price-input-group">
-                                    <label class="shop-sidebar__price-input-label">From:</label>
-                                    <input type="number" class="shop-sidebar__price-input" id="shop-price-from-list" value="0" min="0" max="500">
+                            <form action="{{ route('public.shop.list') }}" method="GET" id="price-filter-form-list">
+                                @if(request('category'))
+                                    <input type="hidden" name="category" value="{{ request('category') }}">
+                                @endif
+                                @if(request('brand'))
+                                    <input type="hidden" name="brand" value="{{ request('brand') }}">
+                                @endif
+                                <div class="shop-sidebar__price-info">
+                                    <p class="shop-sidebar__price-info-text">Range: <span>${{ $minPriceRange }} - ${{ $maxPriceRange }}</span></p>
+                                    <a href="{{ route('public.shop.list', request()->only(['category', 'brand'])) }}" class="shop-sidebar__price-reset">Reset</a>
                                 </div>
-                                <span class="shop-sidebar__price-input-separator">-</span>
-                                <div class="shop-sidebar__price-input-group">
-                                    <label class="shop-sidebar__price-input-label">To:</label>
-                                    <input type="number" class="shop-sidebar__price-input" id="shop-price-to-list" value="500" min="0" max="500">
+                                <div class="shop-sidebar__price-slider">
+                                    <input type="range" id="shop-price-range-list" class="shop-sidebar__price-range" 
+                                           min="{{ $minPriceRange }}" max="{{ $maxPriceRange }}" 
+                                           value="{{ request('max_price', $maxPriceRange) }}">
                                 </div>
-                            </div>
+                                <div class="shop-sidebar__price-inputs">
+                                    <div class="shop-sidebar__price-input-group">
+                                        <label class="shop-sidebar__price-input-label">From:</label>
+                                        <input type="number" name="min_price" class="shop-sidebar__price-input" id="shop-price-from-list" 
+                                               value="{{ request('min_price', $minPriceRange) }}" min="{{ $minPriceRange }}" max="{{ $maxPriceRange }}">
+                                    </div>
+                                    <span class="shop-sidebar__price-input-separator">-</span>
+                                    <div class="shop-sidebar__price-input-group">
+                                        <label class="shop-sidebar__price-input-label">To:</label>
+                                        <input type="number" name="max_price" class="shop-sidebar__price-input" id="shop-price-to-list" 
+                                               value="{{ request('max_price', $maxPriceRange) }}" min="{{ $minPriceRange }}" max="{{ $maxPriceRange }}">
+                                    </div>
+                                </div>
+                                <button type="submit" class="rr-btn-button mt-3 w-100" style="padding: 10px;">
+                                    <span class="text">Apply Filter</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
 
@@ -82,8 +113,13 @@
                             <ul class="shop-sidebar__categories-list">
                                 @foreach($categories as $category)
                                 <li class="shop-sidebar__categories-item">
-                                    <a href="#" class="shop-sidebar__categories-link" data-category="{{ $category->slug }}">
-                                        <i class="fa-solid fa-chevron-right"></i>{{ $category->name }}
+                                    <a href="{{ route('public.shop.list', ['category' => $category->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $category->slug ? 'active' : '' }} d-flex align-items-center">
+                                        @if($category->image)
+                                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
+                                        @else
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        @endif
+                                        {{ $category->name }}
                                     </a>
                                 </li>
                                 @endforeach
@@ -99,7 +135,7 @@
                             <ul class="shop-sidebar__brand-list">
                                 @foreach($brands as $brand)
                                 <li class="shop-sidebar__brand-item">
-                                    <a href="#" class="shop-sidebar__brand-link" data-brand="{{ $brand->slug }}">
+                                    <a href="{{ route('public.shop.list', ['brand' => $brand->slug]) }}" class="shop-sidebar__brand-link {{ request('brand') == $brand->slug ? 'active' : '' }}">
                                         <i class="fa-solid fa-chevron-right"></i>{{ $brand->name }}
                                     </a>
                                 </li>
@@ -129,8 +165,8 @@
                             <div class="shop-list-card">
                                 <div class="shop-list-card__thumb">
                                     <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('frontend-assets/imgs/inner/shop-list/shop-list-thumb1_1.jpg') }}" alt="{{ $product->name }}">
-                                    @if($product->discount_price)
-                                    <div class="shop-list-card__thumb-offer">-{{ round((($product->price - $product->discount_price) / $product->price) * 100) }}%</div>
+                                    @if($product->old_price && $product->old_price > $product->price)
+                                    <div class="shop-list-card__thumb-offer">-{{ round((($product->old_price - $product->price) / $product->old_price) * 100) }}%</div>
                                     @endif
                                 </div>
                                 <div class="shop-list-card__content">
@@ -144,17 +180,15 @@
                                     <h4 class="shop-list-card__content-title"><a href="{{ route('public.product.details', $product->slug) }}">{{ $product->name }}</a></h4>
                                     <p class="shop-list-card__content-subtitle">{{ Str::limit(strip_tags($product->description), 150) }}</p>
                                     <div class="shop-list-card__content-price">
-                                        @if($product->discount_price)
-                                        <span class="offer-price">${{ number_format($product->discount_price, 2) }}</span>
-                                        <span class="original-price" style="text-decoration: line-through; color: #888; margin-left: 10px;">${{ number_format($product->price, 2) }}</span>
-                                        @else
                                         <span class="offer-price">${{ number_format($product->price, 2) }}</span>
+                                        @if($product->old_price)
+                                        <span class="original-price" style="text-decoration: line-through; color: #888; margin-left: 10px;">${{ number_format($product->old_price, 2) }}</span>
                                         @endif
                                     </div>
                                     <div class="shop-list-card__content-social">
                                         <div class="shop-list-card__content-social-link">
-                                            <a href="#"><span><i class="fa-solid fa-heart"></i></span></a>
-                                            <a href="#"><span><i class="fa-solid fa-cart-shopping"></i></span></a>
+                                            <a href="#" class="wishlist-btn"><span><i class="fa-solid fa-heart"></i></span></a>
+                                            <a href="#" class="add-to-cart" data-id="{{ $product->id }}"><span><i class="fa-solid fa-cart-shopping"></i></span></a>
                                         </div>
                                     </div>
                                 </div>

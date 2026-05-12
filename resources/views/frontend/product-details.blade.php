@@ -128,15 +128,20 @@
                 </div>
                 <div class="col-xl-6 col-lg-6">
                   <div class="product-details-content">
-                    <p class="product-details-content__text">{{ $product->brand->name ?? 'AenumLuxe' }}</p>
                     <h1 class="product-details-content__title mb-2"> {{ $product->name }}</h1>
                     <div class="product-details-content-items d-flex flex-wrap align-items-center gap-3">
                       <div class="product-details-content__price d-flex align-items-baseline gap-2">
-                        <span class="price-now">${{ $product->price }}</span>
-                        <span class="price-was">${{ $product->price * 1.5 }}</span>
+                        <span class="price-now">${{ number_format($product->price, 2) }}</span>
+                        @if($product->old_price)
+                        <span class="price-was">${{ number_format($product->old_price, 2) }}</span>
+                        @endif
                         <span class="price-currency">USD</span>
                       </div>
-                      <span class="product-details-content__badge-pill">60% OFF</span>
+                      @if($product->discount)
+                      <span class="product-details-content__badge-pill">{{ $product->discount }}% OFF</span>
+                      @elseif($product->old_price && $product->old_price > $product->price)
+                      <span class="product-details-content__badge-pill">{{ round((($product->old_price - $product->price) / $product->old_price) * 100) }}% OFF</span>
+                      @endif
                       <div class="product-details-content__rating d-flex align-items-center">
                         <div class="stars">
                           <span class="star"><i class="fa-solid fa-star fa-fw"></i></span>
@@ -150,35 +155,15 @@
                     <p class="product-details-content__desc">
                       {{ $product->description ?? 'No description available for this product.' }}
                     </p>
-                    <div class="product-details-content__color-items mb-4">
-                      <div class="d-flex align-items-center gap-2 mb-4">
-                        <span class="label">Select Color:</span>
-                        <span class="selected-dot"></span>
-                        <span class="selected-name">RED</span>
-                      </div>
-                      <div class="color-row">
-                        <button class="color-dot" type="button" aria-label="Blue" style="--dot:#3f51b5"></button>
-                        <button class="color-dot" type="button" aria-label="Green" style="--dot:#20c997"></button>
-                        <button class="color-dot" type="button" aria-label="Mint" style="--dot:#7ef5d8"></button>
-                        <button class="color-dot" type="button" aria-label="Yellow" style="--dot:#ffca28"></button>
-                        <button class="color-dot" type="button" aria-label="Orange" style="--dot:#ff9800"></button>
-                        <!-- Active -->
-                        <button class="color-dot is-active" type="button" aria-label="Red"
-                          style="--dot:#FF1212"></button>
-                        <button class="color-dot" type="button" aria-label="Purple" style="--dot:#7e57c2"></button>
-                        <button class="color-dot" type="button" aria-label="Black" style="--dot:#111"></button>
-                        <button class="color-dot" type="button" aria-label="Magenta" style="--dot:#e91e63"></button>
-                      </div>
-                    </div>
                     <div class="product-details-content__info">
                       <p class="label mb-3">Quantity</p>
                       <div class="d-flex flex-wrap align-items-center gap-3">
                         <div class="qty">
-                          <button class="qty-btn" type="button" aria-label="Decrease">−</button>
-                          <span class="qty-val">01</span>
-                          <button class="qty-btn" type="button" aria-label="Increase">+</button>
+                          <button class="qty-btn qty-minus" type="button" aria-label="Decrease">−</button>
+                          <span class="qty-val" id="product-qty">1</span>
+                          <button class="qty-btn qty-plus" type="button" aria-label="Increase">+</button>
                         </div>
-                        <button class="btn-add" type="button">ADD TO CART
+                        <button class="btn-add add-to-cart" type="button" data-id="{{ $product->id }}" data-quantity="1">ADD TO CART
                           <span class="btn-icon" aria-hidden="true"><i
                               class="fa-duotone fa-thin fa-arrow-right-long"></i></span>
                         </button>
@@ -186,31 +171,11 @@
                           <i class="fa-solid fa-heart"></i>
                         </button>
                       </div>
-                      <button class="btn-buy mt-5" type="button">
-                        BUY NOW
-                        <span class="btn-icon" aria-hidden="true"><i
-                            class="fa-duotone fa-thin fa-arrow-right-long"></i></span>
-                      </button>
                     </div>
                     <div class="product-details-content__meta mb-4">
-                      <div class="meta-row"><span class="k">SKU:</span> <span class="v">{{ strtoupper(substr($product->slug, 0, 8)) }}</span></div>
-                      <div class="meta-row"><span class="k">Category:</span> <span class="v">{{ $product->category->name ?? 'Beauty' }}</span></div>
-                      <div class="meta-row"><span class="k">Tag:</span> <span class="v">Cream</span></div>
-                    </div>
-                    <div class="product-details-content__checkout">
-                      <p class="product-details-content__checkout-text mb-2">Guranted Safe Checkout</p>
-                      <div class="pay-row">
-                        <span class="pay-badge"><img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-logo1_1.png') }}"
-                            alt="logo"></span>
-                        <span class="pay-badge"><img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-logo1_2.png') }}"
-                            alt="logo"></span>
-                        <span class="pay-badge"><img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-logo1_3.png') }}"
-                            alt="logo"></span>
-                        <span class="pay-badge"><img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-logo1_4.png') }}"
-                            alt="logo"></span>
-                        <span class="pay-badge"><img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-logo1_3.png') }}"
-                            alt="logo"></span>
-                      </div>
+                      <div class="meta-row"><span class="k">SKU:</span> <span class="v">{{ $product->sku ?? 'N/A' }}</span></div>
+                      <div class="meta-row"><span class="k">Category:</span> <span class="v">{{ $product->category->name ?? 'N/A' }}</span></div>
+                      <div class="meta-row"><span class="k">Tag:</span> <span class="v">{{ $product->tags ?? 'N/A' }}</span></div>
                     </div>
                   </div>
                 </div>
@@ -230,12 +195,8 @@
                 </button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="two-tab" data-bs-toggle="tab" data-bs-target="#two-tab-pane" type="button"
-                  role="tab" aria-controls="two-tab-pane" aria-selected="false">Additional information</button>
-              </li>
-              <li class="nav-item" role="presentation">
                 <button class="nav-link" id="three-tab" data-bs-toggle="tab" data-bs-target="#three-tab-pane"
-                  type="button" role="tab" aria-controls="three-tab-pane" aria-selected="false">Reviews (1)</button>
+                  type="button" role="tab" aria-controls="three-tab-pane" aria-selected="false">Reviews ({{ $product->reviews_count ?? 0 }})</button>
               </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -247,153 +208,78 @@
                       <div class="product-tab-card">
                         <div class="product-tab-card__content">
                           <div class="product-tab-card__content-title">Long Description</div>
-                          <p class="product-tab-card__content-dsc">Discover a lipstick that blends luxury, comfort, and
-                            bold beauty in every swipe. The Luxe
-                            Matte Lipstick is crafted with a creamy, weightless formula that glides effortlessly across
-                            your lips, delivering rich, vibrant color with a smooth matte finish. Its high-pigment
-                            payoff ensures full coverage instantly, giving you a confident look that lasts from morning
-                            to night without fading or smudging.</p>
-                          <p class="product-tab-card__content-text">Infused with nourishing oils and softening
-                            ingredients, this lipstick keeps your lips
-                            feeling moisturized and comfortable—never dry, flaky, or tight. The velvety texture hugs
-                            your lips perfectly, offering a plush matte look that feels soft and natural all day long.
-                            Whether you’re aiming for an everyday natural vibe or a bold, statement-making glam look,
-                            Luxe Matte Lipstick adapts beautifully to every mood and every skin tone.</p>
-                          <p class="product-tab-card__content-subtitle">Designed for all-day wear and all-day comfort,
-                            this lipstick brings together long-lasting
-                            performance, elegant color, and a premium feel—making it a must-have in every makeup
-                            routine.</p>
-                          <div class="product-tab-card__content-title2">User-friendly</div>
-                          <p class="product-tab-card__content-subtitle2">Luxe Matte Lipstick delivers bold, vibrant
-                            color with a smooth, velvety matte finish. Its lightweight, creamy formula glides on
-                            effortlessly, keeping lips soft, hydrated, and comfortable all day. Perfect for any skin
-                            tone, this lipstick is ideal for everyday wear or a glamorous night look, giving you a
-                            flawless, confident smile without dryness or fading.</p>
+                          <div class="product-tab-card__content-dsc">
+                            {!! $product->description !!}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="two-tab-pane" role="tabpanel" aria-labelledby="two-tab" tabindex="0">
-                <div class="product-tab-wrapper">
-                  <div class="row d-flex justify-content-between">
-                    <div class="col-xl-12">
-                      <div class="product-tab-card">
-                        <div class="product-tab-card__content">
-                          <div class="product-tab-card__content-title">Long Description</div>
-                          <p class="product-tab-card__content-dsc">Discover a lipstick that blends luxury, comfort, and
-                            bold beauty in every swipe. The Luxe
-                            Matte Lipstick is crafted with a creamy, weightless formula that glides effortlessly across
-                            your lips, delivering rich, vibrant color with a smooth matte finish. Its high-pigment
-                            payoff ensures full coverage instantly, giving you a confident look that lasts from morning
-                            to night without fading or smudging.</p>
-                          <p class="product-tab-card__content-text">Infused with nourishing oils and softening
-                            ingredients, this lipstick keeps your lips
-                            feeling moisturized and comfortable—never dry, flaky, or tight. The velvety texture hugs
-                            your lips perfectly, offering a plush matte look that feels soft and natural all day long.
-                            Whether you’re aiming for an everyday natural vibe or a bold, statement-making glam look,
-                            Luxe Matte Lipstick adapts beautifully to every mood and every skin tone.</p>
-                          <p class="product-tab-card__content-subtitle">Designed for all-day wear and all-day comfort,
-                            this lipstick brings together long-lasting
-                            performance, elegant color, and a premium feel—making it a must-have in every makeup
-                            routine.</p>
-                          <div class="product-tab-card__content-title2">User-friendly</div>
-                          <p class="product-tab-card__content-subtitle2">Luxe Matte Lipstick delivers bold, vibrant
-                            color with a smooth, velvety matte finish. Its lightweight, creamy formula glides on
-                            effortlessly, keeping lips soft, hydrated, and comfortable all day. Perfect for any skin
-                            tone, this lipstick is ideal for everyday wear or a glamorous night look, giving you a
-                            flawless, confident smile without dryness or fading.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
               <div class="tab-pane fade" id="three-tab-pane" role="tabpanel" aria-labelledby="three-tab" tabindex="0">
                 <div class="product-tab-wrapper">
                   <div class="row g-4 d-flex justify-content-between">
                     <div class="col-xl-7">
                       <div class="product-tab-items">
-                        <p class="product-tab-items__text">05 review for Denim Jean Top Jacket Sleeve Crop Women</p>
-                        <div class="product-tab-items__card d-flex align-items-start justify-content-between gap-3">
-
-                          <div
-                            class="product-tab-items__card-info d-flex align-items-center justify-content-between gap-3">
-                            <div class="product-tab-items__card-thumb">
-                              <img src="{{ asset('frontend-assets/imgs/inner/product-details/image-1.png') }}" alt="img">
+                        <p class="product-tab-items__text">{{ $product->reviews_count ?? 0 }} reviews for {{ $product->name }}</p>
+                        
+                        @if(isset($product->reviews) && $product->reviews->count() > 0)
+                          @foreach($product->reviews as $review)
+                            <div class="product-tab-items__card d-flex align-items-start justify-content-between gap-3">
+                              <div class="product-tab-items__card-info d-flex align-items-center justify-content-between gap-3">
+                                <div class="product-tab-items__card-thumb">
+                                  <img src="{{ $review->user->profile_photo_url ?? asset('frontend-assets/imgs/inner/product-details/image-1.png') }}" alt="{{ $review->user->name }}">
+                                </div>
+                                <div class="product-tab-items__card-info-content">
+                                  <p class="product-tab-items__card-info-content-text">{{ $review->user->name }} – {{ $review->created_at->format('M d, Y') }}</p>
+                                  <div class="product-tab-items__card-info-content-name">{{ $review->comment }}</div>
+                                </div>
+                              </div>
+                              <div class="product-tab-items__card-info-star">
+                                <div class="stars">
+                                  @for($i = 0; $i < 5; $i++)
+                                    <i class="fa-solid fa-star {{ $i < $review->rating ? 'text-warning' : 'text-muted' }}"></i>
+                                  @endfor
+                                </div>
+                              </div>
                             </div>
-                            <div class="product-tab-items__card-info-content">
-                              <p class="product-tab-items__card-info-content-text">George – October 13, 2023</p>
-                              <div class="product-tab-items__card-info-content-name">Amazing Quility 😍</div>
-                            </div>
-                          </div>
-
-                          <div class="product-tab-items__card-info-star">
-                            <img src="{{ asset('frontend-assets/imgs/inner/product-details/star.png') }}" alt="stat">
-                          </div>
-                        </div>
-                        <div class="product-tab-items__card d-flex align-items-start justify-content-between gap-3">
-                          <div
-                            class="product-tab-items__card-info d-flex align-items-center justify-content-between gap-3">
-                            <div class="product-tab-items__card-thumb">
-                              <img src="{{ asset('frontend-assets/imgs/inner/product-details/image-2.png') }}" alt="img">
-                            </div>
-                            <div class="product-tab-items__card-info-content">
-                              <p class="product-tab-items__card-info-content-text">George – October 13, 2023</p>
-                              <div class="product-tab-items__card-info-content-name">Amazing Quility 😍</div>
-                            </div>
-                          </div>
-                          <div class="product-tab-items__card-info-star">
-                            <img src="{{ asset('frontend-assets/imgs/inner/product-details/star.png') }}" alt="stat">
-                          </div>
-                        </div>
-                        <div class="product-tab-items__card  d-flex align-items-start justify-content-between gap-3">
-                          <div
-                            class="product-tab-items__card-info d-flex align-items-center justify-content-between gap-3">
-                            <div class="product-tab-items__card-thumb">
-                              <img src="{{ asset('frontend-assets/imgs/inner/product-details/image-3.png') }}" alt="img">
-                            </div>
-                            <div class="product-tab-items__card-info-content">
-                              <p class="product-tab-items__card-info-content-text">George – October 13, 2023</p>
-                              <div class="product-tab-items__card-info-content-name">Amazing Quility 😍</div>
-                            </div>
-                          </div>
-                          <div class="product-tab-items__card-info-star">
-                            <img src="{{ asset('frontend-assets/imgs/inner/product-details/star.png') }}" alt="stat">
-                          </div>
-                        </div>
+                          @endforeach
+                        @else
+                          <p>There are no reviews yet. Be the first to review "{{ $product->name }}"</p>
+                        @endif
                       </div>
                     </div>
                     <div class="col-xl-5">
                       <div class="product-tab-contact">
                         <div class="product-tab-contact__title">Add a review</div>
-                        <form action="contact.php" id="contact-form" method="POST" class="product-tab-contact__form">
+                        <form action="{{ route('product.review', $product->id) }}" id="review-form" method="POST" class="product-tab-contact__form">
+                          @csrf
                           <div class="row g-4">
                             <div class="col-lg-12">
-                              <div class="product-tab-contact__form_input">
-                                <span class="product-tab-contact__form-input-name">Your Name</span>
-                                <input type="text" class="product-tab-contact__form-input-field" name="name" id="name"
-                                  placeholder="Enter Your Name">
-                              </div>
-                            </div>
-                            <div class="col-lg-12">
-                              <div class="product-tab-contact__form_input">
-                                <span class="product-tab-contact__form-input-name">Your Email</span>
-                                <input type="text" class="product-tab-contact__form-input-field" name="email"
-                                  id="email1" placeholder="Email Here">
-                              </div>
+                                <div class="product-details-content__rating d-flex align-items-center gap-2 mb-2">
+                                    <span class="label">Your Rating:</span>
+                                    <div class="stars rating-input">
+                                        <input type="hidden" name="rating" id="rating-value" value="5">
+                                        <i class="fa-solid fa-star star-select clickable" data-value="1"></i>
+                                        <i class="fa-solid fa-star star-select clickable" data-value="2"></i>
+                                        <i class="fa-solid fa-star star-select clickable" data-value="3"></i>
+                                        <i class="fa-solid fa-star star-select clickable" data-value="4"></i>
+                                        <i class="fa-solid fa-star star-select clickable" data-value="5"></i>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-lg-12">
                               <div class="product-tab-contact__form_input">
                                 <span class="product-tab-contact__form-input-name">Your Message</span>
-                                <textarea name="message" class="product-tab-contact__form-input-field textarea"
-                                  id="message" placeholder="Enter Your Message"></textarea>
+                                <textarea name="comment" class="product-tab-contact__form-input-field textarea"
+                                  id="review-message" placeholder="Enter Your Message" required></textarea>
                               </div>
                             </div>
                             <div class="col-lg-6">
                               <button type="submit" class="rr-btn-button">
-                                <span class="text">Send Message</span>
+                                <span class="text">Submit Review</span>
                                 <span class="icon">
                                   <svg width="16" height="10" viewBox="0 0 16 10" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -416,56 +302,67 @@
           </div>
         </div>
 
-        <!--===== Offertwo Section    S T A R T =====-->
-        <section class="featured-products2 section-spacing-120 rr-ov-hidden pt-0">
-          <div class="container rr-container-1350">
-            <div class="row gy-5 d-flex align-items-center justify-content-between">
-              <div class="col-xl-6 d-flex justify-content-start">
-                <div class="section-heading">
-                  <h2 class="section-heading__title wow fadeInUp" data-wow-delay=".5s"
-                    style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">FEATURED PRODUCTS
-                  </h2>
-                </div>
-              </div>
-              <div class="col-xl-6 d-flex justify-content-xl-end">
-                <div class="featured-products2-controls wow fadeInUp" data-wow-delay=".5s"
-                  style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
-                  <div class="featured-products2-controls__arrowLeft">
-                    <div class="icon"><i class="fa-solid fa-angle-left"></i></div>prev
-                  </div>
-                  <div class="featured-products2-controls__arrowRight">next
-                    <div class="icon"><i class="fa-solid fa-angle-right"></i></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="featured-products2-wrapper">
-              <div class="swiper featured-products2-slider">
-                <div class="swiper-wrapper">
-                  @foreach($featuredProducts as $featured)
-                  <div class="swiper-slide">
-                    <div class="featured-products2-card">
-                      <div class="featured-products2-card__thumb">
-                        <img src="{{ $featured->image ? asset('storage/' . $featured->image) : asset('frontend-assets/imgs/inner/featured-products/featured-products-thumb1_1.jpg') }}" alt="{{ $featured->name }}">
-                      </div>
-                      <div class="featured-products2-card__content">
-                        <div class="featured-products2-card__content-title"><a href="{{ route('public.product.details', $featured->slug) }}">{{ $featured->name }}</a></div>
-                        <ul class="featured-products2-card__content-list">
-                          <li class="featured-products2-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i>
-                          </li>
-                          <li class="featured-products2-card__content-list-point">5.0</li>
-                          <li class="featured-products2-card__content-list-text">(135 Reviews)</li>
-                        </ul>
-                        <div class="featured-products2-card__content-dollar">${{ $featured->price }}</div>
-                      </div>
-                    </div>
-                  </div>
-                  @endforeach
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
       
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const qtyMinus = document.querySelector('.qty-minus');
+        const qtyPlus = document.querySelector('.qty-plus');
+        const qtyVal = document.getElementById('product-qty');
+        const addToCartBtn = document.querySelector('.btn-add');
+
+        if (qtyMinus && qtyPlus && qtyVal && addToCartBtn) {
+            qtyMinus.addEventListener('click', function () {
+                let currentQty = parseInt(qtyVal.textContent);
+                if (currentQty > 1) {
+                    currentQty--;
+                    qtyVal.textContent = currentQty;
+                    addToCartBtn.dataset.quantity = currentQty;
+                }
+            });
+
+            qtyPlus.addEventListener('click', function () {
+                let currentQty = parseInt(qtyVal.textContent);
+                currentQty++;
+                qtyVal.textContent = currentQty;
+                addToCartBtn.dataset.quantity = currentQty;
+            });
+        }
+        // Star rating selection
+        const stars = document.querySelectorAll('.star-select');
+        const ratingInput = document.getElementById('rating-value');
+
+        if (stars && ratingInput) {
+            stars.forEach(star => {
+                star.addEventListener('click', function () {
+                    const value = this.dataset.value;
+                    ratingInput.value = value;
+
+                    // Update UI
+                    stars.forEach(s => {
+                        if (parseInt(s.dataset.value) <= parseInt(value)) {
+                            s.classList.add('text-warning');
+                            s.classList.remove('text-muted');
+                        } else {
+                            s.classList.add('text-muted');
+                            s.classList.remove('text-warning');
+                        }
+                    });
+                });
+            });
+
+            // Set default (5 stars)
+            const defaultValue = ratingInput.value;
+            stars.forEach(s => {
+                if (parseInt(s.dataset.value) <= parseInt(defaultValue)) {
+                    s.classList.add('text-warning');
+                } else {
+                    s.classList.add('text-muted');
+                }
+            });
+        }
+    });
+</script>
+@endpush
 @endsection
