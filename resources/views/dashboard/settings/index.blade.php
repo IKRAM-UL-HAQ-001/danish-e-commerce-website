@@ -93,21 +93,14 @@
                         <input type="text" name="offer_link" class="form-control" id="offer_link" value="{{ $settings['offer_link'] ?? '' }}" placeholder="/shop or https://...">
                     </div>
 
-                    <hr>
-                    <h4 class="card-title mt-4">Features / CTA Section</h4>
-                    <p class="card-description">Customize the three feature blocks below the offer banner.</p>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h5>Feature 1</h5>
-                            <div class="form-group mb-2">
-                                <label>Title</label>
-                                <input type="text" name="feature1_title" class="form-control" value="{{ $settings['feature1_title'] ?? '' }}">
-                            </div>
-                            <div class="form-group mb-2">
-                                <label>Description</label>
-                                <textarea name="feature1_desc" class="form-control" rows="2">{{ $settings['feature1_desc'] ?? '' }}</textarea>
-                            </div>
-                        </div>
+                    <div class="form-group mb-3">
+                        <label for="shipping_cost">Flat Rate Shipping Cost ($)</label>
+                        <input type="number" step="0.01" name="shipping_cost" class="form-control" id="shipping_cost" value="{{ $settings['shipping_cost'] ?? '8.00' }}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="shipping_location">Shipping Destination (e.g., Bangladesh)</label>
+                        <input type="text" name="shipping_location" class="form-control" id="shipping_location" value="{{ $settings['shipping_location'] ?? '' }}">
+                    </div>
                         <div class="col-md-4">
                             <h5>Feature 2</h5>
                             <div class="form-group mb-2">

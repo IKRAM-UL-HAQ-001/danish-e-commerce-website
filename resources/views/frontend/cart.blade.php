@@ -172,6 +172,10 @@
                                     Flat rate: ${{ number_format($shipping, 2) }}
                                 </span>
                             </div>
+                            <div class="cart-page__totals-row" id="coupon-discount-row" style="display:none;">
+                                <span class="cart-page__totals-label">Discount</span>
+                                <span class="cart-page__totals-value cart-page__totals-value--muted text-end" id="coupon-discount-value" data-value="0"></span>
+                            </div>
                             <div class="cart-page__totals-row cart-page__totals-row--total">
                                 <span class="cart-page__totals-label">Total</span>
                                 <span class="cart-page__totals-value cart-page__totals-value--highlight" id="cart-total">${{ number_format($subtotal + $shipping, 2) }}</span>
@@ -222,7 +226,8 @@
           subtotalEl.textContent = '$' + subtotal.toFixed(2);
         }
         if (totalEl) {
-          totalEl.textContent = '$' + (subtotal + shipping).toFixed(2);
+          const discount = parseFloat(document.getElementById('coupon-discount-value')?.dataset.value || '0');
+          totalEl.textContent = '$' + (subtotal + shipping - discount).toFixed(2);
         }
       }
 
@@ -333,7 +338,25 @@
           const code = input.value.trim();
 
           if (code) {
-            alert('Coupon code applied: ' + code);
+            let discount = 0;
+            const subtotalText = document.getElementById('cart-subtotal').textContent.replace('$', '');
+            const subtotalVal = parseFloat(subtotalText);
+            if (code === 'DISCOUNT10') {
+              discount = subtotalVal * 0.10;
+            } else if (code === 'FLAT5') {
+              discount = 5.00;
+            }
+            if (discount > 0) {
+              const discountRow = document.getElementById('coupon-discount-row');
+              const discountValEl = document.getElementById('coupon-discount-value');
+              discountRow.style.display = 'flex';
+              discountValEl.dataset.value = discount.toFixed(2);
+              discountValEl.textContent = '-$' + discount.toFixed(2);
+              calculateCartTotals();
+              alert('Coupon applied: ' + code);
+            } else {
+              alert('Invalid coupon code');
+            }
             this.querySelector('.text').textContent = 'Applied';
             this.style.background = 'var(--Primary-950, #EE2D7A)';
           } else {

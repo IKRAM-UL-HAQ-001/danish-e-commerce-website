@@ -86,44 +86,6 @@
                         </div>
                       </div>
                     </div>
-                    <div class="tab-header">
-                      <!-- Tabs (thumbnails) -->
-                      <ul class="nav border-0" role="tablist" aria-label="Product image thumbnails">
-                        <li class="item wow fadeInUp" data-wow-delay=".3s" role="presentation">
-                          <a class="nav-link1 active" id="thumb-one-tab" href="#thumb-one" data-bs-toggle="tab"
-                            role="tab" aria-controls="thumb-one" aria-selected="true">
-                            <img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-thumb1_2.jpg') }}"
-                              alt="Product thumbnail 1">
-                          </a>
-                        </li>
-
-                        <li class="tab-header-nav-item wow fadeInUp" data-wow-delay=".3s" role="presentation">
-                          <a class="nav-link2" id="thumb-two-tab" href="#thumb-two" data-bs-toggle="tab" role="tab"
-                            aria-controls="thumb-two" aria-selected="false" tabindex="-1">
-                            <img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-thumb1_3.jpg') }}"
-                              alt="Product thumbnail 2">
-                          </a>
-                        </li>
-
-                        <li class="tab-header-nav-item wow fadeInUp" data-wow-delay=".3s" role="presentation">
-                          <a class="nav-link2" id="thumb-three-tab" href="#thumb-three" data-bs-toggle="tab" role="tab"
-                            aria-controls="thumb-three" aria-selected="false" tabindex="-1">
-                            <img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-thumb1_4.jpg') }}"
-                              alt="Product thumbnail 3">
-                          </a>
-                        </li>
-
-                        <li class="tab-header-nav-item wow fadeInUp" data-wow-delay=".3s" role="presentation">
-                          <a class="nav-link2" id="thumb-four-tab" href="#thumb-four" data-bs-toggle="tab" role="tab"
-                            aria-controls="thumb-four" aria-selected="false" tabindex="-1">
-                            <img src="{{ asset('frontend-assets/imgs/inner/product-details/product-details-thumb1_5.jpg') }}"
-                              alt="Product thumbnail 4">
-                          </a>
-                        </li>
-                      </ul>
-
-
-                    </div>
                   </div>
                 </div>
                 <div class="col-xl-6 col-lg-6">
@@ -172,6 +134,7 @@
                         </button>
                       </div>
                     </div>
+<br>
                     <div class="product-details-content__meta mb-4">
                       <div class="meta-row"><span class="k">SKU:</span> <span class="v">{{ $product->sku ?? 'N/A' }}</span></div>
                       <div class="meta-row"><span class="k">Category:</span> <span class="v">{{ $product->category->name ?? 'N/A' }}</span></div>

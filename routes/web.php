@@ -69,7 +69,9 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
         Route::post('brands/update', [BrandController::class, 'update'])->name('brands.update');
         Route::post('brands/delete', [BrandController::class, 'destroy'])->name('brands.destroy');
 
-        // Coupon Routes
+                // Apply coupon route
+        Route::post('cart/apply-coupon', [CouponController::class, 'apply'])->name('cart.applyCoupon');
+
         Route::get('coupons', [CouponController::class, 'index'])->name('coupons.index');
         Route::post('coupons', [CouponController::class, 'store'])->name('coupons.store');
         Route::post('coupons/update', [CouponController::class, 'update'])->name('coupons.update');

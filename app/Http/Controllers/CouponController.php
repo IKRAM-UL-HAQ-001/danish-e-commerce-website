@@ -48,4 +48,31 @@ class CouponController extends Controller
         $coupon->delete();
         return back()->with('success', 'Coupon deleted successfully.');
     }
+    public function apply(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        $coupon = Coupon::where('code', $request->code)->where('status', true)->first();
+        if (!$coupon) {
+            return response()->json(['success' => false, 'message' => 'Invalid coupon code'], 404);
+        }
+
+        // Determine discount amount based on type
+        $discount = 0;
+        if ($coupon->type === 'percent') {
+            // percentage of subtotal will be calculated client-side, send percent value
+            $discount = $coupon->value; // e.g., 10 for 10%
+        } else { // fixed
+            $discount = $coupon->value; // fixed amount
+        }
+
+        return response()->json([
+            'success' => true,
+            'type' => $coupon->type,
+            'value' => $discount,
+            'message' => 'Coupon applied',
+        ]);
+    }
 }
