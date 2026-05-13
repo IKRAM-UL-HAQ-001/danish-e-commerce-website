@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Slider;
+use App\Models\Brand;
 use App\Models\ContactMessage;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -89,7 +90,7 @@ class HomeController extends Controller
         }
 
         if ($request->has('brand')) {
-            $selectedBrand = \App\Models\Brand::where('slug', $request->brand)->first();
+            $selectedBrand = Brand::where('slug', $request->brand)->first();
             if ($selectedBrand) {
                 $query->where('brand_id', $selectedBrand->id);
             }
@@ -105,7 +106,7 @@ class HomeController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
         $categories = Category::where('status', 1)->get();
-        $brands = \App\Models\Brand::all();
+        $brands = Brand::all();
         
         return view('frontend.shop', compact('products', 'categories', 'brands', 'selectedCategory', 'selectedBrand', 'minPriceRange', 'maxPriceRange'));
     }
@@ -129,7 +130,7 @@ class HomeController extends Controller
         }
 
         if ($request->has('brand')) {
-            $selectedBrand = \App\Models\Brand::where('slug', $request->brand)->first();
+            $selectedBrand = Brand::where('slug', $request->brand)->first();
             if ($selectedBrand) {
                 $query->where('brand_id', $selectedBrand->id);
             }
@@ -145,7 +146,7 @@ class HomeController extends Controller
 
         $products = $query->paginate(10)->withQueryString();
         $categories = Category::where('status', 1)->get();
-        $brands = \App\Models\Brand::all();
+        $brands = Brand::all();
         
         return view('frontend.shop-list', compact('products', 'categories', 'brands', 'selectedCategory', 'selectedBrand', 'minPriceRange', 'maxPriceRange'));
     }
@@ -160,12 +161,13 @@ class HomeController extends Controller
 
     public function cart()
     {
-        $settings = \App\Models\Setting::all()->pluck('value', 'key');
+        $settings = Setting::all()->pluck('value', 'key');
         return view('frontend.cart', compact('settings'));
     }
 
     public function checkout()
     {
-        return view('frontend.checkout');
+        $settings = Setting::all()->pluck('value', 'key');
+        return view('frontend.checkout', compact('settings'));
     }
 }

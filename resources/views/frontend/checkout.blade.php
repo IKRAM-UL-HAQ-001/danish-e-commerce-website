@@ -1,7 +1,5 @@
 @extends('frontend.layouts.app')
-
 @section('title', 'Checkout')
-
 @section('content')
     <div class="breadcumb">
         <div class="container rr-container-1895">
@@ -53,14 +51,15 @@
                             </p>
                         </div>
 
-                        <form class="checkout-page__billing-form">
+                        <form action="{{ route('stripe.checkout') }}" method="POST" class="checkout-page__billing-form" id="checkout-form">
+                            @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="checkout-page__billing-form-group">
                                         <label class="checkout-page__billing-form-label">
                                             First Name <span class="checkout-page__billing-form-required">*</span>
                                         </label>
-                                        <input type="text" class="checkout-page__billing-form-input" placeholder="Enter Your Name" required>
+                                        <input type="text" name="first_name" class="checkout-page__billing-form-input" placeholder="Enter Your Name" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -192,8 +191,8 @@
                                 </div>
                                 <div class="checkout-page__order-summary-totals-row">
                                     <span class="checkout-page__order-summary-totals-label">Shipping</span>
-                                    @php $shipping = 8.00; @endphp
-                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--muted">Flat rate: ${{ number_format($shipping, 2) }} (Bangladesh)</span>
+                                    @php $shipping = floatval($settings['shipping_cost'] ?? 8.00); @endphp
+                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--muted">Flat rate: ${{ number_format($shipping, 2) }} ({{ $settings['shipping_location'] ?? 'N/A' }})</span>
                                 </div>
                                 <div class="checkout-page__order-summary-totals-row checkout-page__order-summary-totals-row--total">
                                     <span class="checkout-page__order-summary-totals-label">Total</span>
@@ -225,7 +224,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <button type="submit" class="checkout-page__place-order-btn">Place Order</button>
                     </div>
                 </div>

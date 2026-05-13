@@ -18,7 +18,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ActivityController;
-
+use App\Http\Controllers\StripeController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -30,6 +30,16 @@ Route::get('/product/{product:slug}', [HomeController::class, 'productDetails'])
 Route::get('/cart', [HomeController::class, 'cart'])->name('public.cart');
 Route::get('/checkout', [HomeController::class, 'checkout'])->name('public.checkout');
 
+//stripe
+Route::get('/stripe', [StripeController::class, 'index']);
+Route::post('/stripe/checkout', [StripeController::class, 'checkout'])
+    ->name('stripe.checkout');
+
+Route::get('/stripe/success', [StripeController::class, 'success'])
+    ->name('stripe.success');
+
+Route::get('/stripe/cancel', [StripeController::class, 'cancel'])
+    ->name('stripe.cancel');
 // Cart AJAX Routes
 Route::post('/cart/add', [\App\Http\Controllers\Frontend\CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update', [\App\Http\Controllers\Frontend\CartController::class, 'update'])->name('cart.update');
@@ -133,3 +143,6 @@ Route::post('/contact/submit', [ContactMessageController::class, 'store'])->name
 
 // Public Terms View
 Route::get('/terms-and-conditions', [HomeController::class, 'terms'])->name('public.terms');
+
+
+
