@@ -114,39 +114,44 @@
                                         Continue Shopping
                                     </a>
                                 </div>
-                                <div class="col-md-6 text-end">
-                                    <button type="button" class="rr-btn-button" id="cart-update-btn">
-                                        <span class="text">Update cart</span>
-                                        <span class="icon">
-                                            <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M0.600006 4.59998H14.6M14.6 4.59998L10.6 8.59998M14.6 4.59998L10.6 0.599976" stroke="#0C0C0C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                        </span>
-                                    </button>
-                                </div>
+                                
                             </div>
                         </div>
 
+                        @php $appliedCoupon = session('applied_coupon'); @endphp
                         <div class="cart-page__coupon">
                             <h3 class="cart-page__coupon-title">Coupon</h3>
                             <p class="cart-page__coupon-text">Enter your coupon code if you have one.</p>
-                            <form class="cart-page__coupon-form">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <input type="text" class="cart-page__coupon-input" placeholder="Enter coupon code">
+
+                            {{-- Banner: server-side visible only when coupon is in session --}}
+                            <div id="coupon-applied-banner"
+                                 class="alert alert-success d-flex align-items-center justify-content-between py-2 px-3 mb-3"
+                                 style="{{ $appliedCoupon ? '' : 'display:none;' }}">
+                                <span>Coupon <strong id="coupon-applied-code">{{ $appliedCoupon['code'] ?? '' }}</strong> applied — you save <strong id="coupon-applied-saving">{{ $appliedCoupon ? '$' . number_format($appliedCoupon['discount_amount'], 2) : '' }}</strong></span>
+                                <button type="button" id="cart-coupon-remove-btn" class="btn btn-sm btn-outline-danger ms-3">Remove</button>
+                            </div>
+
+                            {{-- Form: hidden when coupon is already applied --}}
+                            <div id="coupon-form-wrapper" style="{{ $appliedCoupon ? 'display:none;' : '' }}">
+                                <form class="cart-page__coupon-form" id="cart-coupon-form">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <input type="text" class="cart-page__coupon-input" id="cart-coupon-input" placeholder="Enter coupon code">
+                                            <div id="coupon-error" style="color:#dc3545;font-size:13px;margin-top:4px;display:none;"></div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="rr-btn-button" id="cart-coupon-btn">
+                                                <span class="text">Apply Coupon</span>
+                                                <span class="icon">
+                                                    <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0.599976 4.59998H14.6M14.6 4.59998L10.6 8.59998M14.6 4.59998L10.6 0.599976" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <button type="submit" class="rr-btn-button" id="cart-coupon-btn">
-                                            <span class="text">Apply Coupon</span>
-                                            <span class="icon">
-                                                <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M0.599976 4.59998H14.6M14.6 4.59998L10.6 8.59998M14.6 4.59998L10.6 0.599976" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -168,17 +173,31 @@
                              <div class="cart-page__totals-row">
                                 <span class="cart-page__totals-label">Shipping</span>
                                 @php $shipping = floatval($settings['shipping_cost'] ?? 8.00); @endphp
-                                <span class="cart-page__totals-value cart-page__totals-value--muted text-end">
+                                <span class="cart-page__totals-value cart-page__totals-value--muted text-end"
+                                      id="cart-shipping-value"
+                                      data-value="{{ $shipping }}">
                                     Flat rate: ${{ number_format($shipping, 2) }}
                                 </span>
                             </div>
-                            <div class="cart-page__totals-row" id="coupon-discount-row" style="display:none;">
+                            @php
+                                $couponDiscount = $appliedCoupon ? floatval($appliedCoupon['discount_amount']) : 0;
+                                $cartTotal      = max(0, $subtotal + $shipping - $couponDiscount);
+                            @endphp
+                            <div class="cart-page__totals-row" id="coupon-discount-row"
+                                 style="{{ $couponDiscount > 0 ? '' : 'display:none;' }}">
                                 <span class="cart-page__totals-label">Discount</span>
-                                <span class="cart-page__totals-value cart-page__totals-value--muted text-end" id="coupon-discount-value" data-value="0"></span>
+                                <span class="cart-page__totals-value text-end"
+                                      id="coupon-discount-value"
+                                      data-value="{{ $couponDiscount }}"
+                                      data-coupon-type="{{ $appliedCoupon['type'] ?? '' }}"
+                                      data-coupon-value="{{ $appliedCoupon['value'] ?? 0 }}"
+                                      style="color:#28a745;">
+                                    {{ $couponDiscount > 0 ? '-$' . number_format($couponDiscount, 2) : '' }}
+                                </span>
                             </div>
                             <div class="cart-page__totals-row cart-page__totals-row--total">
                                 <span class="cart-page__totals-label">Total</span>
-                                <span class="cart-page__totals-value cart-page__totals-value--highlight" id="cart-total">${{ number_format($subtotal + $shipping, 2) }}</span>
+                                <span class="cart-page__totals-value cart-page__totals-value--highlight" id="cart-total">${{ number_format($cartTotal, 2) }}</span>
                             </div>
                         </div>
                         <a href="{{ route('public.checkout') }}" class="cart-page__checkout-btn">
@@ -200,34 +219,47 @@
       const updateBtn = document.getElementById('cart-update-btn');
       const couponBtn = document.getElementById('cart-coupon-btn');
 
-      // Calculate cart totals (Client side display update)
       function calculateCartTotals() {
         let subtotal = 0;
-        const items = cartBody.querySelectorAll('.cart-page__item');
+        const items = cartBody ? cartBody.querySelectorAll('.cart-page__item') : [];
 
         items.forEach(item => {
           const priceText = item.querySelector('.cart-page__item-price').textContent;
-          const price = parseFloat(priceText.replace('$', '').replace(',', ''));
+          const price = parseFloat(priceText.replace(/[$,]/g, ''));
           const quantity = parseInt(item.querySelector('.cart-page__qty-input').value) || 1;
           const itemSubtotal = price * quantity;
-
-          // Update item subtotal
           item.querySelector('.cart-page__item-subtotal').textContent = '$' + itemSubtotal.toFixed(2);
-
           subtotal += itemSubtotal;
         });
 
-        // Update cart subtotal and total
-        const subtotalEl = document.getElementById('cart-subtotal');
-        const totalEl = document.getElementById('cart-total');
-        const shipping = parseFloat("{{ $settings['shipping_cost'] ?? 8.00 }}");
+        const subtotalEl  = document.getElementById('cart-subtotal');
+        const totalEl     = document.getElementById('cart-total');
+        const discountEl  = document.getElementById('coupon-discount-value');
+        const shippingEl  = document.getElementById('cart-shipping-value');
+        const shipping    = parseFloat(shippingEl ? shippingEl.dataset.value : '8') || 0;
 
-        if (subtotalEl) {
-          subtotalEl.textContent = '$' + subtotal.toFixed(2);
+        if (subtotalEl) subtotalEl.textContent = '$' + subtotal.toFixed(2);
+
+        // Calculate discount and update all display elements
+        let discount = 0;
+        if (discountEl) {
+          if (discountEl.dataset.couponType === 'percent') {
+            const pct = parseFloat(discountEl.dataset.couponValue || '0');
+            discount = Math.round(subtotal * (pct / 100) * 100) / 100;
+            discountEl.dataset.value = discount.toFixed(2);
+          } else {
+            discount = parseFloat(discountEl.dataset.value || '0');
+          }
+
+          if (discount > 0) {
+            discountEl.textContent = '-$' + discount.toFixed(2);
+            const savingEl = document.getElementById('coupon-applied-saving');
+            if (savingEl) savingEl.textContent = '$' + discount.toFixed(2);
+          }
         }
+
         if (totalEl) {
-          const discount = parseFloat(document.getElementById('coupon-discount-value')?.dataset.value || '0');
-          totalEl.textContent = '$' + (subtotal + shipping - discount).toFixed(2);
+          totalEl.textContent = '$' + Math.max(0, subtotal + shipping - discount).toFixed(2);
         }
       }
 
@@ -330,38 +362,98 @@
         });
       }
 
-      // Coupon button
-      if (couponBtn) {
-        couponBtn.addEventListener('click', function (e) {
-          e.preventDefault();
-          const input = document.querySelector('.cart-page__coupon-input');
-          const code = input.value.trim();
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-          if (code) {
-            let discount = 0;
-            const subtotalText = document.getElementById('cart-subtotal').textContent.replace('$', '');
-            const subtotalVal = parseFloat(subtotalText);
-            if (code === 'DISCOUNT10') {
-              discount = subtotalVal * 0.10;
-            } else if (code === 'FLAT5') {
-              discount = 5.00;
-            }
-            if (discount > 0) {
-              const discountRow = document.getElementById('coupon-discount-row');
-              const discountValEl = document.getElementById('coupon-discount-value');
-              discountRow.style.display = 'flex';
-              discountValEl.dataset.value = discount.toFixed(2);
-              discountValEl.textContent = '-$' + discount.toFixed(2);
-              calculateCartTotals();
-              alert('Coupon applied: ' + code);
+      function applyCouponUI(code, discountAmount, type, couponValue) {
+        const amount       = parseFloat(discountAmount) || 0;
+        const discountRow  = document.getElementById('coupon-discount-row');
+        const discountValEl = document.getElementById('coupon-discount-value');
+        const banner       = document.getElementById('coupon-applied-banner');
+        const formWrapper  = document.getElementById('coupon-form-wrapper');
+
+        discountValEl.dataset.couponType  = type || 'fixed';
+        discountValEl.dataset.couponValue = parseFloat(couponValue) || amount;
+        discountValEl.dataset.value       = amount.toFixed(2);
+
+        discountRow.style.display = 'flex';
+        banner.style.display = 'flex';
+        formWrapper.style.display = 'none';
+
+        document.getElementById('coupon-applied-code').textContent = code;
+        calculateCartTotals();
+      }
+
+      function removeCouponUI() {
+        const discountRow   = document.getElementById('coupon-discount-row');
+        const discountValEl = document.getElementById('coupon-discount-value');
+        const banner        = document.getElementById('coupon-applied-banner');
+        const formWrapper   = document.getElementById('coupon-form-wrapper');
+
+        discountValEl.dataset.value       = '0';
+        discountValEl.dataset.couponType  = '';
+        discountValEl.dataset.couponValue = '0';
+        discountValEl.textContent = '';
+
+        discountRow.style.display = 'none';
+        banner.style.display = 'none';
+        formWrapper.style.display = 'block';
+        document.getElementById('cart-coupon-input').value = '';
+        calculateCartTotals();
+      }
+
+      // Apply coupon form submit
+      const couponForm = document.getElementById('cart-coupon-form');
+      if (couponForm) {
+        couponForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const input = document.getElementById('cart-coupon-input');
+          const errorEl = document.getElementById('coupon-error');
+          const code = input.value.trim().toUpperCase();
+          const btn = document.getElementById('cart-coupon-btn');
+
+          if (!code) return;
+
+          errorEl.style.display = 'none';
+          btn.querySelector('.text').textContent = 'Applying...';
+          btn.disabled = true;
+
+          fetch('{{ route("coupon.apply") }}', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({ code }),
+          })
+          .then(r => r.json())
+          .then(data => {
+            if (data.success) {
+              applyCouponUI(data.code, data.discount_amount, data.type, data.value);
             } else {
-              alert('Invalid coupon code');
+              errorEl.textContent = data.message;
+              errorEl.style.display = 'block';
             }
-            this.querySelector('.text').textContent = 'Applied';
-            this.style.background = 'var(--Primary-950, #EE2D7A)';
-          } else {
-            alert('Please enter a coupon code');
-          }
+          })
+          .catch(() => {
+            errorEl.textContent = 'Something went wrong. Please try again.';
+            errorEl.style.display = 'block';
+          })
+          .finally(() => {
+            btn.querySelector('.text').textContent = 'Apply Coupon';
+            btn.disabled = false;
+          });
+        });
+      }
+
+      // Remove coupon button
+      const removeCouponBtn = document.getElementById('cart-coupon-remove-btn');
+      if (removeCouponBtn) {
+        removeCouponBtn.addEventListener('click', function () {
+          fetch('{{ route("coupon.remove") }}', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': csrfToken },
+          })
+          .then(() => removeCouponUI());
         });
       }
 

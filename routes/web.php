@@ -19,6 +19,7 @@ use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\Frontend\WishlistController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -35,6 +36,9 @@ Route::get('/stripe', [StripeController::class, 'index']);
 Route::post('/stripe/checkout', [StripeController::class, 'checkout'])
     ->name('stripe.checkout');
 
+Route::post('/stripe/webhook', [StripeController::class, 'webhook'])
+    ->name('stripe.webhook');
+
 Route::get('/stripe/success', [StripeController::class, 'success'])
     ->name('stripe.success');
 
@@ -44,6 +48,15 @@ Route::get('/stripe/cancel', [StripeController::class, 'cancel'])
 Route::post('/cart/add', [\App\Http\Controllers\Frontend\CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update', [\App\Http\Controllers\Frontend\CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove', [\App\Http\Controllers\Frontend\CartController::class, 'remove'])->name('cart.remove');
+
+// Coupon Routes (public — guests + logged-in users)
+Route::post('/coupon/apply', [CouponController::class, 'apply'])->name('coupon.apply');
+Route::post('/coupon/remove', [CouponController::class, 'remove'])->name('coupon.remove');
+
+// Wishlist Routes (session-based — guests + logged-in users)
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+Route::post('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
 // Product Review Route
 Route::post('/product/{product}/review', [\App\Http\Controllers\Frontend\ProductReviewController::class, 'store'])->name('product.review');
@@ -143,6 +156,8 @@ Route::post('/contact/submit', [ContactMessageController::class, 'store'])->name
 
 // Public Terms View
 Route::get('/terms-and-conditions', [HomeController::class, 'terms'])->name('public.terms');
+
+
 
 
 

@@ -35,9 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (badge) {
                         badge.textContent = data.cartCount;
                     }
-                    alert(data.message);
                 } else {
-                    alert('Error adding product to cart');
                 }
             })
             .catch(error => {

@@ -187,7 +187,10 @@
                                     </div>
                                     <div class="shop-list-card__content-social">
                                         <div class="shop-list-card__content-social-link">
-                                            <a href="#" class="wishlist-btn"><span><i class="fa-solid fa-heart"></i></span></a>
+                                            <a href="#" class="wishlist-btn wishlist-toggle-btn"
+                                               data-id="{{ $product->id }}"
+                                               style="{{ collect(session('wishlist', []))->has($product->id) ? 'color:#EE2D7A;' : '' }}">
+                                               <span><i class="fa-solid fa-heart"></i></span></a>
                                             <a href="#" class="add-to-cart" data-id="{{ $product->id }}"><span><i class="fa-solid fa-cart-shopping"></i></span></a>
                                         </div>
                                     </div>
@@ -209,10 +212,28 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const filterToggle = document.getElementById('shop-filter-toggle-list');
-        const shopSidebar = document.getElementById('shop-sidebar-list');
-        // Mobile Sidebar logic can be simplified or used from main.js if included.
-        // For now keeping it simple as it is mainly a presentation update.
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        document.querySelectorAll('.wishlist-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = this.dataset.id;
+                const self = this;
+                fetch('{{ route("wishlist.toggle") }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                    body: JSON.stringify({ product_id: id }),
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        self.style.color = data.added ? '#EE2D7A' : '';
+                        const badge = document.getElementById('wishlist-badge');
+                        if (badge) badge.textContent = data.count;
+                    }
+                });
+            });
+        });
     });
 </script>
 @endpush

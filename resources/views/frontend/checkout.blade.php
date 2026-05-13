@@ -46,9 +46,30 @@
 
                         <div class="checkout-page__banner">
                             <p class="checkout-page__banner-text">
-                                Have a coupon? <a href="#coupon" class="checkout-page__banner-link" id="coupon-toggle">Click here to enter your code</a>
+                                Have a coupon? <a href="#" class="checkout-page__banner-link" id="coupon-toggle">Click here to enter your code</a>
                                 <i class="fa-regular fa-chevron-down checkout-page__banner-icon"></i>
                             </p>
+                        </div>
+
+                        <div id="checkout-coupon-section" style="display:none; margin-bottom:20px;">
+                            @if(session('applied_coupon'))
+                                <div class="alert alert-success d-flex align-items-center justify-content-between py-2 px-3">
+                                    <span>Coupon <strong>{{ session('applied_coupon.code') }}</strong> applied — you save <strong>${{ number_format(session('applied_coupon.discount_amount'), 2) }}</strong></span>
+                                    <button type="button" id="checkout-coupon-remove-btn" class="btn btn-sm btn-outline-danger ms-3">Remove</button>
+                                </div>
+                            @else
+                                <div class="row g-2">
+                                    <div class="col-md-8">
+                                        <input type="text" id="checkout-coupon-input" class="checkout-page__billing-form-input" placeholder="Coupon code">
+                                        <div id="checkout-coupon-error" style="color:#dc3545;font-size:13px;margin-top:4px;display:none;"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" id="checkout-coupon-apply-btn" class="rr-btn-button w-100">
+                                            <span class="text">Apply</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
 
                         <form action="{{ route('stripe.checkout') }}" method="POST" class="checkout-page__billing-form" id="checkout-form">
@@ -67,21 +88,21 @@
                                         <label class="checkout-page__billing-form-label">
                                             Last Name <span class="checkout-page__billing-form-required">*</span>
                                         </label>
-                                        <input type="text" class="checkout-page__billing-form-input" placeholder="Enter Your Name" required>
+                                        <input type="text" name="last_name" class="checkout-page__billing-form-input" placeholder="Enter Your Name" required>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="checkout-page__billing-form-group">
                                 <label class="checkout-page__billing-form-label">Company Name (Optional)</label>
-                                <input type="text" class="checkout-page__billing-form-input" placeholder="Enter Company">
+                                <input type="text" name="company" class="checkout-page__billing-form-input" placeholder="Enter Company">
                             </div>
 
                             <div class="checkout-page__billing-form-group">
                                 <label class="checkout-page__billing-form-label">
                                     Country / Region <span class="checkout-page__billing-form-required">*</span>
                                 </label>
-                                <select class="checkout-page__billing-form-select">
+                                <select name="country" class="checkout-page__billing-form-select">
                                     <option value="bangladesh">Bangladesh</option>
                                     <option value="usa">United States</option>
                                     <option value="uk">United Kingdom</option>
@@ -93,15 +114,15 @@
                                 <label class="checkout-page__billing-form-label">
                                     Street Address <span class="checkout-page__billing-form-required">*</span>
                                 </label>
-                                <input type="text" class="checkout-page__billing-form-input" placeholder="House number and street name" required>
-                                <input type="text" class="checkout-page__billing-form-input checkout-page__billing-form-input--optional" placeholder="Apartment, suite, unit, etc. (optional)">
+                                <input type="text" name="address_line_1" class="checkout-page__billing-form-input" placeholder="House number and street name" required>
+                                <input type="text" name="address_line_2" class="checkout-page__billing-form-input checkout-page__billing-form-input--optional" placeholder="Apartment, suite, unit, etc. (optional)">
                             </div>
 
                             <div class="checkout-page__billing-form-group">
                                 <label class="checkout-page__billing-form-label">
                                     Town / City <span class="checkout-page__billing-form-required">*</span>
                                 </label>
-                                <select class="checkout-page__billing-form-select">
+                                <select name="city" class="checkout-page__billing-form-select">
                                     <option value="kota">Kota</option>
                                     <option value="dhaka">Dhaka</option>
                                     <option value="chittagong">Chittagong</option>
@@ -112,7 +133,7 @@
                                 <label class="checkout-page__billing-form-label">
                                     State <span class="checkout-page__billing-form-required">*</span>
                                 </label>
-                                <select class="checkout-page__billing-form-select">
+                                <select name="state" class="checkout-page__billing-form-select">
                                     <option value="uk">Uk</option>
                                     <option value="california">California</option>
                                     <option value="texas">Texas</option>
@@ -123,21 +144,21 @@
                                 <label class="checkout-page__billing-form-label">
                                     Zip Code <span class="checkout-page__billing-form-required">*</span>
                                 </label>
-                                <input type="text" class="checkout-page__billing-form-input" value="304256" required>
+                                <input type="text" name="zip_code" class="checkout-page__billing-form-input" value="304256" required>
                             </div>
 
                             <div class="checkout-page__billing-form-group">
                                 <label class="checkout-page__billing-form-label">
                                     Phone <span class="checkout-page__billing-form-required">*</span>
                                 </label>
-                                <input type="tel" class="checkout-page__billing-form-input" placeholder="Enter Your Name" required>
+                                <input type="tel" name="phone" class="checkout-page__billing-form-input" placeholder="Enter Your Phone" required>
                             </div>
 
                             <div class="checkout-page__billing-form-group">
                                 <label class="checkout-page__billing-form-label">
                                     Email Address <span class="checkout-page__billing-form-required">*</span>
                                 </label>
-                                <input type="email" class="checkout-page__billing-form-input" placeholder="Enter Your Email" required>
+                                <input type="email" name="email" class="checkout-page__billing-form-input" placeholder="Enter Your Email" required>
                             </div>
 
                             <div class="checkout-page__billing-form-group">
@@ -156,7 +177,7 @@
 
                             <div class="checkout-page__billing-form-group">
                                 <label class="checkout-page__billing-form-label">Order Notes (Optional)</label>
-                                <textarea class="checkout-page__billing-form-textarea" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                <textarea name="order_notes" class="checkout-page__billing-form-textarea" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                             </div>
                         </form>
                     </div>
@@ -194,9 +215,18 @@
                                     @php $shipping = floatval($settings['shipping_cost'] ?? 8.00); @endphp
                                     <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--muted">Flat rate: ${{ number_format($shipping, 2) }} ({{ $settings['shipping_location'] ?? 'N/A' }})</span>
                                 </div>
+                                @if(session('applied_coupon'))
+                                    @php $couponDiscount = floatval(session('applied_coupon.discount_amount')); @endphp
+                                    <div class="checkout-page__order-summary-totals-row" id="checkout-discount-row">
+                                        <span class="checkout-page__order-summary-totals-label">Discount ({{ session('applied_coupon.code') }})</span>
+                                        <span class="checkout-page__order-summary-totals-value" style="color:#28a745;">-${{ number_format($couponDiscount, 2) }}</span>
+                                    </div>
+                                @else
+                                    @php $couponDiscount = 0; @endphp
+                                @endif
                                 <div class="checkout-page__order-summary-totals-row checkout-page__order-summary-totals-row--total">
                                     <span class="checkout-page__order-summary-totals-label">Total</span>
-                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--highlight">${{ number_format($subtotal + $shipping, 2) }}</span>
+                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--highlight">${{ number_format(max(0, $subtotal + $shipping - $couponDiscount), 2) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -217,14 +247,9 @@
                                 <div class="checkout-page__payment-option-description mt-2">
                                     Pay securely using your credit or debit card via Stripe.
                                 </div>
-                                <div id="stripe-card-element" class="mt-3 p-3 border rounded bg-light" style="display: block;">
-                                    <!-- Stripe Card Element will be inserted here -->
-                                    <div id="card-element"></div>
-                                    <div id="card-errors" role="alert" class="text-danger mt-2"></div>
-                                </div>
                             </div>
                         </div>
-                        <button type="submit" class="checkout-page__place-order-btn">Place Order</button>
+                        <button type="submit" form="checkout-form" class="checkout-page__place-order-btn">Place Order</button>
                     </div>
                 </div>
             </div>
@@ -234,30 +259,71 @@
 
 @push('scripts')
 <script>
-    // Banner toggle functionality
     document.addEventListener('DOMContentLoaded', function () {
-      const returningCustomerToggle = document.getElementById('returning-customer-toggle');
-      const couponToggle = document.getElementById('coupon-toggle');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-      if (returningCustomerToggle) {
-        returningCustomerToggle.addEventListener('click', function (e) {
-          // e.preventDefault(); // Commented out to allow link to work if it's a real link
-          const icon = this.nextElementSibling;
-          if (icon) {
-            icon.classList.toggle('active');
-          }
-        });
-      }
+        // Coupon section toggle
+        const couponToggle = document.getElementById('coupon-toggle');
+        const couponSection = document.getElementById('checkout-coupon-section');
+        if (couponToggle && couponSection) {
+            @if(session('applied_coupon'))
+                couponSection.style.display = 'block';
+            @endif
+            couponToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                couponSection.style.display = couponSection.style.display === 'none' ? 'block' : 'none';
+                const icon = this.nextElementSibling;
+                if (icon) icon.classList.toggle('active');
+            });
+        }
 
-      if (couponToggle) {
-        couponToggle.addEventListener('click', function (e) {
-          e.preventDefault();
-          const icon = this.nextElementSibling;
-          if (icon) {
-            icon.classList.toggle('active');
-          }
-        });
-      }
+        // Apply coupon on checkout page
+        const applyBtn = document.getElementById('checkout-coupon-apply-btn');
+        if (applyBtn) {
+            applyBtn.addEventListener('click', function () {
+                const code = document.getElementById('checkout-coupon-input').value.trim().toUpperCase();
+                const errorEl = document.getElementById('checkout-coupon-error');
+                if (!code) return;
+                errorEl.style.display = 'none';
+                applyBtn.querySelector('.text').textContent = 'Applying...';
+                applyBtn.disabled = true;
+
+                fetch('{{ route("coupon.apply") }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                    body: JSON.stringify({ code }),
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        errorEl.textContent = data.message;
+                        errorEl.style.display = 'block';
+                    }
+                })
+                .catch(() => {
+                    errorEl.textContent = 'Something went wrong. Please try again.';
+                    errorEl.style.display = 'block';
+                })
+                .finally(() => {
+                    applyBtn.querySelector('.text').textContent = 'Apply';
+                    applyBtn.disabled = false;
+                });
+            });
+        }
+
+        // Remove coupon on checkout page
+        const removeCouponBtn = document.getElementById('checkout-coupon-remove-btn');
+        if (removeCouponBtn) {
+            removeCouponBtn.addEventListener('click', function () {
+                fetch('{{ route("coupon.remove") }}', {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': csrfToken },
+                })
+                .then(() => location.reload());
+            });
+        }
     });
 </script>
 @endpush

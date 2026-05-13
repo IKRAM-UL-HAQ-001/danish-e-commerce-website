@@ -148,8 +148,18 @@
                   @endauth
 
                   <!-- Wishlist Icon -->
-                  <a href="#" class="action-btn d-none d-lg-flex" aria-label="Wishlist">
+                  <a href="{{ route('wishlist.index') }}" class="action-btn d-none d-lg-flex position-relative" aria-label="Wishlist">
                     <i class="fa-solid fa-heart"></i>
+                    @php $wishlistCount = count(session('wishlist', [])); @endphp
+                    @if($wishlistCount > 0)
+                        <span id="wishlist-badge"
+                              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light"
+                              style="font-size:10px;padding:4px 6px;">{{ $wishlistCount }}</span>
+                    @else
+                        <span id="wishlist-badge"
+                              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light"
+                              style="font-size:10px;padding:4px 6px;display:none;">0</span>
+                    @endif
                   </a>
 
                   <!-- Cart Icon with Badge -->
