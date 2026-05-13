@@ -19,6 +19,7 @@ use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\TermController;
 use App\Http\Controllers\Frontend\WishlistController;
 
 
@@ -30,6 +31,9 @@ Route::get('/shop-list', [HomeController::class, 'shopList'])->name('public.shop
 Route::get('/product/{product:slug}', [HomeController::class, 'productDetails'])->name('public.product.details');
 Route::get('/cart', [HomeController::class, 'cart'])->name('public.cart');
 Route::get('/checkout', [HomeController::class, 'checkout'])->name('public.checkout');
+
+// Terms and Conditions (frontend)
+Route::get('/terms', [TermController::class, 'show'])->name('terms');
 
 //stripe
 Route::get('/stripe', [StripeController::class, 'index']);
@@ -74,6 +78,9 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
 
     // Admin Only Management
     Route::middleware('role:admin')->group(function() {
+        // Terms and Conditions (admin)
+        Route::get('terms', [TermController::class, 'edit'])->name('dashboard.terms.edit');
+        Route::put('terms', [TermController::class, 'update'])->name('dashboard.terms.update');
         // Product Routes
         Route::get('products', [ProductController::class, 'index'])->name('products.index');
         Route::post('products', [ProductController::class, 'store'])->name('products.store');

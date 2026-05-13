@@ -9,7 +9,7 @@
                     <a class="footer1-widget__nav-link" href="#">Store List</a>
                     <a class="footer1-widget__nav-link" href="#">Opening Hours</a>
                     <a class="footer1-widget__nav-link" href="{{ route('contact') }}">Contact Us</a>
-                    <a class="footer1-widget__nav-link" href="#">Return Policy</a>
+                    <a class="footer1-widget__nav-link" href="{{ route('terms') }}">Term and Conditions</a>
                   </div>
                 </div>
               </div>

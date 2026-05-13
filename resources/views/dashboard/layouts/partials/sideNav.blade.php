@@ -66,7 +66,7 @@
     </li>
 
     <!-- Sliders -->
-    <li class="nav-item {{ Route::is('sliders.*') ? 'active' : '' }}">
+    <!-- <li class="nav-item {{ Route::is('sliders.*') ? 'active' : '' }}">
       <a class="nav-link {{ Route::is('sliders.*') ? '' : 'collapsed' }}" data-bs-toggle="collapse" href="#slider-menu" aria-expanded="{{ Route::is('sliders.*') ? 'true' : 'false' }}" aria-controls="slider-menu">
         <i class="menu-icon mdi mdi-image-multiple"></i>
         <span class="menu-title">Sliders</span>
@@ -77,7 +77,7 @@
           <li class="nav-item"><a class="nav-link {{ Route::is('sliders.index') ? 'active' : '' }}" href="{{ route('sliders.index') }}">Sliders List</a></li>
         </ul>
       </div>
-    </li>
+    </li> -->
 
     <!-- Orders -->
     <li class="nav-item {{ Route::is('orders.*') ? 'active' : '' }}">
