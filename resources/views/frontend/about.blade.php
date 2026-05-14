@@ -47,12 +47,12 @@
                   @endif
                 </div>
               </div>
-              <!-- <div class="col-lg-6">
+              <div class="col-lg-6">
                 <div class="about1-content" style="color: black;">
                   @if(isset($about_content) && $about_content->value)
                     {!! $about_content->value !!}
                   @else
-                  <div class="section-heading3 wow fadeInRight" data-wow-delay="0.3s">
+                  <!-- <div class="section-heading3 wow fadeInRight" data-wow-delay="0.3s">
                     <span class="section-heading3__subtitle">ABOUT uS</span>
                     <h2 class="section-heading3__title">Beauty Made Simple, Stunning Always</h2>
                   </div>
@@ -86,10 +86,10 @@
                         </svg>
                       </span>
                     </a>
-                  </div>
+                  </div> -->
                   @endif
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
