@@ -1,0 +1,105 @@
+/**
+ * Global responsive media — loaded after theme styles.
+ * Hero image class used on home (replaces fixed inline px).
+ */
+.intro1__thumb .intro-hero-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 550px;
+  aspect-ratio: 11 / 10;
+  height: auto;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+@media screen and (max-width: 991.98px) {
+  /* Avoid horizontal scroll from oversized media + hero layout */
+  .intro1__thumb {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+    padding-inline: 0;
+  }
+
+  .intro1__thumb .intro-hero-img {
+    max-width: 100%;
+    max-height: min(72vh, 520px);
+    border-radius: 16px;
+  }
+
+  .intro1__shape1 img,
+  .intro1__shape2 img,
+  .intro1__shape3 img {
+    max-width: min(200px, 42vw);
+    height: auto;
+  }
+
+  /* Large fixed-height product hero in “best selling” */
+  main .best-selling-product-card__thumb1 img {
+    height: auto;
+    max-height: min(70vh, 440px);
+    min-height: 200px;
+    object-fit: cover;
+  }
+
+  main .best-selling-product-card__thumb img {
+    height: auto;
+    max-height: 280px;
+    min-height: 160px;
+    object-fit: cover;
+  }
+
+  /* Default: never wider than the column (height unchanged so object-fit cards still work) */
+  main img,
+  footer.footer1 img {
+    max-width: 100%;
+  }
+
+  /* About page inline-style blocks */
+  .about2-items__hand-right img {
+    width: 100%;
+    max-width: 312px;
+    height: auto;
+  }
+
+  main .about1-thumb img,
+  main .about2-items__title img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+  }
+
+  /* Swiper: constrain width without breaking slide layout */
+  .swiper-slide img {
+    max-width: 100%;
+  }
+
+  /* Embedded media */
+  main iframe,
+  main video,
+  .contact2 iframe {
+    max-width: 100%;
+  }
+
+  /* Bootstrap columns: images should not force overflow */
+  .container img,
+  .container-fluid img,
+  .rr-container-1350 img,
+  .rr-container-1895 img {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .intro1__thumb .intro-hero-img {
+    border-radius: 12px;
+    max-height: min(68vh, 420px);
+  }
+
+  main .best-selling-product-card__thumb1 img {
+    min-height: 180px;
+    max-height: min(65vh, 380px);
+  }
+}

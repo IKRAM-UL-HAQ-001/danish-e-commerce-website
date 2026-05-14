@@ -95,6 +95,62 @@
   .category-slide.active .category1-item{
       height:336px;
   }
+
+  /* Tablet / mobile: one slide at a time (JS hides others) */
+  @media (max-width: 991px) {
+    .category-slider {
+      gap: 0;
+      justify-content: center;
+      overflow: visible;
+    }
+    .category-slide {
+      width: 100%;
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+    .category-slide.small,
+    .category-slide.active {
+      width: 100%;
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+    .category-slide, .category1-item {
+      height: 200px;
+    }
+    .category-slide.small .category1-item,
+    .category-slide.active .category1-item {
+      height: 200px;
+    }
+    .category-content {
+      top: 10px;
+      left: 10px;
+    }
+    .category-title a {
+      font-size: 20px;
+    }
+    .category-tag {
+      font-size: 12px;
+    }
+  }
+  @media (max-width: 575px) {
+    .category-slide, .category1-item {
+      height: 160px;
+    }
+    .category-slide.small .category1-item,
+    .category-slide.active .category1-item {
+      height: 160px;
+    }
+    .category-content {
+      top: 5px;
+      left: 5px;
+    }
+    .category-title a {
+      font-size: 16px;
+    }
+    .category-tag {
+      font-size: 10px;
+    }
+  }
 </style>
         <!-- Intro1 Section Start -->
         <section class="intro1 rr-ov-hidden">
@@ -124,7 +180,7 @@
               <!-- Center: Main Image -->
               <div class="col-lg-6 col-md-12 wow fadeInUp" data-wow-delay=".5s">
                 <div class="intro1__thumb text-center">
-                  <img src="{{ isset($settings['hero_image']) ? (str_starts_with($settings['hero_image'], 'http') ? $settings['hero_image'] : asset($settings['hero_image'])) : asset('frontend-assets/imgs/hero/hero-thumb1_1.png') }}" alt="Beauty model" class="main-img" style="width: 550px; height: 500px; object-fit: cover;">
+                  <img src="{{ isset($settings['hero_image']) ? (str_starts_with($settings['hero_image'], 'http') ? $settings['hero_image'] : asset($settings['hero_image'])) : asset('frontend-assets/imgs/hero/hero-thumb1_1.png') }}" alt="Beauty model" class="main-img intro-hero-img">
                 </div>
               </div>
 
@@ -493,129 +549,38 @@
               <h2 class="section-heading__title">{{ $settings['testimonial_title'] ?? 'WHAT OUR CUSTOMERS SAY' }}</h2>
             </div>
             <div class="row g-4">
-              <!-- Card 1 -->
-              <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
-                <div class="testimonial1-card dark-card"
-                  style="background-image: url({{ asset('frontend-assets/imgs/testimonials/testimonial-thumb1_1.jpg') }});">
-                  <div class="testimonial1-card__content">
-                    <div class="testimonial1-card__quote">
-                      <i class="fa-solid fa-quote-left"></i>
-                    </div>
-                    <p class="testimonial1-card__text">“I’m so happy to find a cruelty-free brand that actually works.
-                      My skin feels soft and hydrated,”</p>
-                    <div class="testimonial1-card__author-meta d-flex align-items-center gap-2">
-                      <h3 class="testimonial1-card__author-name">Nusrat Jahan</h3>
-                      <span class="testimonial1-card__author-designation">Product designer</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Card 2 -->
-              <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".5s">
-                <div class="testimonial1-card light-card">
-                  <div class="testimonial1-card__product-img">
-                    <img src="{{ asset('frontend-assets/imgs/best-selling-products/best-selling-products1_3.jpg') }}" alt="product">
-                  </div>
-                  <div class="testimonial1-card__content">
-                    <div class="testimonial1-card__quote">
-                      <i class="fa-solid fa-quote-left"></i>
-                    </div>
-                    <p class="testimonial1-card__text">“I’m so happy to find a cruelty-free brand that actually works.
-                      My skin feels soft and hydrated, !”</p>
-                    <div class="testimonial1-card__author-meta d-flex align-items-center gap-3">
-                      <div class="testimonial1-card__author-thumb">
-                        <img src="{{ asset('frontend-assets/imgs/hero/hero-rating-user2_1.png') }}" alt="user">
+              @php $testimonials = \App\Models\Testimonial::latest()->take(6)->get(); @endphp
+              @foreach($testimonials as $testimonial)
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
+                  <div class="testimonial1-card {{ $loop->iteration % 2 == 0 ? 'light-card' : 'dark-card' }}"
+                    @if($testimonial->image) style="background-image: url('{{ asset('storage/' . $testimonial->image) }}'); background-size:cover; background-position:center;" @endif>
+                    @if($testimonial->image && $loop->iteration % 2 == 0)
+                      <div class="testimonial1-card__product-img">
+                        <img src="{{ asset('storage/' . $testimonial->image) }}" alt="product">
                       </div>
-                      <div class="testimonial1-card__author">
-                        <h3 class="testimonial1-card__author-name">Nusrat Jahan</h3>
-                        <span class="testimonial1-card__author-designation">Product designer</span>
+                    @endif
+                    <div class="testimonial1-card__content">
+                      <div class="testimonial1-card__quote">
+                        <i class="fa-solid fa-quote-left"></i>
+                      </div>
+                      <p class="testimonial1-card__text">{{ $testimonial->text }}</p>
+                      <div class="testimonial1-card__author-meta d-flex align-items-center gap-2">
+                        @if($testimonial->image && $loop->iteration % 2 == 0)
+                          <div class="testimonial1-card__author-thumb">
+                            <img src="{{ asset('storage/' . $testimonial->image) }}" alt="user">
+                          </div>
+                        @endif
+                        <div class="testimonial1-card__author">
+                          <h4 class="testimonial1-card__author-name">{{ $testimonial->author }}</h4>
+                          @if($testimonial->designation)
+                            <span class="testimonial1-card__author-designation">{{ $testimonial->designation }}</span>
+                          @endif
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <!-- Card 3 -->
-              <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".7s">
-                <div class="testimonial1-card dark-card"
-                  style="background-image: url({{ asset('frontend-assets/imgs/testimonials/testimonial-thumb1_2.jpg') }});">
-                  <div class="testimonial1-card__content">
-                    <div class="testimonial1-card__quote">
-                      <i class="fa-solid fa-quote-left"></i>
-                    </div>
-                    <p class="testimonial1-card__text">“I’m so happy to find a cruelty-free brand that actually works.
-                      My skin feels soft and hydrated,”</p>
-                    <div class="testimonial1-card__author-meta d-flex align-items-center gap-2">
-                      <h3 class="testimonial1-card__author-name">Nusrat Jahan</h3>
-                      <span class="testimonial1-card__author-designation">Product designer</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Card 4 -->
-              <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
-                <div class="testimonial1-card light-card">
-                  <div class="testimonial1-card__product-img">
-                    <img src="{{ asset('frontend-assets/imgs/best-selling-products/best-selling-products1_5.jpg') }}" alt="product">
-                  </div>
-                  <div class="testimonial1-card__content">
-                    <div class="testimonial1-card__quote">
-                      <i class="fa-solid fa-quote-left"></i>
-                    </div>
-                    <p class="testimonial1-card__text">“I feel more confident than ever. The products enhance my natural
-                      features without feeling heavy or artificial.!”</p>
-                    <div class="testimonial1-card__author-meta d-flex align-items-center gap-3">
-                      <div class="testimonial1-card__author-thumb">
-                        <img src="{{ asset('frontend-assets/imgs/hero/hero-rating-user2_2.png') }}" alt="user">
-                      </div>
-                      <div class="testimonial1-card__author">
-                        <h4 class="testimonial1-card__author-name">Sofia Rahman</h4>
-                        <span class="testimonial1-card__author-designation">Product designer</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Card 5 -->
-              <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".5s">
-                <div class="testimonial1-card dark-card"
-                  style="background-image: url({{ asset('frontend-assets/imgs/testimonials/testimonial-thumb1_3.jpg') }});">
-                  <div class="testimonial1-card__content">
-                    <div class="testimonial1-card__quote">
-                      <i class="fa-solid fa-quote-left"></i>
-                    </div>
-                    <p class="testimonial1-card__text">“I’m so happy to find a cruelty-free brand that actually works.
-                      My skin feels soft and hydrated,”</p>
-                    <div class="testimonial1-card__author-meta d-flex align-items-center gap-2">
-                      <h4 class="testimonial1-card__author-name">Nusrat Jahan</h4>
-                      <span class="testimonial1-card__author-designation">Product designer</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Card 6 -->
-              <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".7s">
-                <div class="testimonial1-card light-card">
-                  <div class="testimonial1-card__product-img">
-                    <img src="{{ asset('frontend-assets/imgs/best-selling-products/best-selling-products1_3.jpg') }}" alt="product">
-                  </div>
-                  <div class="testimonial1-card__content">
-                    <div class="testimonial1-card__quote">
-                      <i class="fa-solid fa-quote-left"></i>
-                    </div>
-                    <p class="testimonial1-card__text">“I’ve tried countless beauty brands, but nothing compares to
-                      this. The texture is silky, lightweight, .”</p>
-                    <div class="testimonial1-card__author-meta d-flex align-items-center gap-3">
-                      <div class="testimonial1-card__author-thumb">
-                        <img src="{{ asset('frontend-assets/imgs/hero/hero-rating-user2_3.png') }}" alt="user">
-                      </div>
-                      <div class="testimonial1-card__author">
-                        <h4 class="testimonial1-card__author-name">Sabrina Alam</h4>
-                        <span class="testimonial1-card__author-designation">Product designer</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              @endforeach
             </div>
           </div>
         </section>
@@ -625,12 +590,28 @@
     const slides = document.querySelectorAll('.category-slide');
     if (slides.length > 0) {
         let activeIndex = 0;
+        slides.forEach(function (slide, i) {
+            if (slide.classList.contains('active')) {
+                activeIndex = i;
+            }
+        });
+        const mobileMq = window.matchMedia('(max-width: 991px)');
+
+        function isMobileSliderView() {
+            return mobileMq.matches;
+        }
 
         function updateSlider() {
             slides.forEach((slide) => {
                 slide.style.display = 'none';
                 slide.classList.remove('active', 'small');
             });
+
+            if (isMobileSliderView()) {
+                slides[activeIndex].style.display = 'block';
+                slides[activeIndex].classList.add('active');
+                return;
+            }
 
             if (slides.length >= 3) {
                 let prevIndex = (activeIndex - 1 + slides.length) % slides.length;
@@ -645,7 +626,6 @@
                 slides[nextIndex].style.display = 'block';
                 slides[nextIndex].classList.add('small');
             } else {
-                // Handle cases with 1 or 2 slides
                 slides.forEach((slide, idx) => {
                     slide.style.display = 'block';
                     if (idx === activeIndex) {
@@ -673,7 +653,17 @@
         if (nextBtn) nextBtn.addEventListener('click', nextSlide);
         if (prevBtn) prevBtn.addEventListener('click', prevSlide);
 
-        // Auto Slide
+        let resizeTimer;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(updateSlider, 100);
+        });
+        if (typeof mobileMq.addEventListener === 'function') {
+            mobileMq.addEventListener('change', updateSlider);
+        } else if (typeof mobileMq.addListener === 'function') {
+            mobileMq.addListener(updateSlider);
+        }
+
         setInterval(nextSlide, 3000);
 
         updateSlider();

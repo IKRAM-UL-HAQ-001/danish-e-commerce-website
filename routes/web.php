@@ -21,6 +21,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\Frontend\WishlistController;
+use App\Http\Controllers\TestimonialController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -78,6 +79,13 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
 
     // Admin Only Management
     Route::middleware('role:admin')->group(function() {
+        // Testimonials CRUD
+        Route::get('testimonials', [TestimonialController::class, 'index'])->name('dashboard.testimonials.index');
+        Route::get('testimonials/create', [TestimonialController::class, 'create'])->name('dashboard.testimonials.create');
+        Route::post('testimonials', [TestimonialController::class, 'store'])->name('dashboard.testimonials.store');
+        Route::get('testimonials/{testimonial}/edit', [TestimonialController::class, 'edit'])->name('dashboard.testimonials.edit');
+        Route::put('testimonials/{testimonial}', [TestimonialController::class, 'update'])->name('dashboard.testimonials.update');
+        Route::delete('testimonials/{testimonial}', [TestimonialController::class, 'destroy'])->name('dashboard.testimonials.destroy');
         // Terms and Conditions (admin)
         Route::get('terms', [TermController::class, 'edit'])->name('dashboard.terms.edit');
         Route::put('terms', [TermController::class, 'update'])->name('dashboard.terms.update');

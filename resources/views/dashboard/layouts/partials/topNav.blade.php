@@ -1,5 +1,24 @@
       <!-- partial:partials/_navbar.html -->
-      <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+       <style>
+        .navbar-brand-wrapper {
+    width: 220px !important;   /* increase container width */
+}
+
+.brand-logo img {
+    height: 70px !important;   /* main control */
+    width: auto !important;}
+
+.brand-logo-mini img {
+    height: 50px !important;
+    width: auto !important;
+}
+.navbar-brand-wrapper {
+    width: 260px;
+}
+
+       </style>
+       <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-center flex-row">
+      <!-- <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row"> -->
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
           <div class="me-3">
             <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
@@ -8,10 +27,11 @@
           </div>
           <div>
             <a class="navbar-brand brand-logo" href="{{ route('dashboard') }}">
-              <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo" />
+            <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" 
+            alt="logo" />
             </a>
             <a class="navbar-brand brand-logo-mini" href="{{ route('dashboard') }}">
-              <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo" style="width: 40px; height: auto;"/>
+            <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo" class="logo-img" />
             </a>
           </div>
         </div>

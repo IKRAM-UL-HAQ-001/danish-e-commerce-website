@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/wow/animate.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/odometer/odometer-theme-default.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('frontend-assets/css/mobile-responsive.css') }}">
   @stack('styles')
 </head>
 
