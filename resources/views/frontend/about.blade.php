@@ -47,7 +47,7 @@
                   @endif
                 </div>
               </div>
-              <div class="col-lg-6">
+              <!-- <div class="col-lg-6">
                 <div class="about1-content">
                   @if(isset($about_content) && $about_content->value)
                     {!! $about_content->value !!}
@@ -89,7 +89,7 @@
                   </div>
                   @endif
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
