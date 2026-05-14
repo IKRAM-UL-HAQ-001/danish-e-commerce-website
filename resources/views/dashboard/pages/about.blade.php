@@ -11,8 +11,18 @@
                 <h4 class="card-title">Manage About Us Content</h4>
                 <p class="card-description">This content will be displayed on the frontend About page.</p>
 
-                <form action="{{ route('pages.about.update') }}" method="POST" class="forms-sample">
+                <form action="{{ route('pages.about.update') }}" method="POST" enctype="multipart/form-data" class="forms-sample">
                     @csrf
+
+                    <div class="form-group mb-4">
+                        <label for="image">About Us Image</label>
+                        <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                        @if(isset($image) && $image->value)
+                            <div class="mt-2">
+                                <img src="{{ asset('storage/' . $image->value) }}" alt="About Image" width="150">
+                            </div>
+                        @endif
+                    </div>
 
                     <div class="form-group mb-4">
                         <label for="content">Page Content (HTML support)</label>

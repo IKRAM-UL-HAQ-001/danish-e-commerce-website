@@ -40,11 +40,18 @@
             <div class="row gy-4 gx-5 d-flex justify-content-center justify-content-between">
               <div class="col-lg-6">
                 <div class="about1-thumb">
-                  <img src="{{ asset('frontend-assets/imgs/inner/about/about-thumb1_1.jpg') }}" alt="thumb">
+                  @if(isset($about_image) && $about_image->value)
+                    <img src="{{ asset('storage/' . $about_image->value) }}" alt="thumb" class="img-fluid" style="width: 100%; height: auto; border-radius: 10px;">
+                  @else
+                    <img src="{{ asset('frontend-assets/imgs/inner/about/about-thumb1_1.jpg') }}" alt="thumb">
+                  @endif
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="about1-content">
+                  @if(isset($about_content) && $about_content->value)
+                    {!! $about_content->value !!}
+                  @else
                   <div class="section-heading3 wow fadeInRight" data-wow-delay="0.3s">
                     <span class="section-heading3__subtitle">ABOUT uS</span>
                     <h2 class="section-heading3__title">Beauty Made Simple, Stunning Always</h2>
@@ -80,6 +87,7 @@
                       </span>
                     </a>
                   </div>
+                  @endif
                 </div>
               </div>
             </div>

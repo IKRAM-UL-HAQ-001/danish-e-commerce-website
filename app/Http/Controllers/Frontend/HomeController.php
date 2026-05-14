@@ -43,7 +43,9 @@ class HomeController extends Controller
 
     public function about()
     {
-        return view('frontend.about');
+        $about_content = Setting::where('key', 'about_us_content')->first();
+        $about_image = Setting::where('key', 'about_us_image')->first();
+        return view('frontend.about', compact('about_content', 'about_image'));
     }
 
     public function contact()

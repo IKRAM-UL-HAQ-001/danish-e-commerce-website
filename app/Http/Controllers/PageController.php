@@ -10,7 +10,8 @@ class PageController extends Controller
     public function editAbout()
     {
         $content = Setting::where('key', 'about_us_content')->first();
-        return view('dashboard.pages.about', compact('content'));
+        $image = Setting::where('key', 'about_us_image')->first();
+        return view('dashboard.pages.about', compact('content', 'image'));
     }
 
     public function updateAbout(Request $request)
@@ -19,6 +20,15 @@ class PageController extends Controller
             ['key' => 'about_us_content'],
             ['value' => $request->content]
         );
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('about', 'public');
+            Setting::updateOrCreate(
+                ['key' => 'about_us_image'],
+                ['value' => $imagePath]
+            );
+        }
+
         return back()->with('success', 'About Us page updated successfully.');
     }
 
