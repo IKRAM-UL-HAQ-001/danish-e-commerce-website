@@ -53,37 +53,25 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
 <script>
-    CKEDITOR.ClassicEditor.create(document.getElementById("content"), {
-
-    toolbar: {
-        items: [
+ClassicEditor
+    .create(document.querySelector('#content'), {
+        toolbar: [
             'heading', '|',
-            'bold', 'italic', 'underline', '|',
+            'bold', 'italic', 'link', '|',
             'fontColor', 'fontBackgroundColor', '|',
-            'alignment', '|',
             'bulletedList', 'numberedList', '|',
+            'alignment', '|',
             'insertTable', 'uploadImage', 'blockQuote', '|',
             'undo', 'redo'
-        ]
-    },
+        ],
 
-    alignment: {
-        options: [ 'left', 'center', 'right', 'justify' ]
-    },
-
-    image: {
-        toolbar: [
-            'imageTextAlternative',
-            'imageStyle:inline',
-            'imageStyle:block',
-            'imageStyle:side'
-        ]
-    }
-
-}).catch(error => {
-    console.error(error);
-});
-
+        alignment: {
+            options: [ 'left', 'center', 'right', 'justify' ]
+        }
+    })
+    .catch(error => {
+        console.error(error);
+    });
 </script>
 
 @endsection
