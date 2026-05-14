@@ -151,6 +151,63 @@
       font-size: 10px;
     }
   }
+
+  /* Category slider prev / next */
+  .category-slider-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .category-slider-nav__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 12px 26px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #0C0C0C;
+    background: #fff;
+    border: 2px solid #0C0C0C;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+  }
+  .category-slider-nav__btn:hover {
+    background: #0C0C0C;
+    color: #fff;
+    border-color: #0C0C0C;
+  }
+  .category-slider-nav__btn:focus-visible {
+    outline: 3px solid rgba(238, 45, 122, 0.45);
+    outline-offset: 3px;
+  }
+  .category-slider-nav__btn:active {
+    transform: scale(0.98);
+  }
+  .category-slider-nav__btn i {
+    font-size: 14px;
+    line-height: 1;
+  }
+  @media (max-width: 575px) {
+    .category-slider-nav {
+      gap: 10px;
+      padding: 0 4px;
+      margin-top: 1.25rem;
+    }
+    .category-slider-nav__btn {
+      flex: 1 1 calc(50% - 5px);
+      min-width: 0;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+  }
 </style>
         <!-- Intro1 Section Start -->
         <section class="intro1 rr-ov-hidden">
@@ -243,9 +300,15 @@
 
             </div>
 
-            <div class="slider-btns text-center mt-4">
-                <button id="prevCategory" class="btn btn-dark">Prev</button>
-                <button id="nextCategory" class="btn btn-dark">Next</button>
+            <div class="category-slider-nav" role="group" aria-label="Category carousel controls">
+                <button type="button" id="prevCategory" class="category-slider-nav__btn" aria-label="Show previous category">
+                    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                    <span>Previous</span>
+                </button>
+                <button type="button" id="nextCategory" class="category-slider-nav__btn" aria-label="Show next category">
+                    <span>Next</span>
+                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </button>
             </div>
 
         </div>
