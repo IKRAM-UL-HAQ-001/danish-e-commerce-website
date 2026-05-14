@@ -58,7 +58,8 @@
             toolbar: [
                 'heading', '|',
                 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
-                'blockQuote', 'insertTable', 'undo', 'redo'
+                'blockQuote', 'insertTable', 'undo', 'redo',
+                'alignment',
             ]
         })
         .catch(error => {
