@@ -53,45 +53,37 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
 <script>
-    ClassicEditor
-        // .create(document.querySelector('#content'), {
-        //     toolbar: [
-        //         'heading', '|',
-        //         'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
-        //         'blockQuote', 'insertTable', 'undo', 'redo',
-        //         'alignment',
-        //     ]
-        // })
-        // .catch(error => {
-        //     console.error(error);
-        // });
-        ClassicEditor
-    .create(document.querySelector('#content'), {
-        toolbar: [
+    CKEDITOR.ClassicEditor.create(document.getElementById("content"), {
+
+    toolbar: {
+        items: [
             'heading', '|',
-            'bold', 'italic', 'fontColor', 'fontBackgroundColor', '|',
-            'link', 'bulletedList', 'numberedList', '|',
+            'bold', 'italic', 'underline', '|',
+            'fontColor', 'fontBackgroundColor', '|',
             'alignment', '|',
-            'insertImage', 'insertTable', 'blockQuote', '|',
+            'bulletedList', 'numberedList', '|',
+            'insertTable', 'uploadImage', 'blockQuote', '|',
             'undo', 'redo'
-        ],
+        ]
+    },
 
-        image: {
-            toolbar: [
-                'imageTextAlternative',
-                'imageStyle:inline',
-                'imageStyle:block',
-                'imageStyle:side'
-            ]
-        },
+    alignment: {
+        options: [ 'left', 'center', 'right', 'justify' ]
+    },
 
-        alignment: {
-            options: [ 'left', 'center', 'right', 'justify' ]
-        }
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    image: {
+        toolbar: [
+            'imageTextAlternative',
+            'imageStyle:inline',
+            'imageStyle:block',
+            'imageStyle:side'
+        ]
+    }
+
+}).catch(error => {
+    console.error(error);
+});
+
 </script>
 
 @endsection
