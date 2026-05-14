@@ -374,7 +374,7 @@
           </div>
         </section>
 
-        <!-- <section class="offer1 section-spacing-120 rr-ov-hidden">
+        <section class="offer1 section-spacing-120 rr-ov-hidden">
           <div class="container rr-container-1350">
             <div class="offer1-wrapper background-image wow fadeInUp"
               style="background-image: url({{ asset($settings['offer_bg'] ?? 'frontend-assets/imgs/offer/offer-banner.jpg') }});" data-wow-delay=".3s">
@@ -402,7 +402,7 @@
               </div>
             </div>
           </div>
-        </section> -->
+        </section>
 
         <section class="best-selling-product section-spacing-120 bg-light-pick rr-ov-hidden">
           <div class="container rr-container-1350">
