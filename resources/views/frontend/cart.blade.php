@@ -118,21 +118,23 @@
                             </div>
                         </div>
 
-                        @php $appliedCoupon = session('applied_coupon'); @endphp
+                        @php
+                            $appliedCoupon = session('applied_coupon');
+                            $couponApplied = is_array($appliedCoupon) && !empty($appliedCoupon['code'] ?? null);
+                        @endphp
                         <div class="cart-page__coupon">
                             <h3 class="cart-page__coupon-title">Coupon</h3>
                             <p class="cart-page__coupon-text">Enter your coupon code if you have one.</p>
 
-                            {{-- Banner: server-side visible only when coupon is in session --}}
+                            {{-- Banner: use d-none/d-flex (not inline display) — Bootstrap d-flex uses !important and overrides display:none --}}
                             <div id="coupon-applied-banner"
-                                 class="alert alert-success d-flex align-items-center justify-content-between py-2 px-3 mb-3"
-                                 style="{{ $appliedCoupon ? '' : 'display:none;' }}">
-                                <span>Coupon <strong id="coupon-applied-code">{{ $appliedCoupon['code'] ?? '' }}</strong> applied — you save <strong id="coupon-applied-saving">{{ $appliedCoupon ? '$' . number_format($appliedCoupon['discount_amount'], 2) : '' }}</strong></span>
+                                 class="alert alert-success align-items-center justify-content-between py-2 px-3 mb-3 {{ $couponApplied ? 'd-flex' : 'd-none' }}">
+                                <span>Coupon <strong id="coupon-applied-code">{{ $appliedCoupon['code'] ?? '' }}</strong> applied — you save <strong id="coupon-applied-saving">{{ $couponApplied ? '$' . number_format((float) ($appliedCoupon['discount_amount'] ?? 0), 2) : '' }}</strong></span>
                                 <button type="button" id="cart-coupon-remove-btn" class="btn btn-sm btn-outline-danger ms-3">Remove</button>
                             </div>
 
                             {{-- Form: hidden when coupon is already applied --}}
-                            <div id="coupon-form-wrapper" style="{{ $appliedCoupon ? 'display:none;' : '' }}">
+                            <div id="coupon-form-wrapper" class="{{ $couponApplied ? 'd-none' : '' }}">
                                 <form class="cart-page__coupon-form" id="cart-coupon-form">
                                     <div class="row">
                                         <div class="col-md-8">
@@ -180,7 +182,7 @@
                                 </span>
                             </div>
                             @php
-                                $couponDiscount = $appliedCoupon ? floatval($appliedCoupon['discount_amount']) : 0;
+                                $couponDiscount = $couponApplied ? floatval($appliedCoupon['discount_amount'] ?? 0) : 0;
                                 $cartTotal      = max(0, $subtotal + $shipping - $couponDiscount);
                             @endphp
                             <div class="cart-page__totals-row" id="coupon-discount-row"
@@ -376,8 +378,9 @@
         discountValEl.dataset.value       = amount.toFixed(2);
 
         discountRow.style.display = 'flex';
-        banner.style.display = 'flex';
-        formWrapper.style.display = 'none';
+        banner.classList.remove('d-none');
+        banner.classList.add('d-flex');
+        formWrapper.classList.add('d-none');
 
         document.getElementById('coupon-applied-code').textContent = code;
         calculateCartTotals();
@@ -395,8 +398,9 @@
         discountValEl.textContent = '';
 
         discountRow.style.display = 'none';
-        banner.style.display = 'none';
-        formWrapper.style.display = 'block';
+        banner.classList.add('d-none');
+        banner.classList.remove('d-flex');
+        formWrapper.classList.remove('d-none');
         document.getElementById('cart-coupon-input').value = '';
         calculateCartTotals();
       }

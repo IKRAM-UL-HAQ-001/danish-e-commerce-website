@@ -1,6 +1,10 @@
 @extends('frontend.layouts.app')
 @section('title', 'Checkout')
 @section('content')
+    @php
+        $appliedCoupon = session('applied_coupon');
+        $couponApplied = is_array($appliedCoupon) && !empty($appliedCoupon['code'] ?? null);
+    @endphp
     <div class="breadcumb">
         <div class="container rr-container-1895">
             <div class="breadcumb-wrapper section-spacing-120 fix" data-bg-src="{{ asset('frontend-assets/imgs/breadcumbBg.jpg') }}">
@@ -32,7 +36,25 @@
 
     <section class="checkout-page section-spacing-120">
         <div class="container container-1352">
-            <div class="row">
+            @if ($errors->any())
+                <div class="alert alert-danger mb-4" role="alert">
+                    <ul class="mb-0 ps-3">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger mb-4" role="alert">{{ session('error') }}</div>
+            @endif
+            @if (session('success'))
+                <div class="alert alert-success mb-4" role="alert">{{ session('success') }}</div>
+            @endif
+
+            <form action="{{ route('stripe.checkout') }}" method="POST" class="checkout-page__billing-form" id="checkout-form">
+                @csrf
+                <div class="row">
                 <div class="col-lg-7 col-md-12">
                     <div class="checkout-page__billing">
                         <h2 class="checkout-page__billing-title">Billing details</h2>
@@ -52,9 +74,9 @@
                         </div>
 
                         <div id="checkout-coupon-section" style="display:none; margin-bottom:20px;">
-                            @if(session('applied_coupon'))
+                            @if($couponApplied)
                                 <div class="alert alert-success d-flex align-items-center justify-content-between py-2 px-3">
-                                    <span>Coupon <strong>{{ session('applied_coupon.code') }}</strong> applied — you save <strong>${{ number_format(session('applied_coupon.discount_amount'), 2) }}</strong></span>
+                                    <span>Coupon <strong>{{ $appliedCoupon['code'] }}</strong> applied — you save <strong>${{ number_format((float) ($appliedCoupon['discount_amount'] ?? 0), 2) }}</strong></span>
                                     <button type="button" id="checkout-coupon-remove-btn" class="btn btn-sm btn-outline-danger ms-3">Remove</button>
                                 </div>
                             @else
@@ -72,8 +94,6 @@
                             @endif
                         </div>
 
-                        <form action="{{ route('stripe.checkout') }}" method="POST" class="checkout-page__billing-form" id="checkout-form">
-                            @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="checkout-page__billing-form-group">
@@ -179,7 +199,6 @@
                                 <label class="checkout-page__billing-form-label">Order Notes (Optional)</label>
                                 <textarea name="order_notes" class="checkout-page__billing-form-textarea" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                             </div>
-                        </form>
                     </div>
                 </div>
 
@@ -215,10 +234,10 @@
                                     @php $shipping = floatval($settings['shipping_cost'] ?? 8.00); @endphp
                                     <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--muted">Flat rate: ${{ number_format($shipping, 2) }} ({{ $settings['shipping_location'] ?? 'N/A' }})</span>
                                 </div>
-                                @if(session('applied_coupon'))
-                                    @php $couponDiscount = floatval(session('applied_coupon.discount_amount')); @endphp
+                                @if($couponApplied)
+                                    @php $couponDiscount = floatval($appliedCoupon['discount_amount'] ?? 0); @endphp
                                     <div class="checkout-page__order-summary-totals-row" id="checkout-discount-row">
-                                        <span class="checkout-page__order-summary-totals-label">Discount ({{ session('applied_coupon.code') }})</span>
+                                        <span class="checkout-page__order-summary-totals-label">Discount ({{ $appliedCoupon['code'] }})</span>
                                         <span class="checkout-page__order-summary-totals-value" style="color:#28a745;">-${{ number_format($couponDiscount, 2) }}</span>
                                     </div>
                                 @else
@@ -249,10 +268,11 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" form="checkout-form" class="checkout-page__place-order-btn">Place Order</button>
+                        <button type="submit" class="checkout-page__place-order-btn">Place Order</button>
                     </div>
                 </div>
-            </div>
+                </div>
+            </form>
         </div>
     </section>
 @endsection
@@ -266,7 +286,7 @@
         const couponToggle = document.getElementById('coupon-toggle');
         const couponSection = document.getElementById('checkout-coupon-section');
         if (couponToggle && couponSection) {
-            @if(session('applied_coupon'))
+            @if($couponApplied)
                 couponSection.style.display = 'block';
             @endif
             couponToggle.addEventListener('click', function (e) {

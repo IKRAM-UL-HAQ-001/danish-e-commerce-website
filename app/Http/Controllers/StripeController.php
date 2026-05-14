@@ -77,7 +77,7 @@ class StripeController extends Controller
         $total = max(0, $subtotal + $shipping - $discount);
 
         try {
-            $order = DB::transaction(function () use ($request, $cart, $total) {
+            $order = DB::transaction(function () use ($request, $cart, $total, $discount, $couponCode) {
                 $order = Order::create([
                     'user_id'         => Auth::id(),
                     'customer_email'  => $request->input('email'),
