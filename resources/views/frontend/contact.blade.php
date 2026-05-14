@@ -61,6 +61,14 @@
                             placeholder="Email address">
                         </div>
                       </div>
+                      <div class="col-lg-6 wow fadeInUp" data-wow-delay=".5s">
+                        <div class="contact2-form__input">
+                          <span class="contact2-form__input-name">Phone Number</span>
+                          <input type="text" class="contact2-form__input-field" name="number" id="number"
+                            placeholder="Phone number">
+                        </div>
+                      </div>
+
                       <div class="col-lg-12 wow fadeInUp" data-wow-delay=".7s">
                         <div class="contact2-form__input">
                           <span class="contact2-form__input-name">Your Message</span>
