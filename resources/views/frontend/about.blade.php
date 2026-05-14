@@ -95,7 +95,7 @@
         </div>
 
 
-        <div class="about2 section-spacing-120 rr-ov-hidden pt-0">
+        <!-- <div class="about2 section-spacing-120 rr-ov-hidden pt-0">
           <div class="container rr-container-1350">
             <div class="row g-4 d-flex justify-content-center">
               <div class="col-xl-11 col-lg-10">
@@ -115,7 +115,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
       
 @endsection
