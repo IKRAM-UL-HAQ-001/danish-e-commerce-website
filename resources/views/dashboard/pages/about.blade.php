@@ -57,12 +57,28 @@ ClassicEditor
     .create(document.querySelector('#content'), {
         toolbar: [
             'heading', '|',
-            'bold', 'italic', 'link', '|',
-            'fontColor', 'fontBackgroundColor', '|',
-            'bulletedList', 'numberedList', '|',
+
+            'fontFamily',
+            'fontSize',
+            'fontColor',
+            'fontBackgroundColor', '|',
+
+            'bold',
+            'italic',
+            'underline',
+            'link', '|',
+
+            'bulletedList',
+            'numberedList', '|',
+
             'alignment', '|',
-            'insertTable', 'uploadImage', 'blockQuote', '|',
-            'undo', 'redo'
+
+            'insertTable',
+            'uploadImage',
+            'blockQuote', '|',
+
+            'undo',
+            'redo'
         ],
 
         alignment: {
