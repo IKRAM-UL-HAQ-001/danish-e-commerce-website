@@ -34,14 +34,13 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="card-title">Weekly Sales Performance</h4>
                 </div>
-                @if($chartData->isEmpty())
-                    <div class="text-center py-5">
-                        <i class="mdi mdi-chart-line mdi-48px text-muted"></i>
-                        <p class="text-muted">No sales data available for the last 7 days.</p>
-                    </div>
-                @else
-                    <canvas id="dashboardSalesChart" style="height: 250px;"></canvas>
+                <p class="text-muted small mb-2">Revenue from orders (pending, processing, completed), last 7 days.</p>
+                @if((float) $chartData->sum('total') <= 0)
+                    <p class="text-muted small mb-2">No order revenue in this period (or only cancelled orders).</p>
                 @endif
+                <div class="dashboard-chart-wrap" style="position: relative; height: 280px; width: 100%;">
+                    <canvas id="dashboardSalesChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -72,6 +71,7 @@
     </div>
 </div>
 
+<div class="row mt-4">
     <div class="col-md-6 grid-margin stretch-card">
         <div class="card card-rounded">
             <div class="card-body">
@@ -149,18 +149,21 @@
 </div>
 
 @push('scripts')
-@if(!$chartData->isEmpty())
-<script src="{{ asset('assets/vendors/chart.js/chart.umd.js') }}"></script>
 <script>
-    $(document).ready(function() {
-        const ctx = document.getElementById('dashboardSalesChart');
-        new Chart(ctx, {
+    document.addEventListener('DOMContentLoaded', function () {
+        const canvas = document.getElementById('dashboardSalesChart');
+        if (!canvas || typeof Chart === 'undefined') {
+            return;
+        }
+        const labels = {!! json_encode($chartData->pluck('date')) !!};
+        const values = {!! json_encode($chartData->pluck('total')->values()->all()) !!};
+        new Chart(canvas, {
             type: 'line',
             data: {
-                labels: {!! json_encode($chartData->pluck('date')) !!},
+                labels: labels,
                 datasets: [{
-                    label: 'Revenue',
-                    data: {!! json_encode($chartData->pluck('total')) !!},
+                    label: 'Revenue ($)',
+                    data: values,
                     borderColor: '#EE2D7A',
                     backgroundColor: 'rgba(238, 45, 122, 0.1)',
                     fill: true,
@@ -174,13 +177,19 @@
                     legend: { display: false }
                 },
                 scales: {
-                    y: { beginAtZero: true }
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value) {
+                                return '$' + value;
+                            }
+                        }
+                    }
                 }
             }
         });
     });
 </script>
-@endif
 @endpush
 
 @endsection
