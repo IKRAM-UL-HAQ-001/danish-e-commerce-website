@@ -48,7 +48,7 @@
                 </div>
               </div>
               <div class="col-lg-6">
-                <div class="about1-content" style="color: black;">
+                <div class="about1-content" style="color:black;">
                   @if(isset($about_content) && $about_content->value)
                     {!! $about_content->value !!}
                   @else

@@ -54,17 +54,44 @@
 
 <script>
     ClassicEditor
-        .create(document.querySelector('#content'), {
+        // .create(document.querySelector('#content'), {
+        //     toolbar: [
+        //         'heading', '|',
+        //         'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+        //         'blockQuote', 'insertTable', 'undo', 'redo',
+        //         'alignment',
+        //     ]
+        // })
+        // .catch(error => {
+        //     console.error(error);
+        // });
+        ClassicEditor
+    .create(document.querySelector('#content'), {
+        toolbar: [
+            'heading', '|',
+            'bold', 'italic', 'fontColor', 'fontBackgroundColor', '|',
+            'link', 'bulletedList', 'numberedList', '|',
+            'alignment', '|',
+            'insertImage', 'insertTable', 'blockQuote', '|',
+            'undo', 'redo'
+        ],
+
+        image: {
             toolbar: [
-                'heading', '|',
-                'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
-                'blockQuote', 'insertTable', 'undo', 'redo',
-                'alignment',
+                'imageTextAlternative',
+                'imageStyle:inline',
+                'imageStyle:block',
+                'imageStyle:side'
             ]
-        })
-        .catch(error => {
-            console.error(error);
-        });
+        },
+
+        alignment: {
+            options: [ 'left', 'center', 'right', 'justify' ]
+        }
+    })
+    .catch(error => {
+        console.error(error);
+    });
 </script>
 
 @endsection
