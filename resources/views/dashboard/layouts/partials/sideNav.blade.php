@@ -65,6 +65,20 @@
       </div>
     </li>
 
+    <!-- Offers -->
+    <li class="nav-item {{ Route::is('offers.*') ? 'active' : '' }}">
+      <a class="nav-link {{ Route::is('offers.*') ? '' : 'collapsed' }}" data-bs-toggle="collapse" href="#offer-menu" aria-expanded="{{ Route::is('offers.*') ? 'true' : 'false' }}" aria-controls="offer-menu">
+        <i class="menu-icon mdi mdi-tag"></i>
+        <span class="menu-title">Offers</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse {{ Route::is('offers.*') ? 'show' : '' }}" id="offer-menu">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link {{ Route::is('offers.index') ? 'active' : '' }}" href="{{ route('offers.index') }}">Offers List</a></li>
+        </ul>
+      </div>
+    </li>
+
     <!-- Sliders -->
     <!-- <li class="nav-item {{ Route::is('sliders.*') ? 'active' : '' }}">
       <a class="nav-link {{ Route::is('sliders.*') ? '' : 'collapsed' }}" data-bs-toggle="collapse" href="#slider-menu" aria-expanded="{{ Route::is('sliders.*') ? 'true' : 'false' }}" aria-controls="slider-menu">
@@ -129,6 +143,20 @@
       </div>
     </li>
 
+    <!-- Testimonials -->
+    <li class="nav-item {{ Route::is('dashboard.testimonials.*') ? 'active' : '' }}">
+      <a class="nav-link {{ Route::is('dashboard.testimonials.*') ? '' : 'collapsed' }}" data-bs-toggle="collapse" href="#testimonial-menu" aria-expanded="{{ Route::is('dashboard.testimonials.*') ? 'true' : 'false' }}" aria-controls="testimonial-menu">
+        <i class="menu-icon mdi mdi-comment-account-outline"></i>
+        <span class="menu-title">Testimonials</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse {{ Route::is('dashboard.testimonials.*') ? 'show' : '' }}" id="testimonial-menu">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.testimonials.index') ? 'active' : '' }}" href="{{ route('dashboard.testimonials.index') }}">Testimonials List</a></li>
+        </ul>
+      </div>
+    </li>
+
     <li class="nav-item nav-category">System</li>
 
     <!-- User Management -->
@@ -156,7 +184,7 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link {{ Route::is('pages.about') ? 'active' : '' }}" href="{{ route('pages.about') }}">About Us</a></li>
           <li class="nav-item"><a class="nav-link {{ Route::is('pages.contact') ? 'active' : '' }}" href="{{ route('pages.contact') }}">Contact Us</a></li>
-          <li class="nav-item"><a class="nav-link {{ Route::is('pages.terms') ? 'active' : '' }}" href="{{ route('pages.terms') }}">Terms & Conditions</a></li>
+          <li class="nav-item"><a class="nav-link {{ Route::is('dashboard.terms.edit') ? 'active' : '' }}" href="{{ route('dashboard.terms.edit') }}">Terms & Conditions</a></li>
           <li class="nav-item"><a class="nav-link {{ Route::is('faqs.index') ? 'active' : '' }}" href="{{ route('faqs.index') }}">Manage FAQs</a></li>
         </ul>
       </div>

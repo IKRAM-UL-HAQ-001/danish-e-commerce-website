@@ -374,19 +374,20 @@
           </div>
         </section>
 
+        @if($activeOffer)
         <section class="offer1 section-spacing-120 rr-ov-hidden">
           <div class="container rr-container-1350">
             <div class="offer1-wrapper background-image wow fadeInUp"
-              style="background-image: url({{ asset($settings['offer_bg'] ?? 'frontend-assets/imgs/offer/offer-banner.jpg') }});" data-wow-delay=".3s">
+              style="background-image: url({{ $activeOffer->image ? asset('storage/' . $activeOffer->image) : asset('frontend-assets/imgs/offer/offer-banner.jpg') }});" data-wow-delay=".3s">
               <div class="row">
                 <div class="col-xl-12 d-flex justify-content-end">
                   <div class="offer1__content">
-                    <span class="offer1__content-text">{{ $settings['offer_subtext'] ?? 'A nature`s touch' }}</span>
-                    <h2 class="offer1__content-title">{!! $settings['offer_title'] ?? '<span class="subtitle">Get 25%</span> Off All Cosmetic Creams' !!}</h2>
-                    <p class="offer1__content-subtext">{{ $settings['offer_desc'] ?? 'Pamper your skin with our nourishing cosmetic creams — crafted for radiant, silky-smooth results. Enjoy 25% off today' }}</p>
+                    <span class="offer1__content-text">Special Offer</span>
+                    <h2 class="offer1__content-title">{{ $activeOffer->title ?? 'Special Offer' }}</h2>
+                    <p class="offer1__content-subtext">{{ Str::limit($activeOffer->description, 150) }}</p>
                     <div class="offer1__content-button">
-                      <a href="{{ $settings['offer_link'] ?? route('public.shop') }}" class="rr-btn-button2">
-                        <span class="text">Browse product</span>
+                      <a href="{{ route('public.offer.details', $activeOffer->id) }}" class="rr-btn-button2">
+                        <span class="text">View Offer Details</span>
                         <span class="icon">
                           <svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -403,6 +404,7 @@
             </div>
           </div>
         </section>
+        @endif
 
         <section class="best-selling-product section-spacing-120 bg-light-pick rr-ov-hidden">
           <div class="container rr-container-1350">

@@ -10,19 +10,37 @@ class CartController extends Controller
 {
     public function add(Request $request)
     {
-        $product = Product::findOrFail($request->product_id);
-        $cart = session()->get('cart', []);
+        if ($request->has('offer_id')) {
+            $offer = \App\Models\Offer::findOrFail($request->offer_id);
+            $cart = session()->get('cart', []);
+            $cartKey = 'offer_' . $offer->id;
 
-        if(isset($cart[$product->id])) {
-            $cart[$product->id]['quantity'] += $request->quantity ?? 1;
+            if(isset($cart[$cartKey])) {
+                $cart[$cartKey]['quantity'] += $request->quantity ?? 1;
+            } else {
+                $cart[$cartKey] = [
+                    "name" => $offer->title,
+                    "quantity" => $request->quantity ?? 1,
+                    "price" => $offer->price,
+                    "image" => $offer->image,
+                    "sku" => 'OFFER-' . $offer->id
+                ];
+            }
         } else {
-            $cart[$product->id] = [
-                "name" => $product->name,
-                "quantity" => $request->quantity ?? 1,
-                "price" => $product->price,
-                "image" => $product->image,
-                "sku" => $product->sku
-            ];
+            $product = Product::findOrFail($request->product_id);
+            $cart = session()->get('cart', []);
+
+            if(isset($cart[$product->id])) {
+                $cart[$product->id]['quantity'] += $request->quantity ?? 1;
+            } else {
+                $cart[$product->id] = [
+                    "name" => $product->name,
+                    "quantity" => $request->quantity ?? 1,
+                    "price" => $product->price,
+                    "image" => $product->image,
+                    "sku" => $product->sku
+                ];
+            }
         }
 
         session()->put('cart', $cart);
@@ -31,7 +49,7 @@ class CartController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Product added to cart successfully!',
+            'message' => 'Item added to cart successfully!',
             'cartCount' => $cartCount
         ]);
     }

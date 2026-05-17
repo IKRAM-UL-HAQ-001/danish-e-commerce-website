@@ -22,12 +22,15 @@ use App\Http\Controllers\StripeController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\OfferController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/shop', [HomeController::class, 'shop'])->name('public.shop');
+Route::get('/offer', [HomeController::class, 'offer'])->name('public.offer');
+Route::get('/offer/{offer}', [HomeController::class, 'offerDetails'])->name('public.offer.details');
 Route::get('/shop-list', [HomeController::class, 'shopList'])->name('public.shop.list');
 Route::get('/product/{product:slug}', [HomeController::class, 'productDetails'])->name('public.product.details');
 Route::get('/cart', [HomeController::class, 'cart'])->name('public.cart');
@@ -89,6 +92,9 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
         // Terms and Conditions (admin)
         Route::get('terms', [TermController::class, 'edit'])->name('dashboard.terms.edit');
         Route::put('terms', [TermController::class, 'update'])->name('dashboard.terms.update');
+        Route::post('terms/section', [TermController::class, 'storeSection'])->name('dashboard.terms.section.store');
+        Route::post('terms/section/update', [TermController::class, 'updateSection'])->name('dashboard.terms.section.update');
+        Route::post('terms/section/delete', [TermController::class, 'deleteSection'])->name('dashboard.terms.section.delete');
         // Product Routes
         Route::get('products', [ProductController::class, 'index'])->name('products.index');
         Route::post('products', [ProductController::class, 'store'])->name('products.store');
@@ -121,6 +127,12 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
         Route::post('sliders/update', [SliderController::class, 'update'])->name('sliders.update');
         Route::post('sliders/delete', [SliderController::class, 'destroy'])->name('sliders.destroy');
         
+        // Offer Routes
+        Route::get('offers', [OfferController::class, 'index'])->name('offers.index');
+        Route::post('offers', [OfferController::class, 'store'])->name('offers.store');
+        Route::post('offers/update', [OfferController::class, 'update'])->name('offers.update');
+        Route::post('offers/delete', [OfferController::class, 'destroy'])->name('offers.destroy');
+        
         // Order Routes
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
         Route::post('orders/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
@@ -147,8 +159,6 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
         Route::post('pages/about', [PageController::class, 'updateAbout'])->name('pages.about.update');
         Route::get('pages/contact', [PageController::class, 'editContact'])->name('pages.contact');
         Route::post('pages/contact', [PageController::class, 'updateContact'])->name('pages.contact.update');
-        Route::get('pages/terms', [PageController::class, 'editTerms'])->name('pages.terms');
-        Route::post('pages/terms', [PageController::class, 'updateTerms'])->name('pages.terms.update');
         // Contact Messages
         Route::get('messages', [ContactMessageController::class, 'index'])->name('messages.index');
         Route::post('messages/show', [ContactMessageController::class, 'show'])->name('messages.show');

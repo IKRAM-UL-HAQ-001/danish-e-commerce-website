@@ -64,35 +64,6 @@
                         @endif
                     </div>
 
-                    <hr>
-                    <h4 class="card-title mt-4">Offer Banner Configuration</h4>
-                    <p class="card-description">Customize the middle offer banner.</p>
-                    <div class="form-group mb-3">
-                        <label for="offer_subtext">Offer Subtext</label>
-                        <input type="text" name="offer_subtext" class="form-control" id="offer_subtext" value="{{ $settings['offer_subtext'] ?? '' }}">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="offer_title">Offer Title (HTML allowed)</label>
-                        <input type="text" name="offer_title" class="form-control" id="offer_title" value="{{ $settings['offer_title'] ?? '' }}">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="offer_desc">Offer Description</label>
-                        <textarea name="offer_desc" class="form-control" id="offer_desc" rows="3">{{ $settings['offer_desc'] ?? '' }}</textarea>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="offer_bg">Offer Banner Background (1350x300 recommended)</label>
-                        <input type="file" name="offer_bg" class="form-control" id="offer_bg">
-                        @if(isset($settings['offer_bg']))
-                            <div class="mt-2">
-                                <img src="{{ asset($settings['offer_bg']) }}" alt="Offer Preview" style="max-width: 200px; border-radius: 8px;">
-                            </div>
-                        @endif
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="offer_link">Offer Redirect Link</label>
-                        <input type="text" name="offer_link" class="form-control" id="offer_link" value="{{ $settings['offer_link'] ?? '' }}" placeholder="/shop or https://...">
-                    </div>
-
                     <div class="form-group mb-3">
                         <label for="shipping_cost">Flat Rate Shipping Cost ($)</label>
                         <input type="number" step="0.01" name="shipping_cost" class="form-control" id="shipping_cost" value="{{ $settings['shipping_cost'] ?? '8.00' }}">

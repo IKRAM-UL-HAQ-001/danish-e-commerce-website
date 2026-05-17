@@ -112,15 +112,26 @@
                         <div class="shop-sidebar__categories">
                             <ul class="shop-sidebar__categories-list">
                                 @foreach($categories as $category)
-                                <li class="shop-sidebar__categories-item">
-                                    <a href="{{ route('public.shop.list', ['category' => $category->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $category->slug ? 'active' : '' }} d-flex align-items-center">
+                                <li class="shop-sidebar__categories-item" style="margin-bottom: 10px;">
+                                    <a href="{{ route('public.shop.list', ['category' => $category->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $category->slug || (isset($selectedCategory) && $selectedCategory->parent_id == $category->id) ? 'active' : '' }} d-flex align-items-center">
                                         @if($category->image)
                                             <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
                                         @else
-                                            <i class="fa-solid fa-chevron-right"></i>
+                                            <i class="fa-solid fa-chevron-right" style="margin-right: 10px;"></i>
                                         @endif
                                         {{ $category->name }}
                                     </a>
+                                    @if($category->subcategories->count() > 0)
+                                    <ul class="shop-sidebar__subcategories-list" style="padding-left: 30px; margin-top: 10px;">
+                                        @foreach($category->subcategories as $sub)
+                                        <li class="shop-sidebar__subcategories-item" style="margin-bottom: 8px;">
+                                            <a href="{{ route('public.shop.list', ['category' => $sub->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $sub->slug ? 'active' : '' }}" style="font-size: 14px; display: flex; align-items: center; justify-content: flex-start; gap: 8px;">
+                                                <i class="fa-solid fa-minus" style="font-size: 10px;"></i> {{ $sub->name }}
+                                            </a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                    @endif
                                 </li>
                                 @endforeach
                             </ul>

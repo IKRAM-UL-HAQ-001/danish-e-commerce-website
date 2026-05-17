@@ -22,7 +22,7 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('frontend-assets/imgs/logo/logo2.png') }}" />
 
     <style>
         .form-select, select {

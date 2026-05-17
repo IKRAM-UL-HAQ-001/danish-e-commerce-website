@@ -10,7 +10,7 @@
 
   <title>@yield('title') | {{ config('app.name') }}</title>
 
-  <link rel="icon" type="image/x-icon" href="{{ asset('frontend-assets/imgs/logo/favicon-white.png') }}">
+  <link rel="icon" type="image/x-icon" href="{{ asset('frontend-assets/imgs/logo/logo2.png') }}">
 
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/bootstrap/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/fontawesome/fontawesome-pro.min.css') }}">
@@ -22,6 +22,51 @@
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/odometer/odometer-theme-default.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/css/mobile-responsive.css') }}">
+  <style>
+    .header__logo img {
+      max-height: 85px !important;
+      width: auto;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+    .header-sticky.sticky .header__logo img {
+      max-height: 60px !important;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+    .header-main {
+      padding: 10px 0;
+    }
+    @media (max-width: 991px) {
+      .header__logo img {
+        max-height: 60px !important;
+      }
+    }
+    .main-menu ul.dp-menu ul {
+        visibility: hidden;
+        pointer-events: none;
+        opacity: 0;
+        background-color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        padding: 10px 0 !important;
+    }
+    .main-menu ul.dp-menu ul li a {
+        color: #000000 !important;
+    }
+    .main-menu ul.dp-menu ul li a:hover {
+        color: #EE2D7A !important;
+        background-color: #f8f9fa !important;
+        padding-left: 28px !important;
+    }
+    .main-menu ul.dp-menu li:hover > ul {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+  </style>
   @stack('styles')
 </head>
 
@@ -48,10 +93,9 @@
             <div class="offset-widget-box">
               <h2 class="title">Social Info</h2>
               <div class="offset-social">
-                <a href="#" class="facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="twitter" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="youtube" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.facebook.com/share/1akN9wgZ8X/"> <span><i class="fa-brands fa-facebook-f"></i></span> </a>
+                    <a href="https://www.tiktok.com/@aenum.luxe?_r=1&_t=ZN-95TrGjnkFp0"> <span><i class="fa-brands  fa-tiktok"></i></span> </a>
+                    <a href="https://www.instagram.com/aenum_luxe_style?igsh=eGt1aXpkOW1wZG9u&utm_source=qr"> <span><i class="fa-brands fa-instagram"></i></span> </a>
               </div>
             </div>
           </div>
@@ -68,7 +112,7 @@
               <div class="col-auto">
                 <div class="header__logo">
                   <a href="{{ route('home') }}">
-                    <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" class="normal-logo" alt="Site Logo" />
+                    <img src="{{ asset('frontend-assets/imgs/logo/logo2.png') }}" class="normal-logo" alt="Site Logo" />
                   </a>
                 </div>
               </div>
@@ -82,13 +126,22 @@
                       <a href="javascript:void(0)">Categories</a>
                       <ul class="dp-menu">
                         @foreach($headerCategories as $category)
-                          <li>
+                          <li class="{{ $category->subcategories->count() > 0 ? 'menu-item-has-children' : '' }}">
                             <a href="{{ route('public.shop', ['category' => $category->slug]) }}" class="d-flex align-items-center">
                               @if($category->image)
                                 <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 25px; height: 25px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
                               @endif
                               {{ $category->name }}
                             </a>
+                            @if($category->subcategories->count() > 0)
+                              <ul>
+                                @foreach($category->subcategories as $sub)
+                                  <li>
+                                    <a href="{{ route('public.shop', ['category' => $sub->slug]) }}">{{ $sub->name }}</a>
+                                  </li>
+                                @endforeach
+                              </ul>
+                            @endif
                           </li>
                         @endforeach
                       </ul>

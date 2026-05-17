@@ -11,17 +11,19 @@ class TermController extends Controller
     public function show()
     {
         $term = Term::first();
-        return view('frontend.terms', compact('term'));
+        $sections = \App\Models\TermSection::orderBy('order')->get();
+        return view('frontend.terms', compact('term', 'sections'));
     }
 
     // Show the edit form in admin
     public function edit()
     {
         $term = Term::first();
-        return view('dashboard.terms.edit', compact('term'));
+        $sections = \App\Models\TermSection::orderBy('order')->get();
+        return view('dashboard.terms.edit', compact('term', 'sections'));
     }
 
-    // Update the terms content
+    // Update the main terms content
     public function update(Request $request)
     {
         $request->validate([
@@ -33,6 +35,45 @@ class TermController extends Controller
         } else {
             $term->update(['content' => $request->content]);
         }
-        return redirect()->back()->with('success', 'Terms and Conditions updated successfully.');
+        return redirect()->back()->with('success', 'Main title updated successfully.');
+    }
+
+    // Store a new section
+    public function storeSection(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'order' => 'nullable|integer',
+        ]);
+
+        \App\Models\TermSection::create($request->all());
+
+        return redirect()->back()->with('success', 'Section added successfully.');
+    }
+
+    // Update a section
+    public function updateSection(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:term_sections,id',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'order' => 'nullable|integer',
+        ]);
+
+        $section = \App\Models\TermSection::findOrFail($request->id);
+        $section->update($request->all());
+
+        return redirect()->back()->with('success', 'Section updated successfully.');
+    }
+
+    // Delete a section
+    public function deleteSection(Request $request)
+    {
+        $section = \App\Models\TermSection::findOrFail($request->id);
+        $section->delete();
+
+        return redirect()->back()->with('success', 'Section deleted successfully.');
     }
 }
