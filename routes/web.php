@@ -135,6 +135,7 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
         
         // Order Routes
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('orders/{order_number}', [OrderController::class, 'show'])->name('orders.show');
         Route::post('orders/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
         Route::post('orders/delete', [OrderController::class, 'destroy'])->name('orders.destroy');
 

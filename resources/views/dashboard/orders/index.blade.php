@@ -52,6 +52,8 @@
                                             <i class="mdi mdi-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{{ route('orders.show', $order->order_number) }}"><i class="mdi mdi-eye text-primary me-2"></i>View Details</a></li>
+                                            <li><hr class="dropdown-divider"></li>
                                             <li><h6 class="dropdown-header">Update Status</h6></li>
                                             @foreach(['pending', 'processing', 'completed', 'cancelled'] as $status)
                                                 @if($status !== $order->status)
