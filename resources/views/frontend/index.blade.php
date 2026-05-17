@@ -208,6 +208,40 @@
       font-size: 13px;
     }
   }
+  /* Make all testimonial cards dark with white text */
+  .testimonial1-card.light-card,
+  .testimonial1-card.dark-card {
+      background-color: #0C0C0C !important;
+      position: relative;
+      z-index: 1;
+  }
+  .testimonial1-card.light-card:hover {
+      background-color: #121212 !important;
+  }
+  .testimonial1-card.light-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: -1;
+      transition: all 0.4s ease;
+  }
+  .testimonial1-card.light-card:hover::after {
+      background: rgba(0, 0, 0, 0.55);
+  }
+  .testimonial1-card.light-card .testimonial1-card__text,
+  .testimonial1-card.light-card .testimonial1-card__author-name {
+      color: #ffffff !important;
+  }
+  .testimonial1-card.light-card .testimonial1-card__author-designation {
+      color: #CDCDCD !important;
+  }
+  .testimonial1-card.light-card .testimonial1-card__product-img {
+      opacity: 0.15 !important;
+  }
 </style>
         <!-- Intro1 Section Start -->
         <section class="intro1 rr-ov-hidden">
