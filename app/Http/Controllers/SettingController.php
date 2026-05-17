@@ -15,11 +15,33 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
-        dd([
-            'has_file' => $request->hasFile('site_logo'),
-            'file_details' => $request->file('site_logo'),
-            'upload_error' => isset($_FILES['site_logo']) ? $_FILES['site_logo']['error'] : 'No file key in $_FILES',
-            'all_inputs' => $request->except('_token'),
+        $request->validate([
+            'site_logo' => 'nullable|file|max:10240',
+            'hero_image' => 'nullable|file|max:10240',
         ]);
+
+        $data = $request->except('_token');
+
+        if ($request->hasFile('site_logo')) {
+            $image = $request->file('site_logo');
+            $imageName = 'logo_' . time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('settings', $imageName, 'public');
+            Setting::updateOrCreate(['key' => 'site_logo'], ['value' => 'storage/' . $path]);
+            unset($data['site_logo']);
+        }
+
+        if ($request->hasFile('hero_image')) {
+            $image = $request->file('hero_image');
+            $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('settings', $imageName, 'public');
+            Setting::updateOrCreate(['key' => 'hero_image'], ['value' => 'storage/' . $path]);
+            unset($data['hero_image']);
+        }
+
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate(['key' => $key], ['value' => $value]);
+        }
+
+        return back()->with('success', 'Settings updated successfully.');
     }
 }
