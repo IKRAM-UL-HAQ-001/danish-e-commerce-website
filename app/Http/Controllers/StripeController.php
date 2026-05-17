@@ -80,7 +80,9 @@ class StripeController extends Controller
             $order = DB::transaction(function () use ($request, $cart, $total, $discount, $couponCode) {
                 $order = Order::create([
                     'user_id'         => Auth::id(),
+                    'customer_name'   => trim($request->input('first_name') . ' ' . $request->input('last_name')),
                     'customer_email'  => $request->input('email'),
+                    'customer_phone'  => $request->input('phone'),
                     'total_price'     => $total,
                     'status'          => 'pending',
                     'shipping_address'=> $this->formatSubmittedAddress($request),

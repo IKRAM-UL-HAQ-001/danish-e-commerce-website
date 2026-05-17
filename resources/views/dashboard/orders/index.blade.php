@@ -28,10 +28,8 @@
                             <tr>
                                 <td>#{{ $order->order_number }}</td>
                                 <td>
-                                    <strong>{{ $order->user->name ?? 'Deleted User' }}</strong><br>
-                                    <!-- <small class="text-muted">{{ $order->user->email ?? '' }}</small> -->
-                                        <small class="text-muted">{{ $order->customer_email ?? '' }}</small>
-                                    
+                                    <strong>{{ $order->customer_name ?? ($order->user->name ?? 'Guest User') }}</strong><br>
+                                    <small class="text-muted">{{ $order->customer_email ?? ($order->user->email ?? 'No email provided') }}</small>
                                 </td>
                                 <td>${{ number_format($order->total_price, 2) }}</td>
                                 <td>{{ $order->created_at->format('M d, Y H:i') }}</td>
