@@ -17,6 +17,15 @@
                         <input type="text" name="site_name" class="form-control" id="site_name" value="{{ $settings['site_name'] ?? '' }}" placeholder="My Awesome Store">
                     </div>
                     <div class="form-group mb-3">
+                        <label for="site_logo">Site Logo</label>
+                        <input type="file" name="site_logo" class="form-control" id="site_logo">
+                        @if(isset($settings['site_logo']))
+                            <div class="mt-2">
+                                <img src="{{ asset($settings['site_logo']) }}" alt="Site Logo Preview" style="max-height: 80px; border-radius: 8px;">
+                            </div>
+                        @endif
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="site_email">Support Email</label>
                         <input type="email" name="site_email" class="form-control" id="site_email" value="{{ $settings['site_email'] ?? '' }}" placeholder="support@myapp.com">
                     </div>

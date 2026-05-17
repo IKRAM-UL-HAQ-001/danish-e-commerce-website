@@ -17,6 +17,14 @@ class SettingController extends Controller
     {
         $data = $request->except('_token');
 
+        if ($request->hasFile('site_logo')) {
+            $image = $request->file('site_logo');
+            $imageName = 'logo_' . time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('settings', $imageName, 'public');
+            Setting::updateOrCreate(['key' => 'site_logo'], ['value' => 'storage/' . $path]);
+            unset($data['site_logo']);
+        }
+
         if ($request->hasFile('hero_image')) {
             $image = $request->file('hero_image');
             $imageName = 'hero_' . time() . '.' . $image->getClientOriginalExtension();

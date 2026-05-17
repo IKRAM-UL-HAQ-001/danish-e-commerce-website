@@ -158,6 +158,30 @@ class StripeController extends Controller
             return redirect()->route('public.checkout')->with('error', 'Stripe checkout session was not found.');
         }
 
+        try {
+            $stripeSecret = config('services.stripe.secret');
+            \Stripe\Stripe::setApiKey($stripeSecret);
+            
+            $session = \Stripe\Checkout\Session::retrieve($request->session_id);
+            
+            if ($session && $session->payment_status === 'paid') {
+                $orderNumber = $session->metadata->order_number ?? null;
+                if ($orderNumber) {
+                    $order = Order::where('order_number', $orderNumber)->first();
+                    if ($order && $order->status === 'pending') {
+                        $order->update([
+                            'status' => 'completed',
+                            'stripe_payment_intent_id' => $session->payment_intent ?? $order->stripe_payment_intent_id,
+                            'shipping_address' => $this->formatStripeCustomerDetails($session) ?: $order->shipping_address,
+                        ]);
+                        $this->sendPaymentStatusEmail($order, 'success');
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('Error verifying Stripe session in success route: ' . $e->getMessage());
+        }
+
         session()->forget('cart');
 
         return redirect()->route('public.shop')->with('success', 'Payment successful. Thank you for your order!');

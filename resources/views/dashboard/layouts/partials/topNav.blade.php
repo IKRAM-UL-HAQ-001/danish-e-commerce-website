@@ -25,13 +25,16 @@
               <span class="icon-menu"></span>
             </button>
           </div>
+          @php
+            $dashboardSiteLogo = \App\Models\Setting::where('key', 'site_logo')->value('value');
+          @endphp
           <div>
             <a class="navbar-brand brand-logo" href="{{ route('dashboard') }}">
-            <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" 
+            <img src="{{ $dashboardSiteLogo ? asset($dashboardSiteLogo) : asset('frontend-assets/imgs/logo/logo.png') }}" 
             alt="logo" />
             </a>
             <a class="navbar-brand brand-logo-mini" href="{{ route('dashboard') }}">
-            <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo" class="logo-img" />
+            <img src="{{ $dashboardSiteLogo ? asset($dashboardSiteLogo) : asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo" class="logo-img" />
             </a>
           </div>
         </div>

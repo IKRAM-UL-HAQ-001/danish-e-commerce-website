@@ -10,7 +10,7 @@
 
   <title>@yield('title') | {{ config('app.name') }}</title>
 
-  <link rel="icon" type="image/x-icon" href="{{ asset('frontend-assets/imgs/logo/logo2.png') }}">
+  <link rel="icon" type="image/x-icon" href="{{ isset($siteLogo) && $siteLogo ? asset($siteLogo) : asset('frontend-assets/imgs/logo/logo2.png') }}">
 
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/bootstrap/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/fontawesome/fontawesome-pro.min.css') }}">
@@ -112,7 +112,7 @@
               <div class="col-auto">
                 <div class="header__logo">
                   <a href="{{ route('home') }}">
-                    <img src="{{ asset('frontend-assets/imgs/logo/logo2.png') }}" class="normal-logo" alt="Site Logo" />
+                    <img src="{{ isset($siteLogo) && $siteLogo ? asset($siteLogo) : asset('frontend-assets/imgs/logo/logo2.png') }}" class="normal-logo" alt="Site Logo" />
                   </a>
                 </div>
               </div>

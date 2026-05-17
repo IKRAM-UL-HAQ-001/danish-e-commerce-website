@@ -22,7 +22,10 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
-    <link rel="shortcut icon" href="{{ asset('frontend-assets/imgs/logo/logo2.png') }}" />
+    @php
+        $dashboardSiteLogo = \App\Models\Setting::where('key', 'site_logo')->value('value');
+    @endphp
+    <link rel="shortcut icon" href="{{ $dashboardSiteLogo ? asset($dashboardSiteLogo) : asset('frontend-assets/imgs/logo/logo2.png') }}" />
 
     <style>
         .form-select, select {

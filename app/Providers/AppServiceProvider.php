@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('headerCategories', \App\Models\Category::whereNull('parent_id')->where('status', 1)->with(['subcategories' => function($q) {
                 $q->where('status', 1);
             }])->get());
+            $view->with('siteLogo', \App\Models\Setting::where('key', 'site_logo')->value('value'));
         });
     }
 }
