@@ -18,7 +18,10 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="site_logo">Site Logo</label>
-                        <input type="file" name="site_logo" class="form-control" id="site_logo">
+                        <input type="file" name="site_logo" class="form-control @error('site_logo') is-invalid @enderror" id="site_logo">
+                        @error('site_logo')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                         @if(isset($settings['site_logo']))
                             <div class="mt-2">
                                 <img src="{{ asset($settings['site_logo']) }}" alt="Site Logo Preview" style="max-height: 80px; border-radius: 8px;">
@@ -65,7 +68,10 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="hero_image">Hero Image (796x750 recommended)</label>
-                        <input type="file" name="hero_image" class="form-control" id="hero_image">
+                        <input type="file" name="hero_image" class="form-control @error('hero_image') is-invalid @enderror" id="hero_image">
+                        @error('hero_image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                         @if(isset($settings['hero_image']))
                             <div class="mt-2">
                                 <img src="{{ asset($settings['hero_image']) }}" alt="Hero Preview" style="max-width: 200px; border-radius: 8px;">
