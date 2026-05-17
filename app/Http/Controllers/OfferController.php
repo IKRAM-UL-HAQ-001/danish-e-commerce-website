@@ -21,7 +21,7 @@ class OfferController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'product_id' => 'nullable|exists:products,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:15360',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'old_price' => 'nullable|numeric',
@@ -54,7 +54,7 @@ class OfferController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'product_id' => 'nullable|exists:products,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:15360',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'old_price' => 'nullable|numeric',

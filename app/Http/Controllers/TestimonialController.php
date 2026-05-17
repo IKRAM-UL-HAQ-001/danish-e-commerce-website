@@ -27,7 +27,7 @@ class TestimonialController extends Controller
             'author' => 'required|string|max:255',
             'designation' => 'nullable|string|max:255',
             'text' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
         $imagePath = null;
         if ($request->hasFile('image')) {
@@ -55,7 +55,7 @@ class TestimonialController extends Controller
             'author' => 'required|string|max:255',
             'designation' => 'nullable|string|max:255',
             'text' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
         if ($request->hasFile('image')) {
             if ($testimonial->image && \Storage::disk('public')->exists($testimonial->image)) {

@@ -26,7 +26,7 @@ class ProfileController extends Controller
                 }
             }],
             'password' => ['nullable', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:15360',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:10240',
         ]);
 
         if ($request->hasFile('profile_picture')) {

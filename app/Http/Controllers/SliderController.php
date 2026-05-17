@@ -22,7 +22,7 @@ class SliderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:15360',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             'status' => 'required|boolean',
         ]);
 
@@ -46,7 +46,7 @@ class SliderController extends Controller
     {
         $slider = Slider::where('slug', $request->slug)->firstOrFail();
         $request->validate([
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:15360',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'status' => 'required|boolean',
         ]);
 
