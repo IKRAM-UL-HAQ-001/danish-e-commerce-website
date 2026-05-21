@@ -121,6 +121,22 @@
                                         @endif
                                         {{ $category->name }}
                                     </a>
+                                    @if($category->subcategories->isNotEmpty())
+                                    <ul class="shop-sidebar__categories-list" style="margin-left: 28px; margin-top: 8px;">
+                                        @foreach($category->subcategories as $subcategory)
+                                        <li class="shop-sidebar__categories-item">
+                                            <a href="{{ route('public.shop.list', ['category' => $subcategory->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $subcategory->slug ? 'active' : '' }} d-flex align-items-center">
+                                                @if($subcategory->image)
+                                                    <img src="{{ asset('storage/' . $subcategory->image) }}" alt="{{ $subcategory->name }}" style="width: 18px; height: 18px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
+                                                @else
+                                                    <i class="fa-solid fa-angle-right" style="margin-right: 10px;"></i>
+                                                @endif
+                                                {{ $subcategory->name }}
+                                            </a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                    @endif
                                 </li>
                                 @endforeach
                             </ul>
