@@ -102,4 +102,140 @@
     min-height: 180px;
     max-height: min(65vh, 380px);
   }
+
+  /* Hero Banner Slider Mobile Responsive */
+  .hero-banner-section {
+    padding: 0;
+  }
+
+  .hero-banner-slider {
+    max-height: 280px !important;
+    border-radius: 8px;
+  }
+
+  .hero-banner-slider .swiper-slide {
+    height: 280px;
+  }
+
+  .hero-banner-slider .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-banner-slider .swiper-button-next,
+  .hero-banner-slider .swiper-button-prev {
+    display: none !important;
+  }
+
+  .hero-banner-slider .swiper-pagination {
+    padding-bottom: 10px;
+  }
+
+  .hero-banner-slider .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+  }
+}
+
+/* Additional tablet responsive styles */
+@media screen and (max-width: 991.98px) and (min-width: 576px) {
+  .hero-banner-slider {
+    max-height: 400px;
+  }
+
+  .hero-banner-slider .swiper-slide {
+    height: 400px;
+  }
+}
+
+/* Mobile Category Drill-Down Navigation Styles */
+@media screen and (max-width: 1199px) {
+  /* Style the back button */
+  .mobile-menu .mobile-menu-back {
+    border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    list-style: none;
+  }
+
+  .mobile-menu .mobile-menu-back a {
+    color: #0c0c0c !important;
+    display: flex !important;
+    align-items: center;
+    font-weight: 600;
+    padding: 8px 0;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .mobile-menu .mobile-menu-back a:hover {
+    color: #EE2D7A !important;
+  }
+
+  .mobile-menu .mobile-menu-back a span {
+    margin-right: 12px;
+    font-size: 16px;
+  }
+
+  /* Style the category items with subcategories */
+  .mobile-menu > ul > li li:has(> ul) > a {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Style the > icon for categories */
+  .mobile-menu .meanmenu-reveal {
+    color: #0c0c0c !important;
+    font-weight: 700;
+    font-size: 16px;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 8px !important;
+    text-align: center;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    background: none !important;
+    border: none !important;
+  }
+
+  .mobile-menu .meanmenu-reveal:hover {
+    color: #EE2D7A !important;
+  }
+
+  /* Hide default meanmenu reveal styles */
+  .mobile-menu .meanmenu-reveal::before,
+  .mobile-menu .meanmenu-reveal::after {
+    display: none !important;
+  }
+
+  /* Smooth subcategory display */
+  .mobile-menu > ul > li > ul {
+    display: none;
+    transition: display 0.3s ease;
+  }
+
+  .mobile-menu > ul > li > ul[style*="display: block"] {
+    display: block !important;
+  }
+
+  /* Smooth category item display */
+  .mobile-menu > ul > li {
+    transition: display 0.3s ease;
+  }
+
+  /* Styling for subcategory items */
+  .mobile-menu > ul > li > ul > li > a {
+    padding-left: 30px !important;
+    font-size: 13px;
+  }
+
+  .mobile-menu > ul > li > ul > li > a img {
+    margin-right: 8px;
+  }
 }

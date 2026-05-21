@@ -166,7 +166,146 @@
   .testimonial1 i{
       color:#fff !important;
   }
+
+  /* Hero Banner Slider Styles */
+  .hero-banner-slider {
+      width: 100%;
+      max-height: 600px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 40px;
+  }
+
+  .hero-banner-slider .swiper-slide {
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .hero-banner-slider .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+  }
+
+  .hero-banner-slider .swiper-button-next,
+  .hero-banner-slider .swiper-button-prev {
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+  }
+
+  .hero-banner-slider .swiper-button-next:hover,
+  .hero-banner-slider .swiper-button-prev:hover {
+      background-color: rgba(238, 45, 122, 0.8);
+  }
+
+  .hero-banner-slider .swiper-button-next::after,
+  .hero-banner-slider .swiper-button-prev::after {
+      font-size: 18px;
+  }
+
+  .hero-banner-slider .swiper-pagination-bullet {
+      background-color: rgba(255, 255, 255, 0.7);
+      opacity: 1;
+  }
+
+  .hero-banner-slider .swiper-pagination-bullet-active {
+      background-color: #EE2D7A;
+  }
+
+  @media (max-width: 991px) {
+      .hero-banner-slider {
+          max-height: 400px;
+          margin-bottom: 30px;
+      }
+
+      .hero-banner-slider .swiper-slide {
+          height: 400px;
+      }
+
+      .hero-banner-slider .swiper-button-next,
+      .hero-banner-slider .swiper-button-prev {
+          width: 40px;
+          height: 40px;
+      }
+
+      .hero-banner-slider .swiper-button-next::after,
+      .hero-banner-slider .swiper-button-prev::after {
+          font-size: 16px;
+      }
+  }
+
+  @media (max-width: 575px) {
+      .hero-banner-slider {
+          max-height: 280px;
+          margin-bottom: 20px;
+          border-radius: 8px;
+      }
+
+      .hero-banner-slider .swiper-slide {
+          height: 280px;
+      }
+
+      .hero-banner-slider .swiper-button-next,
+      .hero-banner-slider .swiper-button-prev {
+          width: 35px;
+          height: 35px;
+          display: none;
+      }
+
+      .hero-banner-slider .swiper-button-next::after,
+      .hero-banner-slider .swiper-button-prev::after {
+          font-size: 14px;
+      }
+
+      .hero-banner-slider .swiper-pagination {
+          bottom: 10px;
+      }
+
+      .hero-banner-slider .swiper-pagination-bullet {
+          width: 8px;
+          height: 8px;
+          margin: 0 4px;
+      }
+  }
 </style>
+
+@if($sliders && $sliders->count() > 0)
+<!-- Hero Banner Slider Start -->
+<section class="hero-banner-section rr-ov-hidden">
+  <div class="container rr-container-1350">
+    <div class="swiper hero-banner-slider">
+      <div class="swiper-wrapper">
+        @foreach($sliders as $slider)
+          @if($slider->status)
+          <div class="swiper-slide">
+            <a href="{{ $slider->url ?? '#' }}" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%; height: 100%;">
+              <img src="{{ asset('storage/' . $slider->image) }}" alt="{{ $slider->title }}" loading="lazy">
+            </a>
+          </div>
+          @endif
+        @endforeach
+      </div>
+      <!-- Navigation Arrows -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <!-- Pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+<!-- Hero Banner Slider End -->
+@endif
+
         <!-- Intro1 Section Start -->
         <section class="intro1 rr-ov-hidden">
           <div class="intro1__bg-text" style="font-size: 150px;">AenumLuxeStyle</div>
@@ -617,6 +756,53 @@
         <!-- Testimonial Section End -->
 
 <script>
+    // Hero Banner Slider
+    @if($sliders && $sliders->count() > 0)
+    var heroBannerSwiper = new Swiper('.hero-banner-slider', {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 0,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.hero-banner-slider .swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.hero-banner-slider .swiper-button-next',
+            prevEl: '.hero-banner-slider .swiper-button-prev',
+        },
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true
+        },
+        breakpoints: {
+            320: {
+                slidesPerView: 1,
+                spaceBetween: 0,
+            },
+            640: {
+                slidesPerView: 1,
+                spaceBetween: 0,
+            },
+            768: {
+                slidesPerView: 1,
+                spaceBetween: 0,
+            },
+            1024: {
+                slidesPerView: 1,
+                spaceBetween: 0,
+            },
+            1200: {
+                slidesPerView: 1,
+                spaceBetween: 0,
+            },
+        }
+    });
+    @endif
+
     const slides = document.querySelectorAll('.category-slide');
     if (slides.length > 0) {
         let activeIndex = 0;
