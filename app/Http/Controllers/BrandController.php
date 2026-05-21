@@ -24,7 +24,7 @@ class BrandController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'status' => 'required|boolean',
         ]);
 
@@ -51,7 +51,7 @@ class BrandController extends Controller
         $brand = Brand::where('slug', $request->slug)->firstOrFail();
         $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
             'status' => 'required|boolean',
         ]);
 

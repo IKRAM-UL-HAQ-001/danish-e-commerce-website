@@ -129,7 +129,11 @@
                           <span class="btn-icon" aria-hidden="true"><i
                               class="fa-duotone fa-thin fa-arrow-right-long"></i></span>
                         </button>
-                        <button class="btn-heart" type="button" aria-label="Wishlist">
+                        <button class="btn-heart wishlist-toggle-btn"
+                                type="button"
+                                aria-label="Wishlist"
+                                data-id="{{ $product->id }}"
+                                style="{{ collect(session('wishlist', []))->has($product->id) ? 'color:#EE2D7A;' : '' }}">
                           <i class="fa-solid fa-heart"></i>
                         </button>
                       </div>
@@ -323,6 +327,29 @@
                 } else {
                     s.classList.add('text-muted');
                 }
+            });
+        }
+        // Wishlist toggle
+        const wishlistBtn = document.querySelector('.wishlist-toggle-btn');
+        if (wishlistBtn) {
+            wishlistBtn.addEventListener('click', function () {
+                const id = this.dataset.id;
+                fetch('{{ route("wishlist.toggle") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: JSON.stringify({ product_id: id }),
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        wishlistBtn.style.color = data.added ? '#EE2D7A' : '';
+                        const badge = document.getElementById('wishlist-badge');
+                        if (badge) badge.textContent = data.count;
+                    }
+                });
             });
         }
     });

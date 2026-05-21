@@ -15,7 +15,20 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
+        $request->validate([
+            'site_logo' => 'nullable|file|max:10240',
+            'hero_image' => 'nullable|file|max:10240',
+        ]);
+
         $data = $request->except('_token');
+
+        if ($request->hasFile('site_logo')) {
+            $image = $request->file('site_logo');
+            $imageName = 'logo_' . time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('settings', $imageName, 'public');
+            Setting::updateOrCreate(['key' => 'site_logo'], ['value' => 'storage/' . $path]);
+            unset($data['site_logo']);
+        }
 
         if ($request->hasFile('hero_image')) {
             $image = $request->file('hero_image');
@@ -23,14 +36,6 @@ class SettingController extends Controller
             $path = $image->storeAs('settings', $imageName, 'public');
             Setting::updateOrCreate(['key' => 'hero_image'], ['value' => 'storage/' . $path]);
             unset($data['hero_image']);
-        }
-
-        if ($request->hasFile('offer_bg')) {
-            $image = $request->file('offer_bg');
-            $imageName = 'offer_bg_' . time() . '.' . $image->getClientOriginalExtension();
-            $path = $image->storeAs('settings', $imageName, 'public');
-            Setting::updateOrCreate(['key' => 'offer_bg'], ['value' => 'storage/' . $path]);
-            unset($data['offer_bg']);
         }
 
         foreach ($data as $key => $value) {

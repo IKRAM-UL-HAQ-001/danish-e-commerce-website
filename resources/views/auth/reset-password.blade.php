@@ -39,7 +39,10 @@
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo">
-                  <img src="{{ asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo">
+                  @php
+                    $siteLogo = \App\Models\Setting::where('key', 'site_logo')->value('value');
+                  @endphp
+                  <img src="{{ $siteLogo ? asset($siteLogo) : asset('frontend-assets/imgs/logo/logo.png') }}" alt="logo">
                 </div>
                 <h4>Reset Password</h4>
                 <h6 class="fw-light mb-4">Please choose a new password.</h6>

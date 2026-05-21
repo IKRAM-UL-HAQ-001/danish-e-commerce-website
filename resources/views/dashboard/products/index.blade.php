@@ -142,7 +142,9 @@
                     </div>
                     <div class="col-12 mb-3">
                         <label for="description">Description</label>
-                        <textarea name="description" class="form-control" rows="2"></textarea>
+                        <textarea name="description" id="description" class="form-control" rows="5">
+                            {{ old('description') }}
+                        </textarea>
                     </div>
                     <div class="col-12 mb-3">
                         <label for="tags">Tags (Comma separated)</label>
@@ -247,6 +249,15 @@
 <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
 <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#description'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
 <script>
     $(document).ready(function() {
         $('#productsTable').DataTable();

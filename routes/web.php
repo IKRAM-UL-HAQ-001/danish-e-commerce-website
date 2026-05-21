@@ -19,21 +19,33 @@ use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\TermController;
+use App\Http\Controllers\Frontend\WishlistController;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\OfferController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/shop', [HomeController::class, 'shop'])->name('public.shop');
+Route::get('/offer', [HomeController::class, 'offer'])->name('public.offer');
+Route::get('/offer/{offer}', [HomeController::class, 'offerDetails'])->name('public.offer.details');
 Route::get('/shop-list', [HomeController::class, 'shopList'])->name('public.shop.list');
 Route::get('/product/{product:slug}', [HomeController::class, 'productDetails'])->name('public.product.details');
 Route::get('/cart', [HomeController::class, 'cart'])->name('public.cart');
 Route::get('/checkout', [HomeController::class, 'checkout'])->name('public.checkout');
 
+// Terms and Conditions (frontend)
+Route::get('/terms', [TermController::class, 'show'])->name('terms');
+
 //stripe
 Route::get('/stripe', [StripeController::class, 'index']);
 Route::post('/stripe/checkout', [StripeController::class, 'checkout'])
     ->name('stripe.checkout');
+
+Route::post('/stripe/webhook', [StripeController::class, 'webhook'])
+    ->name('stripe.webhook');
 
 Route::get('/stripe/success', [StripeController::class, 'success'])
     ->name('stripe.success');
@@ -44,6 +56,15 @@ Route::get('/stripe/cancel', [StripeController::class, 'cancel'])
 Route::post('/cart/add', [\App\Http\Controllers\Frontend\CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update', [\App\Http\Controllers\Frontend\CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove', [\App\Http\Controllers\Frontend\CartController::class, 'remove'])->name('cart.remove');
+
+// Coupon Routes (public — guests + logged-in users)
+Route::post('/coupon/apply', [CouponController::class, 'apply'])->name('coupon.apply');
+Route::post('/coupon/remove', [CouponController::class, 'remove'])->name('coupon.remove');
+
+// Wishlist Routes (session-based — guests + logged-in users)
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+Route::post('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
 // Product Review Route
 Route::post('/product/{product}/review', [\App\Http\Controllers\Frontend\ProductReviewController::class, 'store'])->name('product.review');
@@ -61,6 +82,19 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
 
     // Admin Only Management
     Route::middleware('role:admin')->group(function() {
+        // Testimonials CRUD
+        Route::get('testimonials', [TestimonialController::class, 'index'])->name('dashboard.testimonials.index');
+        Route::get('testimonials/create', [TestimonialController::class, 'create'])->name('dashboard.testimonials.create');
+        Route::post('testimonials', [TestimonialController::class, 'store'])->name('dashboard.testimonials.store');
+        Route::get('testimonials/{testimonial}/edit', [TestimonialController::class, 'edit'])->name('dashboard.testimonials.edit');
+        Route::put('testimonials/{testimonial}', [TestimonialController::class, 'update'])->name('dashboard.testimonials.update');
+        Route::delete('testimonials/{testimonial}', [TestimonialController::class, 'destroy'])->name('dashboard.testimonials.destroy');
+        // Terms and Conditions (admin)
+        Route::get('terms', [TermController::class, 'edit'])->name('dashboard.terms.edit');
+        Route::put('terms', [TermController::class, 'update'])->name('dashboard.terms.update');
+        Route::post('terms/section', [TermController::class, 'storeSection'])->name('dashboard.terms.section.store');
+        Route::post('terms/section/update', [TermController::class, 'updateSection'])->name('dashboard.terms.section.update');
+        Route::post('terms/section/delete', [TermController::class, 'deleteSection'])->name('dashboard.terms.section.delete');
         // Product Routes
         Route::get('products', [ProductController::class, 'index'])->name('products.index');
         Route::post('products', [ProductController::class, 'store'])->name('products.store');
@@ -93,8 +127,15 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
         Route::post('sliders/update', [SliderController::class, 'update'])->name('sliders.update');
         Route::post('sliders/delete', [SliderController::class, 'destroy'])->name('sliders.destroy');
         
+        // Offer Routes
+        Route::get('offers', [OfferController::class, 'index'])->name('offers.index');
+        Route::post('offers', [OfferController::class, 'store'])->name('offers.store');
+        Route::post('offers/update', [OfferController::class, 'update'])->name('offers.update');
+        Route::post('offers/delete', [OfferController::class, 'destroy'])->name('offers.destroy');
+        
         // Order Routes
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('orders/{order_number}', [OrderController::class, 'show'])->name('orders.show');
         Route::post('orders/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
         Route::post('orders/delete', [OrderController::class, 'destroy'])->name('orders.destroy');
 
@@ -119,8 +160,6 @@ Route::prefix('dashboard/')->middleware(['auth', 'verified'])->group(function ()
         Route::post('pages/about', [PageController::class, 'updateAbout'])->name('pages.about.update');
         Route::get('pages/contact', [PageController::class, 'editContact'])->name('pages.contact');
         Route::post('pages/contact', [PageController::class, 'updateContact'])->name('pages.contact.update');
-        Route::get('pages/terms', [PageController::class, 'editTerms'])->name('pages.terms');
-        Route::post('pages/terms', [PageController::class, 'updateTerms'])->name('pages.terms.update');
         // Contact Messages
         Route::get('messages', [ContactMessageController::class, 'index'])->name('messages.index');
         Route::post('messages/show', [ContactMessageController::class, 'show'])->name('messages.show');
@@ -143,6 +182,8 @@ Route::post('/contact/submit', [ContactMessageController::class, 'store'])->name
 
 // Public Terms View
 Route::get('/terms-and-conditions', [HomeController::class, 'terms'])->name('public.terms');
+
+
 
 
 

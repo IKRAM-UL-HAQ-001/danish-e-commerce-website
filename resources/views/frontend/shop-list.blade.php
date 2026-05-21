@@ -112,26 +112,15 @@
                         <div class="shop-sidebar__categories">
                             <ul class="shop-sidebar__categories-list">
                                 @foreach($categories as $category)
-                                <li class="shop-sidebar__categories-item {{ $category->subcategories->isNotEmpty() ? 'has-subcategories' : '' }}">
+                                <li class="shop-sidebar__categories-item">
                                     <a href="{{ route('public.shop.list', ['category' => $category->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $category->slug ? 'active' : '' }} d-flex align-items-center">
                                         @if($category->image)
                                             <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
                                         @else
-                                            <i class="fa-solid fa-chevron-right"></i>
+                                            <i class="fa-solid fa-chevron-right" style="margin-right: 10px;"></i>
                                         @endif
                                         {{ $category->name }}
                                     </a>
-                                    @if($category->subcategories->isNotEmpty())
-                                        <ul class="shop-sidebar__subcategories-list">
-                                            @foreach($category->subcategories as $subcategory)
-                                                <li class="shop-sidebar__subcategories-item">
-                                                    <a href="{{ route('public.shop.list', ['category' => $subcategory->slug]) }}" class="shop-sidebar__categories-link shop-sidebar__categories-link--child {{ request('category') == $subcategory->slug ? 'active' : '' }}">
-                                                        <i class="fa-solid fa-chevron-right"></i>{{ $subcategory->name }}
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
                                 </li>
                                 @endforeach
                             </ul>
@@ -198,7 +187,10 @@
                                     </div>
                                     <div class="shop-list-card__content-social">
                                         <div class="shop-list-card__content-social-link">
-                                            <a href="#" class="wishlist-btn"><span><i class="fa-solid fa-heart"></i></span></a>
+                                            <a href="#" class="wishlist-btn wishlist-toggle-btn"
+                                               data-id="{{ $product->id }}"
+                                               style="{{ collect(session('wishlist', []))->has($product->id) ? 'color:#EE2D7A;' : '' }}">
+                                               <span><i class="fa-solid fa-heart"></i></span></a>
                                             <a href="#" class="add-to-cart" data-id="{{ $product->id }}"><span><i class="fa-solid fa-cart-shopping"></i></span></a>
                                         </div>
                                     </div>
@@ -220,10 +212,28 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const filterToggle = document.getElementById('shop-filter-toggle-list');
-        const shopSidebar = document.getElementById('shop-sidebar-list');
-        // Mobile Sidebar logic can be simplified or used from main.js if included.
-        // For now keeping it simple as it is mainly a presentation update.
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        document.querySelectorAll('.wishlist-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = this.dataset.id;
+                const self = this;
+                fetch('{{ route("wishlist.toggle") }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                    body: JSON.stringify({ product_id: id }),
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        self.style.color = data.added ? '#EE2D7A' : '';
+                        const badge = document.getElementById('wishlist-badge');
+                        if (badge) badge.textContent = data.count;
+                    }
+                });
+            });
+        });
     });
 </script>
 @endpush

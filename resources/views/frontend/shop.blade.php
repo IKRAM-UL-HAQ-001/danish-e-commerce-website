@@ -114,26 +114,15 @@
                         <div class="shop-sidebar__categories">
                             <ul class="shop-sidebar__categories-list">
                                 @foreach($categories as $category)
-                                <li class="shop-sidebar__categories-item {{ $category->subcategories->isNotEmpty() ? 'has-subcategories' : '' }}">
+                                <li class="shop-sidebar__categories-item">
                                     <a href="{{ route('public.shop', ['category' => $category->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $category->slug ? 'active' : '' }} d-flex align-items-center">
                                         @if($category->image)
                                             <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
                                         @else
-                                            <i class="fa-solid fa-chevron-right"></i>
+                                            <i class="fa-solid fa-chevron-right" style="margin-right: 10px;"></i>
                                         @endif
                                         {{ $category->name }}
                                     </a>
-                                    @if($category->subcategories->isNotEmpty())
-                                        <ul class="shop-sidebar__subcategories-list">
-                                            @foreach($category->subcategories as $subcategory)
-                                                <li class="shop-sidebar__subcategories-item">
-                                                    <a href="{{ route('public.shop', ['category' => $subcategory->slug]) }}" class="shop-sidebar__categories-link shop-sidebar__categories-link--child {{ request('category') == $subcategory->slug ? 'active' : '' }}">
-                                                        <i class="fa-solid fa-chevron-right"></i>{{ $subcategory->name }}
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
                                 </li>
                                 @endforeach
                             </ul>

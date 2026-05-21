@@ -17,6 +17,18 @@
                         <input type="text" name="site_name" class="form-control" id="site_name" value="{{ $settings['site_name'] ?? '' }}" placeholder="My Awesome Store">
                     </div>
                     <div class="form-group mb-3">
+                        <label for="site_logo">Site Logo</label>
+                        <input type="file" name="site_logo" class="form-control @error('site_logo') is-invalid @enderror" id="site_logo">
+                        @error('site_logo')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        @if(isset($settings['site_logo']))
+                            <div class="mt-2">
+                                <img src="{{ asset($settings['site_logo']) }}" alt="Site Logo Preview" style="max-height: 80px; border-radius: 8px;">
+                            </div>
+                        @endif
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="site_email">Support Email</label>
                         <input type="email" name="site_email" class="form-control" id="site_email" value="{{ $settings['site_email'] ?? '' }}" placeholder="support@myapp.com">
                     </div>
@@ -56,41 +68,15 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="hero_image">Hero Image (796x750 recommended)</label>
-                        <input type="file" name="hero_image" class="form-control" id="hero_image">
+                        <input type="file" name="hero_image" class="form-control @error('hero_image') is-invalid @enderror" id="hero_image">
+                        @error('hero_image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                         @if(isset($settings['hero_image']))
                             <div class="mt-2">
                                 <img src="{{ asset($settings['hero_image']) }}" alt="Hero Preview" style="max-width: 200px; border-radius: 8px;">
                             </div>
                         @endif
-                    </div>
-
-                    <hr>
-                    <h4 class="card-title mt-4">Offer Banner Configuration</h4>
-                    <p class="card-description">Customize the middle offer banner.</p>
-                    <div class="form-group mb-3">
-                        <label for="offer_subtext">Offer Subtext</label>
-                        <input type="text" name="offer_subtext" class="form-control" id="offer_subtext" value="{{ $settings['offer_subtext'] ?? '' }}">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="offer_title">Offer Title (HTML allowed)</label>
-                        <input type="text" name="offer_title" class="form-control" id="offer_title" value="{{ $settings['offer_title'] ?? '' }}">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="offer_desc">Offer Description</label>
-                        <textarea name="offer_desc" class="form-control" id="offer_desc" rows="3">{{ $settings['offer_desc'] ?? '' }}</textarea>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="offer_bg">Offer Banner Background (1350x300 recommended)</label>
-                        <input type="file" name="offer_bg" class="form-control" id="offer_bg">
-                        @if(isset($settings['offer_bg']))
-                            <div class="mt-2">
-                                <img src="{{ asset($settings['offer_bg']) }}" alt="Offer Preview" style="max-width: 200px; border-radius: 8px;">
-                            </div>
-                        @endif
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="offer_link">Offer Redirect Link</label>
-                        <input type="text" name="offer_link" class="form-control" id="offer_link" value="{{ $settings['offer_link'] ?? '' }}" placeholder="/shop or https://...">
                     </div>
 
                     <div class="form-group mb-3">

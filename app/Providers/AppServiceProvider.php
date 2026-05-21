@@ -20,9 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->composer('frontend.layouts.partials.header', function ($view) {
-            $view->with('headerCategories', \App\Models\Category::with(['subcategories' => function ($query) {
-                $query->where('status', 1)->orderBy('name');
-            }])->whereNull('parent_id')->where('status', 1)->orderBy('name')->get());
+            $view->with('headerCategories', \App\Models\Category::whereNull('parent_id')->where('status', 1)->get());
         });
     }
 }

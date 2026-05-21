@@ -33,7 +33,7 @@
                                         {{ ucfirst($user->role) }}
                                     </span>
                                 </td>
-                                <td>{{ $user->created_at->format('M d, Y') }}</td>
+                                <td>{{ $user->created_at ? $user->created_at->format('M d Y') : '' }}</td>
                                 <td>
                                     <label class="badge {{ $user->status ? 'badge-success' : 'badge-danger' }}">
                                         {{ $user->status ? 'Active' : 'Deactivated' }}

@@ -17,6 +17,15 @@ class OrderController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show($order_number)
+    {
+        $order = Order::with(['user', 'items.product'])->where('order_number', $order_number)->firstOrFail();
+        return view('dashboard.orders.show', compact('order'));
+    }
+
+    /**
      * Update the order status.
      */
     public function updateStatus(Request $request)

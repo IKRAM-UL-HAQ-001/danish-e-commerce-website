@@ -34,16 +34,9 @@ class DashboardController extends Controller
                 ->with('product')
                 ->first();
 
-            // Quick Analysis Chart (Last 7 Days Sales)
-            $chartData = Order::select(
-                DB::raw('DATE(created_at) as date'),
-                DB::raw('SUM(total_price) as total')
-            )
-            ->where('created_at', '>=', Carbon::now()->subDays(7))
-            ->where('status', 'completed')
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
+            // Last 7 calendar days (incl. today): one point per day, 0 if no orders.
+            // Includes pending/processing so Stripe checkouts show before webhook marks completed.
+            $chartData = $this->weeklySalesChartData();
 
             return view('dashboard.dashboard', compact(
                 'totalUsers', 
@@ -69,5 +62,41 @@ class DashboardController extends Controller
     {
         $orders = Order::where('user_id', Auth::id())->latest()->get();
         return view('dashboard.orders.my_orders', compact('orders'));
+    }
+
+    /**
+     * Revenue by day for the last 7 days, always 7 rows (missing days = 0).
+     */
+    private function weeklySalesChartData()
+    {
+        $start = Carbon::now()->subDays(6)->startOfDay();
+        $end = Carbon::now()->endOfDay();
+
+        $rows = Order::query()
+            ->selectRaw('DATE(created_at) as sale_date')
+            ->selectRaw('SUM(total_price) as total')
+            ->whereBetween('created_at', [$start, $end])
+            ->whereNotIn('status', ['cancelled'])
+            ->groupByRaw('DATE(created_at)')
+            ->orderByRaw('DATE(created_at)')
+            ->get();
+
+        $byDay = [];
+        foreach ($rows as $row) {
+            $key = Carbon::parse($row->sale_date)->toDateString();
+            $byDay[$key] = (float) $row->total;
+        }
+
+        $chartData = collect();
+        for ($i = 0; $i < 7; $i++) {
+            $day = $start->copy()->addDays($i);
+            $key = $day->toDateString();
+            $chartData->push((object) [
+                'date' => $day->format('D M j'),
+                'total' => round($byDay[$key] ?? 0, 2),
+            ]);
+        }
+
+        return $chartData;
     }
 }

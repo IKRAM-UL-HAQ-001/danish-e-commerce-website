@@ -28,8 +28,8 @@
                             <tr>
                                 <td>#{{ $order->order_number }}</td>
                                 <td>
-                                    <strong>{{ $order->user->name ?? 'Deleted User' }}</strong><br>
-                                    <small class="text-muted">{{ $order->user->email ?? '' }}</small>
+                                    <strong>{{ $order->customer_name ?? ($order->user->name ?? 'Guest User') }}</strong><br>
+                                    <small class="text-muted">{{ $order->customer_email ?? ($order->user->email ?? 'No email provided') }}</small>
                                 </td>
                                 <td>${{ number_format($order->total_price, 2) }}</td>
                                 <td>{{ $order->created_at->format('M d, Y H:i') }}</td>
@@ -52,6 +52,8 @@
                                             <i class="mdi mdi-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{{ route('orders.show', $order->order_number) }}"><i class="mdi mdi-eye text-primary me-2"></i>View Details</a></li>
+                                            <li><hr class="dropdown-divider"></li>
                                             <li><h6 class="dropdown-header">Update Status</h6></li>
                                             @foreach(['pending', 'processing', 'completed', 'cancelled'] as $status)
                                                 @if($status !== $order->status)

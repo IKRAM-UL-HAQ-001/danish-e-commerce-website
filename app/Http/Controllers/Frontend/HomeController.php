@@ -30,6 +30,7 @@ class HomeController extends Controller
         $all_best_selling = Product::latest()->take(5)->get();
 
         $settings = \DB::table('settings')->pluck('value', 'key');
+        $activeOffer = \App\Models\Offer::where('status', 1)->with('product')->latest()->first();
         
         return view('frontend.index', compact(
             'sliders', 
@@ -37,13 +38,16 @@ class HomeController extends Controller
             'products', 
             'settings', 
             'categories_with_products', 
-            'all_best_selling'
+            'all_best_selling',
+            'activeOffer'
         ));
     }
 
     public function about()
     {
-        return view('frontend.about');
+        $about_content = Setting::where('key', 'about_us_content')->first();
+        $about_image = Setting::where('key', 'about_us_image')->first();
+        return view('frontend.about', compact('about_content', 'about_image'));
     }
 
     public function contact()
@@ -105,12 +109,21 @@ class HomeController extends Controller
         }
 
         $products = $query->paginate(12)->withQueryString();
-        $categories = Category::with(['subcategories' => function ($query) {
-            $query->where('status', 1)->orderBy('name');
-        }])->whereNull('parent_id')->where('status', 1)->orderBy('name')->get();
+        $categories = Category::where('status', 1)->get();
         $brands = Brand::all();
         
         return view('frontend.shop', compact('products', 'categories', 'brands', 'selectedCategory', 'selectedBrand', 'minPriceRange', 'maxPriceRange'));
+    }
+    public function offer(Request $request)
+    {
+        $offers = \App\Models\Offer::where('status', 1)->with('product')->latest()->get();
+        return view('frontend.offer', compact('offers'));
+    }
+
+    public function offerDetails(\App\Models\Offer $offer)
+    {
+        $offer->load('product');
+        return view('frontend.offer-details', compact('offer'));
     }
 
     public function shopList(Request $request)
@@ -147,9 +160,7 @@ class HomeController extends Controller
         }
 
         $products = $query->paginate(10)->withQueryString();
-        $categories = Category::with(['subcategories' => function ($query) {
-            $query->where('status', 1)->orderBy('name');
-        }])->whereNull('parent_id')->where('status', 1)->orderBy('name')->get();
+        $categories = Category::where('status', 1)->get();
         $brands = Brand::all();
         
         return view('frontend.shop-list', compact('products', 'categories', 'brands', 'selectedCategory', 'selectedBrand', 'minPriceRange', 'maxPriceRange'));
