@@ -95,6 +95,16 @@
   .category-slide.active .category1-item{
       height:336px;
   }
+
+  .testimonial1,
+  .testimonial1 a,
+  .testimonial1 h2,
+  .testimonial1 h4,
+  .testimonial1 p,
+  .testimonial1 span,
+  .testimonial1 i{
+      color:#fff !important;
+  }
 </style>
         <!-- Intro1 Section Start -->
         <section class="intro1 rr-ov-hidden">
