@@ -86,7 +86,7 @@
   <script src="{{ asset('frontend-assets/vandor/nice-select/nice-select.js') }}"></script>
   <script src="{{ asset('frontend-assets/vandor/wow/wow.min.js') }}"></script>
 
-  <script src="{{ asset('frontend-assets/vandor/common-js/common.js') }}"></script>
+  <script src="{{ asset('frontend-assets/vandor/common-js/common.js') }}?v={{ filemtime(public_path('frontend-assets/vandor/common-js/common.js')) }}"></script>
   <script src="{{ asset('frontend-assets/js/main.js') }}"></script>
   @stack('scripts')
 </body>

@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/wow/animate.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/vandor/odometer/odometer-theme-default.css') }}">
   <link rel="stylesheet" href="{{ asset('frontend-assets/css/style.css') }}">
-  <link rel="stylesheet" href="{{ asset('frontend-assets/css/mobile-responsive.css') }}">
+  <link rel="stylesheet" href="{{ asset('frontend-assets/css/mobile-responsive.css') }}?v={{ filemtime(public_path('frontend-assets/css/mobile-responsive.css')) }}">
   <style>
     .header__logo img {
       max-height: 85px !important;
@@ -122,7 +122,7 @@
                 <nav class="main-menu">
                   <ul>
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li class="menu-item-has-children">
+                    <li class="menu-item-has-children mobile-category-menu">
                       <a href="javascript:void(0)">Categories</a>
                       <ul class="dp-menu">
                         @foreach($headerCategories as $category)

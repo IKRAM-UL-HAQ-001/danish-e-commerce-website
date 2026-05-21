@@ -190,52 +190,66 @@
   }
 
   /* Style the > icon for categories */
-  .mobile-menu .meanmenu-reveal {
+  .mobile-menu.mean-container .mean-nav ul li a.mean-expand {
     color: #0c0c0c !important;
     font-weight: 700;
-    font-size: 16px;
-    width: auto !important;
-    height: auto !important;
-    padding: 0 8px !important;
+    font-size: 18px !important;
+    width: 42px !important;
+    height: 42px !important;
+    padding: 0 !important;
+    line-height: 42px !important;
     text-align: center;
     cursor: pointer;
     transition: color 0.3s ease;
     background: none !important;
     border: none !important;
+    right: 0;
+    top: 3px;
   }
 
-  .mobile-menu .meanmenu-reveal:hover {
+  .mobile-menu.mean-container .mean-nav ul li a.mean-expand:hover,
+  .mobile-menu.mean-container .mean-nav ul li a.mean-expand.mobile-category-open {
     color: #EE2D7A !important;
+    background: rgba(238, 45, 122, 0.08) !important;
   }
 
   /* Hide default meanmenu reveal styles */
-  .mobile-menu .meanmenu-reveal::before,
-  .mobile-menu .meanmenu-reveal::after {
+  .mobile-menu.mean-container .mean-nav ul li a.mean-expand::before,
+  .mobile-menu.mean-container .mean-nav ul li a.mean-expand::after {
     display: none !important;
   }
 
+  .mobile-menu.mean-container .mean-nav ul li.mobile-category-hidden {
+    display: none !important;
+  }
+
+  .mobile-menu.mean-container .mean-nav ul li.mobile-category-focused > a:not(.mean-expand) {
+    color: #EE2D7A !important;
+    font-weight: 700;
+  }
+
   /* Smooth subcategory display */
-  .mobile-menu > ul > li > ul {
+  .mobile-menu.mean-container .mean-nav > ul > li > ul {
     display: none;
     transition: display 0.3s ease;
   }
 
-  .mobile-menu > ul > li > ul[style*="display: block"] {
+  .mobile-menu.mean-container .mean-nav > ul > li > ul[style*="display: block"] {
     display: block !important;
   }
 
   /* Smooth category item display */
-  .mobile-menu > ul > li {
+  .mobile-menu.mean-container .mean-nav > ul > li {
     transition: display 0.3s ease;
   }
 
   /* Styling for subcategory items */
-  .mobile-menu > ul > li > ul > li > a {
+  .mobile-menu.mean-container .mean-nav > ul > li > ul > li > a {
     padding-left: 30px !important;
     font-size: 13px;
   }
 
-  .mobile-menu > ul > li > ul > li > a img {
+  .mobile-menu.mean-container .mean-nav > ul > li > ul > li > a img {
     margin-right: 8px;
   }
 }

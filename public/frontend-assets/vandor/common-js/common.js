@@ -213,106 +213,89 @@
         meanScreenWidth: "1199",
         meanMenuContainer: '.mobile-menu',
         meanMenuCloseSize: '28px',
+        meanExpand: '>',
+        meanContract: '>',
     });
     $('.main-menu-all').meanmenu({
         meanScreenWidth: "5000",
         meanMenuContainer: '.mobile-menu',
         meanMenuCloseSize: '28px',
+        meanExpand: '>',
+        meanContract: '>',
     });
 
     /* === Mobile Category Drill-Down Navigation === */
     $(document).ready(function() {
-        // Replace + icons with > icons for category items and set up drill-down behavior
-        setTimeout(function() {
+        function setupMobileCategoryDrilldown() {
             var $mobileMenu = $('.mobile-menu');
-            
-            // Find the Categories menu item
-            var $categoriesMenuItem = null;
-            var $categoryItems = null;
-            
-            $mobileMenu.find('> ul > li').each(function() {
-                var $li = $(this);
-                if ($li.find('> a').text().trim() === 'Categories' || $li.find('> a').text().trim().toLowerCase().includes('categor')) {
-                    $categoriesMenuItem = $li;
-                    $categoryItems = $li.find('> ul > li'); // Get direct category children
-                    return false;
-                }
-            });
-            
-            if ($categoryItems && $categoryItems.length > 0) {
-                // Set up drill-down for each category item
-                $categoryItems.each(function() {
-                    var $categoryLi = $(this);
-                    var $categorySubmenu = $categoryLi.find('> ul');
-                    var $trigger = $categoryLi.find('> .meanmenu-reveal');
-                    
-                    if ($categorySubmenu.length > 0 && $trigger.length > 0) {
-                        // Replace the icon with >
-                        $trigger.html('&rsaquo;').css({
-                            'font-size': '20px',
-                            'line-height': '1',
-                            'cursor': 'pointer'
-                        });
-                        
-                        // Prevent default expand behavior
-                        $trigger.off('click').on('click', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            
-                            // Hide all items in the categories menu except this one
-                            $categoryItems.css('display', 'none');
-                            
-                            // Show this category
-                            $categoryLi.css('display', 'block');
-                            
-                            // Show its submenu
-                            $categorySubmenu.css('display', 'block');
-                            
-                            // Hide the trigger/icon
-                            $trigger.css('display', 'none');
-                            
-                            // Add a back button if it doesn't exist
-                            if ($mobileMenu.find('.mobile-menu-back').length === 0) {
-                                var $backBtn = $('<li class="mobile-menu-back"><a href="#"><span>&larr;</span> Back</a></li>');
-                                
-                                $backBtn.find('a').css({
-                                    'display': 'flex',
-                                    'align-items': 'center',
-                                    'font-weight': '600',
-                                    'color': '#0c0c0c',
-                                    'padding': '10px 0',
-                                    'text-decoration': 'none'
-                                });
-                                
-                                $backBtn.find('span').css({
-                                    'margin-right': '10px',
-                                    'font-size': '18px'
-                                });
-                                
-                                $backBtn.on('click', function(e) {
-                                    e.preventDefault();
-                                    
-                                    // Reset: show all categories again
-                                    $categoryItems.css('display', 'list-item');
-                                    
-                                    // Hide all submenus
-                                    $categoryItems.find('> ul').css('display', 'none');
-                                    
-                                    // Show all triggers/icons again
-                                    $categoryItems.find('> .meanmenu-reveal').css('display', 'block');
-                                    
-                                    // Remove the back button
-                                    $backBtn.remove();
-                                });
-                                
-                                // Insert back button at the top of the mobile menu
-                                $mobileMenu.find('> ul').prepend($backBtn);
-                            }
-                        });
+            var $categoriesMenuItem = $();
+
+            $categoriesMenuItem = $mobileMenu.find('.mean-nav > ul > li.mobile-category-menu').first();
+
+            if (!$categoriesMenuItem.length) {
+                $mobileMenu.find('.mean-nav > ul > li').each(function() {
+                    var $li = $(this);
+                    var linkText = $li.find('> a').first().text().trim().toLowerCase();
+
+                    if (linkText === 'categories' || linkText.indexOf('categor') !== -1) {
+                        $categoriesMenuItem = $li;
+                        return false;
                     }
                 });
             }
-        }, 100); // Small delay to ensure meanmenu has rendered
+
+            if (!$categoriesMenuItem.length) {
+                return;
+            }
+
+            var $drawerItems = $mobileMenu.find('.mean-nav > ul > li');
+            var $categoryItems = $categoriesMenuItem.find('> ul > li');
+
+            $categoryItems.find('> .mean-expand').html('&gt;');
+
+            $categoryItems.each(function() {
+                var $categoryLi = $(this);
+                var $categorySubmenu = $categoryLi.find('> ul').first();
+                var $trigger = $categoryLi.find('> .mean-expand').first();
+
+                if (!$categorySubmenu.length || !$trigger.length) {
+                    return;
+                }
+
+                $trigger
+                    .html('&gt;')
+                    .attr('aria-label', 'Toggle ' + $categoryLi.find('> a').first().text().trim())
+                    .off('click')
+                    .on('click.mobileCategoryDrilldown', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+
+                        if ($categoryLi.hasClass('mobile-category-focused')) {
+                            $categoryLi.removeClass('mobile-category-focused');
+                            $drawerItems.removeClass('mobile-category-hidden').show();
+                            $categoryItems.removeClass('mobile-category-hidden mobile-category-focused').show();
+                            $categoryItems.find('> ul').slideUp(250);
+                            $categoryItems.find('> .mean-expand').removeClass('mean-clicked mobile-category-open').html('&gt;');
+                            return;
+                        }
+
+                        $drawerItems.not($categoriesMenuItem).addClass('mobile-category-hidden').hide();
+                        $categoriesMenuItem.removeClass('mobile-category-hidden').show();
+                        $categoryItems.not($categoryLi).addClass('mobile-category-hidden').hide();
+                        $categoryLi.addClass('mobile-category-focused').removeClass('mobile-category-hidden').show();
+                        $categoryItems.not($categoryLi).find('> ul').hide();
+                        $categoryItems.not($categoryLi).find('> .mean-expand').removeClass('mean-clicked mobile-category-open').html('&gt;');
+                        $trigger.addClass('mean-clicked mobile-category-open').html('&gt;');
+                        $categorySubmenu.slideDown(250);
+                    });
+            });
+        }
+
+        setTimeout(setupMobileCategoryDrilldown, 100);
+        $(window).on('resize', function() {
+            setTimeout(setupMobileCategoryDrilldown, 100);
+        });
     });
 
     /* === Magnific Video popup Js (index 08) === */
