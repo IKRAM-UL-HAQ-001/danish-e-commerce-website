@@ -186,7 +186,7 @@
   .hero-banner-slider .swiper-slide img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
   }
 
@@ -246,13 +246,16 @@
 
   @media (max-width: 575px) {
       .hero-banner-slider {
-          max-height: 280px;
+        max-height: 320px;
           margin-bottom: 20px;
           border-radius: 8px;
       }
 
       .hero-banner-slider .swiper-slide {
-          height: 280px;
+        height: 320px;
+        background-color: #f5f5f5;
+        background-position: center;
+        background-repeat: no-repeat;
       }
 
       .hero-banner-slider .swiper-button-next,
