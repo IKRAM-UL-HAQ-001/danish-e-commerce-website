@@ -10,7 +10,7 @@ use App\Models\Brand;
 use App\Models\ContactMessage;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     public function index()
@@ -29,7 +29,7 @@ class HomeController extends Controller
             
         $all_best_selling = Product::latest()->take(5)->get();
 
-        $settings = \DB::table('settings')->pluck('value', 'key');
+        $settings = DB::table('settings')->pluck('value', 'key');
         $activeOffer = \App\Models\Offer::where('status', 1)->with('product')->latest()->first();
         
         return view('frontend.index', compact(

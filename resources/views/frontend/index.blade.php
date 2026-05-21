@@ -264,8 +264,15 @@
         @if($activeOffer)
         <section class="offer1 section-spacing-120 rr-ov-hidden">
           <div class="container rr-container-1350">
+            @php
+                $offerImage = $activeOffer->image
+                    ? asset('storage/' . $activeOffer->image)
+                    : asset('frontend-assets/imgs/offer/offer-banner.jpg');
+            @endphp
+
             <div class="offer1-wrapper background-image wow fadeInUp"
-              style="background-image: url({{ $activeOffer->image ? asset('storage/' . $activeOffer->image) : asset('frontend-assets/imgs/offer/offer-banner.jpg') }});" data-wow-delay=".3s">
+                style="background-image: url('{{ $offerImage }}');"
+                data-wow-delay=".3s">
               <div class="row">
                 <div class="col-xl-12 d-flex justify-content-end">
                   <div class="offer1__content">

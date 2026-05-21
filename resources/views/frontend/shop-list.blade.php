@@ -187,9 +187,8 @@
                                     </div>
                                     <div class="shop-list-card__content-social">
                                         <div class="shop-list-card__content-social-link">
-                                            <a href="#" class="wishlist-btn wishlist-toggle-btn"
-                                               data-id="{{ $product->id }}"
-                                               style="{{ collect(session('wishlist', []))->has($product->id) ? 'color:#EE2D7A;' : '' }}">
+                                            <a href="#" class="wishlist-btn wishlist-toggle-btn {{ collect(session('wishlist', []))->has($product->id) ? 'wishlist-active' : '' }}"
+                                               data-id="{{ $product->id }}">
                                                <span><i class="fa-solid fa-heart"></i></span></a>
                                             <a href="#" class="add-to-cart" data-id="{{ $product->id }}"><span><i class="fa-solid fa-cart-shopping"></i></span></a>
                                         </div>

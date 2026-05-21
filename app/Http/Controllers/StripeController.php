@@ -101,6 +101,7 @@ class StripeController extends Controller
                 // Increment coupon usage count
                 if ($couponCode) {
                     Coupon::where('code', $couponCode)->increment('used_count');
+
                     session()->forget('applied_coupon');
                 }
 

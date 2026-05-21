@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->composer('frontend.layouts.partials.header', function ($view) {
+        View::composer('frontend.layouts.partials.header', function ($view) {
             $view->with('headerCategories', \App\Models\Category::whereNull('parent_id')->where('status', 1)->get());
         });
     }
