@@ -874,7 +874,7 @@ h6 {
   list-style-type: none;
   display: block !important;
 }
-.mobile-menu.mean-container .mean-nav > ul > li {
+.mobile-menu.mean-container .mean-nav ul li {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -887,19 +887,20 @@ h6 {
 .mobile-menu.mean-container .mean-nav > ul > li:last-child > a:not(.mean-expand) {
   border-bottom: none;
 }
-.mobile-menu.mean-container .mean-nav > ul > li > a:not(.mean-expand) {
+.mobile-menu.mean-container .mean-nav ul li > a:not(.mean-expand) {
   flex: 1 1 auto;
   min-width: 0;
   width: auto;
   margin-bottom: 0;
-  order: 1;
-}
-.mobile-menu.mean-container .mean-nav > ul > li > a.mean-expand {
-  flex-shrink: 0;
-  margin-left: 8px;
   order: 2;
 }
-.mobile-menu.mean-container .mean-nav > ul > li > ul {
+.mobile-menu.mean-container .mean-nav ul li > a.mean-expand {
+  flex-shrink: 0;
+  margin-left: 0;
+  margin-right: 8px;
+  order: 1;
+}
+.mobile-menu.mean-container .mean-nav ul li > ul {
   flex-basis: 100%;
   width: 100%;
   margin-top: 0;
@@ -993,6 +994,9 @@ h6 {
   height: 44px;
   min-width: 44px;
   justify-content: center;
+  position: static;
+  right: auto;
+  top: auto;
   font-weight: 600;
   border: none !important;
   background: #EE2D7A;
@@ -2949,7 +2953,7 @@ input.main-search-input::placeholder {
   column-gap: 0;
 }
 .main-menu ul.dp-menu ul {
-  background: var(--black);
+  background: #FFFFFF;
   padding: 18px 0px;
   width: 300px;
   position: absolute;
@@ -18264,4 +18268,46 @@ iframe {
 .testimonial1-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-}/*# sourceMappingURL=style.css.map */
+}
+
+.shop-sidebar__subcategories-list {
+  list-style: none;
+  margin: 6px 0 0 22px;
+  padding: 0;
+}
+
+.shop-sidebar__categories-link--child {
+  font-size: 14px;
+  padding-left: 12px;
+}
+
+.shop-sidebar__categories-link--child i {
+  margin-right: 8px;
+}
+
+.mobile-menu.mean-container .mean-nav ul li a.mean-expand {
+  font-size: 16px !important;
+}
+
+.mobile-menu.mean-container .mean-nav ul li a.mean-expand::after {
+  content: none;
+  display: none;
+}
+
+.mobile-menu.mean-container .mean-nav ul li a.mean-expand.mean-clicked {
+  transform: none;
+}
+
+.mobile-menu.mean-container .mean-nav ul li ul {
+  overflow: hidden;
+}
+
+.mobile-menu.mean-container .mean-nav ul li li a:not(.mean-expand) {
+  padding-left: 30px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.mobile-menu.mean-container .mean-nav ul li li li a:not(.mean-expand) {
+  padding-left: 46px;
+}
+/*# sourceMappingURL=style.css.map */

@@ -11,7 +11,7 @@
         @csrf
 
         <button type="submit">
-            Pay $10
+            Pay £10
         </button>
     </form>
 

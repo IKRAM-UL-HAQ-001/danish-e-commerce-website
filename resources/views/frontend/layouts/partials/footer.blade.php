@@ -7,7 +7,6 @@
                   <div class="footer1-widget__title">Customer Support</div>
                   <div class="footer1-widget__nav">
                     <a class="footer1-widget__nav-link" href="#">Store List</a>
-                    <a class="footer1-widget__nav-link" href="#">Opening Hours</a>
                     <a class="footer1-widget__nav-link" href="{{ route('contact') }}">Contact Us</a>
                     <a class="footer1-widget__nav-link" href="#">Return Policy</a>
                   </div>
@@ -18,7 +17,6 @@
                   <div class="footer1-widget__title">Custom Care</div>
                   <div class="footer1-widget__nav">
                     <a class="footer1-widget__nav-link" href="#">Search</a>
-                    <a class="footer1-widget__nav-link" href="#">Site Map</a>
                     <a class="footer1-widget__nav-link" href="#">Order History</a>
                     <a class="footer1-widget__nav-link" href="#">Gift Vouchers</a>
                   </div>

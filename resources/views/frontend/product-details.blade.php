@@ -93,11 +93,11 @@
                     <h1 class="product-details-content__title mb-2"> {{ $product->name }}</h1>
                     <div class="product-details-content-items d-flex flex-wrap align-items-center gap-3">
                       <div class="product-details-content__price d-flex align-items-baseline gap-2">
-                        <span class="price-now">${{ number_format($product->price, 2) }}</span>
+                        <span class="price-now">£{{ number_format($product->price, 2) }}</span>
                         @if($product->old_price)
-                        <span class="price-was">${{ number_format($product->old_price, 2) }}</span>
+                        <span class="price-was">£{{ number_format($product->old_price, 2) }}</span>
                         @endif
-                        <span class="price-currency">USD</span>
+                        <span class="price-currency">GBP</span>
                       </div>
                       @if($product->discount)
                       <span class="product-details-content__badge-pill">{{ $product->discount }}% OFF</span>

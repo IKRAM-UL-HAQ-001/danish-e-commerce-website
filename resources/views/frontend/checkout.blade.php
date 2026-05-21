@@ -179,7 +179,7 @@
                                             <div class="checkout-page__order-summary-item-title">{{ $details['name'] }}</div>
                                             <p class="checkout-page__order-summary-item-quantity">QTY: {{ $details['quantity'] }}</p>
                                         </div>
-                                        <div class="checkout-page__order-summary-item-price">${{ number_format($details['price'] * $details['quantity'], 2) }}</div>
+                                        <div class="checkout-page__order-summary-item-price">£{{ number_format($details['price'] * $details['quantity'], 2) }}</div>
                                     </div>
                                 @endforeach
                             @endif
@@ -187,16 +187,16 @@
                             <div class="checkout-page__order-summary-totals">
                                 <div class="checkout-page__order-summary-totals-row">
                                     <span class="checkout-page__order-summary-totals-label">Subtotal</span>
-                                    <span class="checkout-page__order-summary-totals-value">${{ number_format($subtotal, 2) }}</span>
+                                    <span class="checkout-page__order-summary-totals-value">£{{ number_format($subtotal, 2) }}</span>
                                 </div>
                                 <div class="checkout-page__order-summary-totals-row">
                                     <span class="checkout-page__order-summary-totals-label">Shipping</span>
                                     @php $shipping = floatval($settings['shipping_cost'] ?? 8.00); @endphp
-                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--muted">Flat rate: ${{ number_format($shipping, 2) }} ({{ $settings['shipping_location'] ?? 'N/A' }})</span>
+                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--muted">Flat rate: £{{ number_format($shipping, 2) }} ({{ $settings['shipping_location'] ?? 'N/A' }})</span>
                                 </div>
                                 <div class="checkout-page__order-summary-totals-row checkout-page__order-summary-totals-row--total">
                                     <span class="checkout-page__order-summary-totals-label">Total</span>
-                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--highlight">${{ number_format($subtotal + $shipping, 2) }}</span>
+                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--highlight">£{{ number_format($subtotal + $shipping, 2) }}</span>
                                 </div>
                             </div>
                         </div>

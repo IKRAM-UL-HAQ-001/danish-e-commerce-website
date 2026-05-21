@@ -81,13 +81,24 @@
                       <a href="javascript:void(0)">Categories</a>
                       <ul class="dp-menu">
                         @foreach($headerCategories as $category)
-                          <li>
+                          <li class="{{ $category->subcategories->isNotEmpty() ? 'menu-item-has-children' : '' }}">
                             <a href="{{ route('public.shop', ['category' => $category->slug]) }}" class="d-flex align-items-center">
                               @if($category->image)
                                 <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 25px; height: 25px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
                               @endif
                               {{ $category->name }}
                             </a>
+                            @if($category->subcategories->isNotEmpty())
+                              <ul>
+                                @foreach($category->subcategories as $subcategory)
+                                  <li>
+                                    <a href="{{ route('public.shop', ['category' => $subcategory->slug]) }}">
+                                      {{ $subcategory->name }}
+                                    </a>
+                                  </li>
+                                @endforeach
+                              </ul>
+                            @endif
                           </li>
                         @endforeach
                       </ul>

@@ -28,7 +28,7 @@ class StripeController extends Controller
         foreach ($cart as $id => $details) {
             $lineItems[] = [
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => 'gbp',
                     'product_data' => [
                         'name' => $details['name'],
                     ],
@@ -46,7 +46,7 @@ class StripeController extends Controller
         if ($shipping > 0) {
             $lineItems[] = [
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => 'gbp',
                     'product_data' => [
                         'name' => 'Flat Rate Shipping (' . ($settings['shipping_location'] ?? 'Standard') . ')',
                     ],

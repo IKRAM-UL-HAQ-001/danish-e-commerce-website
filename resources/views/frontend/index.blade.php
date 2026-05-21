@@ -95,6 +95,19 @@
   .category-slide.active .category1-item{
       height:336px;
   }
+
+  @media (max-width: 768px) {
+      .slider-btns .btn {
+          padding: 4px 10px !important;
+          font-size: 12px !important;
+          min-width: 60px;
+      }
+      .slider-btns {
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+      }
+  }
 </style>
         <!-- Intro1 Section Start -->
         <section class="intro1 rr-ov-hidden">
@@ -241,9 +254,9 @@
                         <li class="trending-product-card__content-list-text">(0 Reviews)</li>
                       </ul>
                       <h4 class="trending-product-card__content-dollar">
-                        ${{ number_format($product->price, 2) }}
+                        £{{ number_format($product->price, 2) }}
                         @if($product->old_price)
-                        <span style="text-decoration: line-through; color: #888; font-size: 0.8em; margin-left: 5px;">${{ number_format($product->old_price, 2) }}</span>
+                        <span style="text-decoration: line-through; color: #888; font-size: 0.8em; margin-left: 5px;">£{{ number_format($product->old_price, 2) }}</span>
                         @endif
                       </h4>
                     </div>
@@ -353,7 +366,7 @@
                               <li class="best-selling-product-card__content1-list-point">5.0</li>
                               <li class="best-selling-product-card__content1-list-text">(0 Reviews)</li>
                             </ul>
-                            <h4 class="best-selling-product-card__content1-dollar">${{ number_format($largeProduct->price, 2) }}</h4>
+                            <h4 class="best-selling-product-card__content1-dollar">£{{ number_format($largeProduct->price, 2) }}</h4>
                           </div>
                         </div>
                       </div>
@@ -375,7 +388,7 @@
                                   <li class="best-selling-product-card__content2-list-point">5.0</li>
                                   <li class="best-selling-product-card__content2-list-text">(0 Reviews)</li>
                                 </ul>
-                                <h4 class="best-selling-product-card__content2-dollar">${{ number_format($smallProduct->price, 2) }}</h4>
+                                <h4 class="best-selling-product-card__content2-dollar">£{{ number_format($smallProduct->price, 2) }}</h4>
                               </div>
                             </div>
                           </div>
@@ -409,7 +422,7 @@
                             <li class="best-selling-product-card__content1-list-point">5.0</li>
                             <li class="best-selling-product-card__content1-list-text">(0 Reviews)</li>
                           </ul>
-                          <h4 class="best-selling-product-card__content1-dollar">${{ number_format($largeProduct->price, 2) }}</h4>
+                          <h4 class="best-selling-product-card__content1-dollar">£{{ number_format($largeProduct->price, 2) }}</h4>
                         </div>
                       </div>
                     </div>
@@ -431,7 +444,7 @@
                                 <li class="best-selling-product-card__content2-list-point">5.0</li>
                                 <li class="best-selling-product-card__content2-list-text">(0 Reviews)</li>
                               </ul>
-                              <h4 class="best-selling-product-card__content2-dollar">${{ number_format($smallProduct->price, 2) }}</h4>
+                              <h4 class="best-selling-product-card__content2-dollar">£{{ number_format($smallProduct->price, 2) }}</h4>
                             </div>
                           </div>
                         </div>

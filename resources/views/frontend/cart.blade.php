@@ -77,7 +77,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2 text-center">
-                                                    <div class="cart-page__item-price">${{ number_format($details['price'], 2) }}</div>
+                                                    <div class="cart-page__item-price">£{{ number_format($details['price'], 2) }}</div>
                                                 </div>
                                                 <div class="col-md-2 text-center">
                                                     <div class="cart-page__item-qty">
@@ -87,7 +87,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2 text-center">
-                                                    <div class="cart-page__item-subtotal">${{ number_format($details['price'] * $details['quantity'], 2) }}</div>
+                                                    <div class="cart-page__item-subtotal">£{{ number_format($details['price'] * $details['quantity'], 2) }}</div>
                                                 </div>
                                                 <div class="col-md-1 text-center">
                                                     <button type="button" class="cart-page__remove remove-from-cart" aria-label="Remove item">
@@ -163,13 +163,13 @@
                                         @php $subtotal += $details['price'] * $details['quantity']; @endphp
                                     @endforeach
                                 @endif
-                                <span class="cart-page__totals-value" id="cart-subtotal">${{ number_format($subtotal, 2) }}</span>
+                                <span class="cart-page__totals-value" id="cart-subtotal">£{{ number_format($subtotal, 2) }}</span>
                             </div>
                              <div class="cart-page__totals-row">
                                 <span class="cart-page__totals-label">Shipping</span>
                                 @php $shipping = floatval($settings['shipping_cost'] ?? 8.00); @endphp
                                 <span class="cart-page__totals-value cart-page__totals-value--muted text-end">
-                                    Flat rate: ${{ number_format($shipping, 2) }}
+                                    Flat rate: £{{ number_format($shipping, 2) }}
                                 </span>
                             </div>
                             <div class="cart-page__totals-row" id="coupon-discount-row" style="display:none;">
@@ -178,7 +178,7 @@
                             </div>
                             <div class="cart-page__totals-row cart-page__totals-row--total">
                                 <span class="cart-page__totals-label">Total</span>
-                                <span class="cart-page__totals-value cart-page__totals-value--highlight" id="cart-total">${{ number_format($subtotal + $shipping, 2) }}</span>
+                                <span class="cart-page__totals-value cart-page__totals-value--highlight" id="cart-total">£{{ number_format($subtotal + $shipping, 2) }}</span>
                             </div>
                         </div>
                         <a href="{{ route('public.checkout') }}" class="cart-page__checkout-btn">
@@ -207,12 +207,12 @@
 
         items.forEach(item => {
           const priceText = item.querySelector('.cart-page__item-price').textContent;
-          const price = parseFloat(priceText.replace('$', '').replace(',', ''));
+          const price = parseFloat(priceText.replace('£', '').replace(',', ''));
           const quantity = parseInt(item.querySelector('.cart-page__qty-input').value) || 1;
           const itemSubtotal = price * quantity;
 
           // Update item subtotal
-          item.querySelector('.cart-page__item-subtotal').textContent = '$' + itemSubtotal.toFixed(2);
+          item.querySelector('.cart-page__item-subtotal').textContent = '£' + itemSubtotal.toFixed(2);
 
           subtotal += itemSubtotal;
         });
@@ -223,11 +223,11 @@
         const shipping = parseFloat("{{ $settings['shipping_cost'] ?? 8.00 }}");
 
         if (subtotalEl) {
-          subtotalEl.textContent = '$' + subtotal.toFixed(2);
+          subtotalEl.textContent = '£' + subtotal.toFixed(2);
         }
         if (totalEl) {
           const discount = parseFloat(document.getElementById('coupon-discount-value')?.dataset.value || '0');
-          totalEl.textContent = '$' + (subtotal + shipping - discount).toFixed(2);
+          totalEl.textContent = '£' + (subtotal + shipping - discount).toFixed(2);
         }
       }
 
@@ -339,7 +339,7 @@
 
           if (code) {
             let discount = 0;
-            const subtotalText = document.getElementById('cart-subtotal').textContent.replace('$', '');
+            const subtotalText = document.getElementById('cart-subtotal').textContent.replace('£', '');
             const subtotalVal = parseFloat(subtotalText);
             if (code === 'DISCOUNT10') {
               discount = subtotalVal * 0.10;
@@ -351,7 +351,7 @@
               const discountValEl = document.getElementById('coupon-discount-value');
               discountRow.style.display = 'flex';
               discountValEl.dataset.value = discount.toFixed(2);
-              discountValEl.textContent = '-$' + discount.toFixed(2);
+              discountValEl.textContent = '-£' + discount.toFixed(2);
               calculateCartTotals();
               alert('Coupon applied: ' + code);
             } else {

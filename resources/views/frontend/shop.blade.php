@@ -79,7 +79,7 @@
                                     <input type="hidden" name="brand" value="{{ request('brand') }}">
                                 @endif
                                 <div class="shop-sidebar__price-info">
-                                    <p class="shop-sidebar__price-info-text">Range: <span>${{ $minPriceRange }} - ${{ $maxPriceRange }}</span></p>
+                                    <p class="shop-sidebar__price-info-text">Range: <span>£{{ $minPriceRange }} - £{{ $maxPriceRange }}</span></p>
                                     <a href="{{ route('public.shop', request()->only(['category', 'brand'])) }}" class="shop-sidebar__price-reset">Reset</a>
                                 </div>
                                 <div class="shop-sidebar__price-slider">
@@ -114,7 +114,7 @@
                         <div class="shop-sidebar__categories">
                             <ul class="shop-sidebar__categories-list">
                                 @foreach($categories as $category)
-                                <li class="shop-sidebar__categories-item">
+                                <li class="shop-sidebar__categories-item {{ $category->subcategories->isNotEmpty() ? 'has-subcategories' : '' }}">
                                     <a href="{{ route('public.shop', ['category' => $category->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $category->slug ? 'active' : '' }} d-flex align-items-center">
                                         @if($category->image)
                                             <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
@@ -123,6 +123,17 @@
                                         @endif
                                         {{ $category->name }}
                                     </a>
+                                    @if($category->subcategories->isNotEmpty())
+                                        <ul class="shop-sidebar__subcategories-list">
+                                            @foreach($category->subcategories as $subcategory)
+                                                <li class="shop-sidebar__subcategories-item">
+                                                    <a href="{{ route('public.shop', ['category' => $subcategory->slug]) }}" class="shop-sidebar__categories-link shop-sidebar__categories-link--child {{ request('category') == $subcategory->slug ? 'active' : '' }}">
+                                                        <i class="fa-solid fa-chevron-right"></i>{{ $subcategory->name }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </li>
                                 @endforeach
                             </ul>
@@ -198,9 +209,9 @@
                                         <li class="shop-card__content-list-text">(135 Reviews)</li>
                                     </ul>
                                     <h4 class="shop-card__content-dollar">
-                                        ${{ number_format($product->price, 2) }}
+                                        £{{ number_format($product->price, 2) }}
                                         @if($product->old_price)
-                                        <span style="text-decoration: line-through; color: #888; font-size: 0.8em; margin-left: 5px;">${{ number_format($product->old_price, 2) }}</span>
+                                        <span style="text-decoration: line-through; color: #888; font-size: 0.8em; margin-left: 5px;">£{{ number_format($product->old_price, 2) }}</span>
                                         @endif
                                     </h4>
                                 </div>
