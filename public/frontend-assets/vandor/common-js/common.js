@@ -213,89 +213,11 @@
         meanScreenWidth: "1199",
         meanMenuContainer: '.mobile-menu',
         meanMenuCloseSize: '28px',
-        meanExpand: '>',
-        meanContract: '>',
     });
     $('.main-menu-all').meanmenu({
         meanScreenWidth: "5000",
         meanMenuContainer: '.mobile-menu',
         meanMenuCloseSize: '28px',
-        meanExpand: '>',
-        meanContract: '>',
-    });
-
-    /* === Mobile Category Drill-Down Navigation === */
-    $(document).ready(function() {
-        function setupMobileCategoryDrilldown() {
-            var $mobileMenu = $('.mobile-menu');
-            var $categoriesMenuItem = $();
-
-            $categoriesMenuItem = $mobileMenu.find('.mean-nav > ul > li.mobile-category-menu').first();
-
-            if (!$categoriesMenuItem.length) {
-                $mobileMenu.find('.mean-nav > ul > li').each(function() {
-                    var $li = $(this);
-                    var linkText = $li.find('> a').first().text().trim().toLowerCase();
-
-                    if (linkText === 'categories' || linkText.indexOf('categor') !== -1) {
-                        $categoriesMenuItem = $li;
-                        return false;
-                    }
-                });
-            }
-
-            if (!$categoriesMenuItem.length) {
-                return;
-            }
-
-            var $drawerItems = $mobileMenu.find('.mean-nav > ul > li');
-            var $categoryItems = $categoriesMenuItem.find('> ul > li');
-
-            $categoryItems.find('> .mean-expand').html('&gt;');
-
-            $categoryItems.each(function() {
-                var $categoryLi = $(this);
-                var $categorySubmenu = $categoryLi.find('> ul').first();
-                var $trigger = $categoryLi.find('> .mean-expand').first();
-
-                if (!$categorySubmenu.length || !$trigger.length) {
-                    return;
-                }
-
-                $trigger
-                    .html('&gt;')
-                    .attr('aria-label', 'Toggle ' + $categoryLi.find('> a').first().text().trim())
-                    .off('click')
-                    .on('click.mobileCategoryDrilldown', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        e.stopImmediatePropagation();
-
-                        if ($categoryLi.hasClass('mobile-category-focused')) {
-                            $categoryLi.removeClass('mobile-category-focused');
-                            $drawerItems.removeClass('mobile-category-hidden').show();
-                            $categoryItems.removeClass('mobile-category-hidden mobile-category-focused').show();
-                            $categoryItems.find('> ul').slideUp(250);
-                            $categoryItems.find('> .mean-expand').removeClass('mean-clicked mobile-category-open').html('&gt;');
-                            return;
-                        }
-
-                        $drawerItems.not($categoriesMenuItem).addClass('mobile-category-hidden').hide();
-                        $categoriesMenuItem.removeClass('mobile-category-hidden').show();
-                        $categoryItems.not($categoryLi).addClass('mobile-category-hidden').hide();
-                        $categoryLi.addClass('mobile-category-focused').removeClass('mobile-category-hidden').show();
-                        $categoryItems.not($categoryLi).find('> ul').hide();
-                        $categoryItems.not($categoryLi).find('> .mean-expand').removeClass('mean-clicked mobile-category-open').html('&gt;');
-                        $trigger.addClass('mean-clicked mobile-category-open').html('&gt;');
-                        $categorySubmenu.slideDown(250);
-                    });
-            });
-        }
-
-        setTimeout(setupMobileCategoryDrilldown, 100);
-        $(window).on('resize', function() {
-            setTimeout(setupMobileCategoryDrilldown, 100);
-        });
     });
 
     /* === Magnific Video popup Js (index 08) === */

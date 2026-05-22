@@ -358,7 +358,7 @@
 
     // Safe to attach listener
     range.addEventListener("input", function () {
-      output.value = "Price: £0 — £" + range.value;
+      output.value = "Price: $0 — $" + range.value;
     });
   })();
 
@@ -406,7 +406,8 @@
   function money(n) {
     var num = Number(n || 0);
     if (isNaN(num)) num = 0;
-    return "£" + num.toFixed(2);
+    // returns e.g. $12.34 — change '$' to '৳' for BDT or use Intl.NumberFormat for localized output
+    return "$" + num.toFixed(2);
   }
 
   var $cartBody = $(".cart-page__body");
@@ -1178,7 +1179,7 @@
 
     const render = () => {
       const q = Number(pill.querySelector('.q-val').textContent.trim() || 0);
-      totalEl.textContent = '£' + (price * q).toFixed(2);
+      totalEl.textContent = '$' + (price * q).toFixed(2);
     };
 
     pill.addEventListener('click', (e) => {

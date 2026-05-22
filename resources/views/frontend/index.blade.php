@@ -377,7 +377,7 @@
                         </div>
                         @endif -->
 
-                        <div class="category-content">
+                        <!-- <div class="category-content">
 
                             <p class="category-tag">
                                 {{ $index == 1 ? 'Trending' : 'Professional' }}
@@ -390,7 +390,7 @@
                             </h2>
 
 
-                        </div>
+                        </div> -->
 
                     </div>
 

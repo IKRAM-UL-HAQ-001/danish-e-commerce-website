@@ -225,12 +225,12 @@
 
         items.forEach(item => {
           const priceText = item.querySelector('.cart-page__item-price').textContent;
-          const price = parseFloat(priceText.replace('$', '').replace(',', ''));
+          const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
           const quantity = parseInt(item.querySelector('.cart-page__qty-input').value) || 1;
           const itemSubtotal = price * quantity;
 
           // Update item subtotal
-          item.querySelector('.cart-page__item-subtotal').textContent = '$' + itemSubtotal.toFixed(2);
+          item.querySelector('.cart-page__item-subtotal').textContent = '\u00a3' + itemSubtotal.toFixed(2);
 
           subtotal += itemSubtotal;
         });
@@ -241,11 +241,11 @@
         const shipping = parseFloat("{{ $settings['shipping_cost'] ?? 8.00 }}");
 
         if (subtotalEl) {
-          subtotalEl.textContent = '$' + subtotal.toFixed(2);
+          subtotalEl.textContent = '\u00a3' + subtotal.toFixed(2);
         }
         if (totalEl) {
           const discount = parseFloat(document.getElementById('coupon-discount-value')?.dataset.value || '0');
-          totalEl.textContent = '$' + (subtotal + shipping - discount).toFixed(2);
+          totalEl.textContent = '\u00a3' + Math.max(0, subtotal + shipping - discount).toFixed(2);
         }
       }
 
@@ -328,7 +328,7 @@
             // Update badge
             const badge = document.getElementById('cart-badge');
             if (badge) {
-                badge.textContent = parseInt(badge.textContent) - 1;
+                badge.textContent = Math.max(0, (parseInt(badge.textContent) || 0) - 1);
             }
 
             if (cartBody.querySelectorAll('.cart-page__item').length === 0) {
@@ -360,13 +360,15 @@
         discountValEl.dataset.couponType  = type || 'fixed';
         discountValEl.dataset.couponValue = parseFloat(couponValue) || amount;
         discountValEl.dataset.value       = amount.toFixed(2);
+        discountValEl.textContent         = '-$' + amount.toFixed(2);
 
         discountRow.style.display = 'flex';
         banner.classList.remove('d-none');
         banner.classList.add('d-flex');
         formWrapper.classList.add('d-none');
 
-        document.getElementById('coupon-applied-code').textContent = code;
+        document.getElementById('coupon-applied-code').textContent    = code;
+        document.getElementById('coupon-applied-saving').textContent  = '$' + amount.toFixed(2);
         calculateCartTotals();
       }
 
@@ -394,33 +396,42 @@
       if (couponForm) {
         couponForm.addEventListener('submit', function (e) {
           e.preventDefault();
-          const input = document.querySelector('.cart-page__coupon-input');
-          const code = input.value.trim();
+          const input   = document.getElementById('cart-coupon-input');
+          const errorEl = document.getElementById('coupon-error');
+          const btn     = document.getElementById('cart-coupon-btn');
+          const code    = input.value.trim();
 
-          if (code) {
-            let discount = 0;
-            const subtotalText = document.getElementById('cart-subtotal').textContent.replace('$', '');
-            const subtotalVal = parseFloat(subtotalText);
-            if (code === 'DISCOUNT10') {
-              discount = subtotalVal * 0.10;
-            } else if (code === 'FLAT5') {
-              discount = 5.00;
-            }
-            if (discount > 0) {
-              const discountRow = document.getElementById('coupon-discount-row');
-              const discountValEl = document.getElementById('coupon-discount-value');
-              discountRow.style.display = 'flex';
-              discountValEl.dataset.value = discount.toFixed(2);
-              discountValEl.textContent = '-$' + discount.toFixed(2);
-              calculateCartTotals();
-              alert('Coupon applied: ' + code);
+          errorEl.style.display = 'none';
+          errorEl.textContent   = '';
+
+          if (!code) {
+            errorEl.textContent   = 'Please enter a coupon code.';
+            errorEl.style.display = 'block';
+            return;
+          }
+
+          btn.disabled = true;
+          btn.querySelector('.text').textContent = 'Applying...';
+
+          fetch('{{ route("coupon.apply") }}', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({ code })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              applyCouponUI(data.code, data.discount_amount, data.type, data.value);
             } else {
-              errorEl.textContent = data.message;
+              errorEl.textContent   = data.message || 'Invalid coupon code.';
               errorEl.style.display = 'block';
             }
           })
           .catch(() => {
-            errorEl.textContent = 'Something went wrong. Please try again.';
+            errorEl.textContent   = 'Something went wrong. Please try again.';
             errorEl.style.display = 'block';
           })
           .finally(() => {
