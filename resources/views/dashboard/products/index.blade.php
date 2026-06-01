@@ -22,6 +22,7 @@
                                 <th>Product Name</th>
                                 <th>Category</th>
                                 <th>Brand</th>
+                                <th>Color</th>
                                 <th>Price</th>
                                 <th>Stock</th>
                                 <th>Status</th>
@@ -32,8 +33,8 @@
                             @foreach($products as $product)
                             <tr>
                                 <td>
-                                    @if($product->image)
-                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" style="width: 50px; height: 50px; border-radius: 5px;">
+                                    @if($product->image_mobile)
+                                        <img src="{{ asset('storage/' . $product->image_mobile) }}" alt="{{ $product->name }}" style="width: 50px; height: 50px; border-radius: 5px;">
                                     @else
                                         <div style="width: 50px; height: 50px; background: #eee; display: flex; align-items: center; justify-content: center; border-radius: 5px;">
                                             <i class="mdi mdi-image text-muted"></i>
@@ -55,6 +56,16 @@
                                         <span class="text-muted">No Brand</span>
                                     @endif
                                 </td>
+                                <td>
+                                    @if($product->color_name || $product->color_hex)
+                                        <div style="display:flex; align-items:center; gap:8px;">
+                                            <div style="width:20px; height:20px; border-radius:4px; background: {{ $product->color_hex ?? '#ffffff' }}; border:1px solid #ddd;"></div>
+                                            <span>{{ $product->color_name ?? $product->color_hex }}</span>
+                                        </div>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
                                 <td>${{ number_format($product->price, 2) }}</td>
                                 <td>{{ $product->stock }}</td>
                                 <td>
@@ -68,11 +79,15 @@
                                         data-name="{{ $product->name }}"
                                         data-category="{{ $product->category_id }}"
                                         data-brand="{{ $product->brand_id }}"
+                                        data-product='@json($product, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_SLASHES)'
                                         data-price="{{ $product->price }}"
                                         data-stock="{{ $product->stock }}"
                                         data-sku="{{ $product->sku }}"
                                         data-tags="{{ $product->tags }}"
-                                        data-description="{{ $product->description }}"
+                                        data-color_name="{{ $product->color_name }}"
+                                        data-color_hex="{{ $product->color_hex }}"
+                                        data-image_mobile="{{ $product->image_mobile ? asset('storage/' . $product->image_mobile) : '' }}"
+                                        data-image_laptop="{{ $product->image_laptop ? asset('storage/' . $product->image_laptop) : '' }}"
                                         data-status="{{ $product->status }}"
                                         data-bs-toggle="modal" data-bs-target="#editProductModal">
                                         <i class="mdi mdi-pencil text-primary"></i>
@@ -151,8 +166,20 @@
                         <input type="text" name="tags" class="form-control" placeholder="Cream, Beauty, Skin">
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="image">Product Image</label>
-                        <input type="file" name="image" class="form-control">
+                        <label for="image_mobile">Product Image (Mobile)</label>
+                        <input type="file" name="image_mobile" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="image_laptop">Product Image (Laptop)</label>
+                        <input type="file" name="image_laptop" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="color_name">Color Name (optional)</label>
+                        <input type="text" name="color_name" class="form-control" placeholder="e.g. Midnight Blue">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="color_hex">Color (pick)</label>
+                        <input type="color" name="color_hex" class="form-control" style="height:45px; padding:3px;">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="status">Status</label>
@@ -225,8 +252,22 @@
                         <input type="text" name="tags" id="edit_tags" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="image">Update Image (Leave blank to keep current)</label>
-                        <input type="file" name="image" class="form-control">
+                        <label for="image_mobile">Update Image (Mobile) (Leave blank to keep current)</label>
+                        <input type="file" name="image_mobile" id="edit_image_mobile" class="form-control">
+                        <div id="current_image_mobile_preview" class="mt-2"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="image_laptop">Update Image (Laptop) (Leave blank to keep current)</label>
+                        <input type="file" name="image_laptop" id="edit_image_laptop" class="form-control">
+                        <div id="current_image_laptop_preview" class="mt-2"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="edit_color_name">Color Name (optional)</label>
+                        <input type="text" name="color_name" id="edit_color_name" class="form-control" placeholder="e.g. Midnight Blue">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="edit_color_hex">Color (pick)</label>
+                        <input type="color" name="color_hex" id="edit_color_hex" class="form-control" style="height:45px; padding:3px;">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="edit_status">Status</label>
@@ -250,47 +291,123 @@
 <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-
 <script>
+    // -----------------------------
+    // CKEditor for Add Description
+    // -----------------------------
     ClassicEditor
         .create(document.querySelector('#description'))
         .catch(error => {
             console.error(error);
         });
-</script>
-<script>
-    $(document).ready(function() {
-        $('#productsTable').DataTable();
 
-        // Handle Edit Button Click
-        $('.edit-btn').on('click', function() {
-            var slug = $(this).data('slug');
-            var name = $(this).data('name');
-            var category = $(this).data('category');
-            var brand = $(this).data('brand');
-            var price = $(this).data('price');
-            var stock = $(this).data('stock');
-            var sku = $(this).data('sku');
-            var tags = $(this).data('tags');
-            var description = $(this).data('description');
-            var status = $(this).data('status');
+    // -----------------------------
+    // CKEditor for Edit Description
+    // -----------------------------
+    let editEditor = null;
+    let pendingEditDescription = '';
 
-            // Set form action dynamically
-            // No longer needed to set action with slug, but we'll populate the hidden slug field
-            $('#edit_slug').val(slug);
+    ClassicEditor
+        .create(document.querySelector('#edit_description'))
+        .then(editor => {
+            editEditor = editor;
 
-            // Populate fields
-            $('#edit_name').val(name);
-            $('#edit_category_id').val(category);
-            $('#edit_brand_id').val(brand);
-            $('#edit_price').val(price);
-            $('#edit_stock').val(stock);
-            $('#edit_sku').val(sku);
-            $('#edit_tags').val(tags);
-            $('#edit_description').val(description);
-            $('#edit_status').val(status);
+            if (pendingEditDescription) {
+                editEditor.setData(pendingEditDescription);
+                pendingEditDescription = '';
+            }
+        })
+        .catch(error => {
+            console.error(error);
         });
+</script>
+
+<script>
+$(document).ready(function () {
+
+    // -----------------------------
+    // Initialize DataTable
+    // -----------------------------
+    $('#productsTable').DataTable();
+
+    // -----------------------------
+    // Edit Button Click (Delegated)
+    // -----------------------------
+    $(document).on('click', '.edit-btn', function () {
+
+        // Safe product data extraction
+        let productData = $(this).data('product') || {};
+
+        if (typeof productData === 'string') {
+            try {
+                productData = JSON.parse(productData);
+            } catch (e) {
+                console.error("Invalid product JSON", e);
+                productData = {};
+            }
+        }
+
+        // -----------------------------
+        // Fill form fields
+        // -----------------------------
+        $('#edit_slug').val(productData.slug || '');
+        $('#edit_name').val(productData.name || '');
+        $('#edit_category_id').val(productData.category_id || '');
+        $('#edit_brand_id').val(productData.brand_id || '');
+        $('#edit_price').val(productData.price || '');
+        $('#edit_stock').val(productData.stock || '');
+        $('#edit_sku').val(productData.sku || '');
+        $('#edit_tags').val(productData.tags || '');
+        $('#edit_status').val(productData.status ?? '');
+
+        // -----------------------------
+        // CKEditor Description
+        // -----------------------------
+        let desc = productData.description || '';
+
+        if (editEditor) {
+            editEditor.setData(desc);
+        } else {
+            pendingEditDescription = desc;
+        }
+
+        // -----------------------------
+        // Color Fields
+        // -----------------------------
+        $('#edit_color_name').val(productData.color_name || '');
+        $('#edit_color_hex').val(productData.color_hex || '');
+
+        // -----------------------------
+        // Image Preview (Safe URLs)
+        // -----------------------------
+        let image_mobile = productData.image_mobile
+            ? ('{{ asset("storage") }}/' + productData.image_mobile).replace(/\\/g, '/')
+            : '';
+
+        let image_laptop = productData.image_laptop
+            ? ('{{ asset("storage") }}/' + productData.image_laptop).replace(/\\/g, '/')
+            : '';
+
+        // Mobile image preview
+        if (image_mobile) {
+            $('#current_image_mobile_preview').html(
+                `<img src="${image_mobile}" style="width:100px;height:100px;object-fit:cover;border-radius:5px;">`
+            );
+        } else {
+            $('#current_image_mobile_preview').html('');
+        }
+
+        // Laptop image preview
+        if (image_laptop) {
+            $('#current_image_laptop_preview').html(
+                `<img src="${image_laptop}" style="width:100px;height:100px;object-fit:cover;border-radius:5px;">`
+            );
+        } else {
+            $('#current_image_laptop_preview').html('');
+        }
     });
+
+});
 </script>
 @endpush
 

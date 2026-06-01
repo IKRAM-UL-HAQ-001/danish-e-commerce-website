@@ -5,25 +5,6 @@
 @section('content')
 <div class="row">
     <div class="col-md-10 offset-md-1">
-        <!-- Main Title Card -->
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">Main Title & Intro</div>
-            <div class="card-body">
-                @if(session('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
-                @endif
-
-                <form action="{{ route('dashboard.terms.update') }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-group mb-3">
-                        <label>Page Title / Intro</label>
-                        <textarea name="content" id="main_content" class="form-control">{{ old('content', $term ? $term->content : '') }}</textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Intro</button>
-                </form>
-            </div>
-        </div>
 
         <!-- Sections Card -->
         <div class="card">

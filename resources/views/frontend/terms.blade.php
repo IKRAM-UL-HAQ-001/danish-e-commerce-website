@@ -36,11 +36,11 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <!-- Main Title / Intro -->
-                <div class="terms-intro mb-5 wow fadeInUp" data-wow-delay=".3s">
-                    <h2 class="mb-4" style="color: #D4AF37; font-family: var(--font_Playfair); font-size: 2.8rem; line-height: 1.2;">
+                <!-- <div class="terms-intro mb-5 wow fadeInUp" data-wow-delay=".3s">
+                    <h2 class="mb-4" style="color: black; font-family: var(--font_Playfair); font-size: 2.8rem; line-height: 1.2;">
                         {!! $term ? $term->content : 'Terms and Conditions' !!}
                     </h2>
-                </div>
+                </div> -->
 
                 <!-- Accordion Sections -->
                 <div class="accordion custom-terms-accordion" id="termsAccordion">
@@ -78,7 +78,7 @@
     
     .custom-terms-accordion .accordion-button {
         background: #3C4858;
-        color: #D4AF37; /* Orange/Gold color from screenshot */
+        color: whitesmoke; /* Theme primary color */
         font-family: var(--font_Lato);
         font-weight: 700;
         font-size: 1.2rem;
@@ -92,7 +92,7 @@
 
     .custom-terms-accordion .accordion-button:not(.collapsed) {
         background: #3C4858;
-        color: #D4AF37;
+        color: whitesmoke;
     }
 
     .custom-terms-accordion .accordion-button::after {
@@ -102,7 +102,7 @@
     .custom-terms-accordion .arrow-icon {
         font-size: 0.8rem;
         transition: transform 0.3s ease;
-        color: #D4AF37;
+        color: white;
     }
 
     .custom-terms-accordion .accordion-button:not(.collapsed) .arrow-icon {

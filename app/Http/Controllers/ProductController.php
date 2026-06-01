@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -17,7 +18,9 @@ class ProductController extends Controller
         $products = Product::with(['category', 'brand'])->get();
         $categories = Category::all();
         $brands = Brand::where('status', 1)->get();
-        return view('dashboard.products.index', compact('products', 'categories', 'brands'));
+        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $siteLogo = $settings['site_logo'] ?? null;
+        return view('dashboard.products.index', compact('products', 'categories', 'brands', 'siteLogo'));
     }
 
     /**
@@ -39,13 +42,21 @@ class ProductController extends Controller
             'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'color_name' => 'nullable|string|max:100',
+            'color_hex' => 'nullable|string|max:7',
             'status' => 'required|boolean',
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
+
+        $imageMobilePath = null;
+        $imageLaptopPath = null;
+        if ($request->hasFile('image_mobile')) {
+            $imageMobilePath = $request->file('image_mobile')->store('products/mobile', 'public');
+        }
+        if ($request->hasFile('image_laptop')) {
+            $imageLaptopPath = $request->file('image_laptop')->store('products/laptop', 'public');
         }
 
         Product::create([
@@ -56,7 +67,10 @@ class ProductController extends Controller
             'tags' => $request->tags,
             'price' => $request->price,
             'stock' => $request->stock,
-            'image' => $imagePath,
+            'image_mobile' => $imageMobilePath,
+            'image_laptop' => $imageLaptopPath,
+            'color_name' => $request->color_name,
+            'color_hex' => $request->color_hex,
             'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,
             'status' => $request->status,
@@ -94,7 +108,10 @@ class ProductController extends Controller
             'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'color_name' => 'nullable|string|max:100',
+            'color_hex' => 'nullable|string|max:7',
             'status' => 'required|boolean',
         ]);
 
@@ -106,6 +123,26 @@ class ProductController extends Controller
             $product->image = $request->file('image')->store('products', 'public');
         }
 
+        if ($request->hasFile('image_mobile')) {
+            if ($product->image_mobile && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_mobile)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_mobile);
+            }
+            $product->image_mobile = $request->file('image_mobile')->store('products/mobile', 'public');
+        }
+
+        if ($request->hasFile('image_laptop')) {
+            if ($product->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_laptop)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_laptop);
+            }
+            $product->image_laptop = $request->file('image_laptop')->store('products/laptop', 'public');
+        }
+
+        // update color fields
+        if ($request->filled('color_name') || $request->filled('color_hex')) {
+            $product->color_name = $request->color_name;
+            $product->color_hex = $request->color_hex;
+        }
+
         $product->update([
             'name' => $request->name,
             'slug' => \Illuminate\Support\Str::slug($request->name),
@@ -114,6 +151,10 @@ class ProductController extends Controller
             'tags' => $request->tags,
             'price' => $request->price,
             'stock' => $request->stock,
+            'image_mobile' => $product->image_mobile,
+            'image_laptop' => $product->image_laptop,
+            'color_name' => $product->color_name,
+            'color_hex' => $product->color_hex,
             'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,
             'status' => $request->status,
@@ -129,8 +170,11 @@ class ProductController extends Controller
     public function destroy(Request $request)
     {
         $product = Product::where('slug', $request->slug)->firstOrFail();
-        if ($product->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image)) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image);
+        if ($product->image_mobile && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_mobile)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_mobile);
+        }
+        if ($product->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_laptop)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_laptop);
         }
         $product->delete();
         return back()->with('success', 'Product deleted successfully.');

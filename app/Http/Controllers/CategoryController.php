@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -14,7 +15,9 @@ class CategoryController extends Controller
     {
         $categories = Category::with('parent')->orderBy('parent_id')->get();
         $allCategories = Category::all();
-        return view('dashboard.categories.show', compact('categories', 'allCategories'));
+        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $siteLogo = $settings['site_logo'] ?? null;
+        return view('dashboard.categories.show', compact('categories', 'allCategories', 'siteLogo'));
     }
 
     /**
@@ -29,19 +32,25 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'status' => 'required|boolean',
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('categories', 'public');
+        $imageMobilePath = null;
+        $imageLaptopPath = null;
+        if ($request->hasFile('image_mobile')) {
+            $imageMobilePath = $request->file('image_mobile')->store('categories/mobile', 'public');
+        }
+        if ($request->hasFile('image_laptop')) {
+            $imageLaptopPath = $request->file('image_laptop')->store('categories/laptop', 'public');
         }
 
         Category::create([
             'name' => $request->name,
             'slug' => \Illuminate\Support\Str::slug($request->name),
-            'image' => $imagePath,
+            'image_mobile' => $imageMobilePath,
+            'image_laptop' => $imageLaptopPath,
             'parent_id' => $request->parent_id,
             'status' => $request->status,
         ]);
@@ -74,16 +83,25 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'status' => 'required|boolean',
         ]);
 
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($category->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image);
+
+        if ($request->hasFile('image_mobile')) {
+            if ($category->image_mobile && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image_mobile)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image_mobile);
             }
-            $category->image = $request->file('image')->store('categories', 'public');
+            $category->image_mobile = $request->file('image_mobile')->store('categories/mobile', 'public');
+            $category->save();
+        }
+
+        if ($request->hasFile('image_laptop')) {
+            if ($category->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image_laptop)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image_laptop);
+            }
+            $category->image_laptop = $request->file('image_laptop')->store('categories/laptop', 'public');
             $category->save();
         }
 
@@ -105,8 +123,11 @@ class CategoryController extends Controller
         $category = Category::where('slug', $request->slug)->firstOrFail();
         
         // Delete image if exists
-        if ($category->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image)) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image);
+        if ($category->image_mobile && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image_mobile)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image_mobile);
+        }
+        if ($category->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image_laptop)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image_laptop);
         }
 
         $category->delete();

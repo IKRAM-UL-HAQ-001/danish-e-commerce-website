@@ -19,7 +19,10 @@ class Product extends Model
         'old_price',
         'discount',
         'stock',
-        'image',
+        'image_mobile',
+        'image_laptop',
+        'color_name',
+        'color_hex',
         'category_id',
         'brand_id',
         'status'
