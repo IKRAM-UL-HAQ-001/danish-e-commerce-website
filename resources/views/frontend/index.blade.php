@@ -440,7 +440,7 @@
                                     </div>
 
                                     {{-- CATEGORY CONTENT (OVER IMAGE) --}}
-                                    <div class="category-content">
+                                    <div class="category-content">c
                                       <h2 class="category-title">
                                           <a href="{{ route('public.shop', ['category' => $category->slug]) }}">
                                               {{ $category->name }}
