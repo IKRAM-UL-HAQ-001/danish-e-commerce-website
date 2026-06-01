@@ -138,22 +138,54 @@
                         </button>
                       </div>
                     </div>
-<br>
+                    <br>
                     <div class="product-details-content__meta mb-4">
-                      <div class="meta-row"><span class="k">SKU:</span> <span class="v">{{ $product->sku ?? 'N/A' }}</span></div>
-                      <div class="meta-row"><span class="k">Category:</span> <span class="v">{{ $product->category->name ?? 'N/A' }}</span></div>
-                      <div class="meta-row"><span class="k">Tag:</span> <span class="v">{{ $product->tags ?? 'N/A' }}</span></div>
-                      <div class="meta-row"><span class="k">Color:</span> <span class="v">
-                        @if($product->color_name || $product->color_hex)
-                          <span style="display:inline-flex; align-items:center; gap:8px;">
-                            <span style="width:14px; height:14px; border-radius:4px; display:inline-block; border:1px solid #ddd; background: {{ $product->color_hex ?? '#ffffff' }};"></span>
-                            <span>{{ $product->color_name ?? $product->color_hex }}</span>
+                      <div class="meta-row">
+                          <span class="k">SKU:</span>
+                          <span class="v">{{ $product->sku ?? 'N/A' }}</span>
+                      </div>
+
+                      <div class="meta-row">
+                          <span class="k">Category:</span>
+                          <span class="v">{{ $product->category->name ?? 'N/A' }}</span>
+                      </div>
+
+                      <div class="meta-row">
+                          <span class="k">Tag:</span>
+                          <span class="v">{{ $product->tags ?? 'N/A' }}</span>
+                      </div>
+
+                      <div class="meta-row">
+                          <span class="k">Color:</span>
+                          <span class="v">
+
+                              @if($product->color_name || $product->color_hex)
+
+                                  <span style="display:inline-flex; align-items:center; gap:8px;">
+
+                                      <span style="
+                                          width:14px;
+                                          height:14px;
+                                          border-radius:4px;
+                                          display:inline-block;
+                                          border:1px solid #ddd;
+                                          background: {{ $product->color_hex ?? '#ffffff' }};
+                                      "></span>
+
+                                      <span>
+                                          {{ $product->color_name ?? $product->color_hex }}
+                                      </span>
+
+                                  </span>
+
+                              @else
+                                  N/A
+                              @endif
+
                           </span>
-                        @else
-                          N/A
-                        @endif
-                      </span></div>
-                    </div>
+                      </div>
+
+                  </div>
                   </div>
                 </div>
               </div>
