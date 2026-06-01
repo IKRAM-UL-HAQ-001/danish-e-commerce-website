@@ -402,90 +402,78 @@
           <div class="intro1__shape3"><img src="{{ asset('frontend-assets/imgs/hero/hero-shape1_3.png') }}" alt="shape"></div>
         </section>
         <!-- Intro1 Section End -->
-<section class="category1 section-spacing-120 rr-ov-hidden">
-    <div class="category1-wrapper">
-        <div class="container rr-container-1350">
+        <section class="category1 section-spacing-120 rr-ov-hidden">
+            <div class="category1-wrapper">
+                <div class="container rr-container-1350">
 
-            <div class="section-heading text-center mb-5">
-                <h2 class="section-heading__title">OUR CATEGORY</h2>
-            </div>
+                    <div class="section-heading text-center mb-5">
+                        <h2 class="section-heading__title">OUR CATEGORY</h2>
+                    </div>
 
-            <div class="category-slider">
+                    <div class="category-slider">
 
-                @foreach($categories as $index => $category)
+                        @foreach($categories as $index => $category)
 
-                    <div class="category-slide {{ $index == 1 ? 'active' : 'small' }}">
+                            <div class="category-slide {{ $index == 1 ? 'active' : 'small' }}">
 
-                        <div class="category1-item">
+                                <div class="category1-item">
 
-                            <div class="category1-item__thumb">
-                                <picture>
+                                    {{-- IMAGE SECTION --}}
+                                    <div class="category1-item__thumb">
+                                        <picture>
 
-                                    {{-- Mobile Image --}}
-                                    @if(!empty($category->image_mobile))
-                                        <source
-                                            media="(max-width: 767px)"
-                                            srcset="{{ asset('storage/' . $category->image_mobile) }}">
-                                    @endif
+                                            {{-- Mobile Image --}}
+                                            @if(!empty($category->image_mobile))
+                                                <source
+                                                    media="(max-width: 767px)"
+                                                    srcset="{{ asset('storage/' . $category->image_mobile) }}">
+                                            @endif
 
-                                    {{-- Desktop / Laptop Image --}}
-                                    <img
-                                        src="{{ !empty($category->image_laptop)
-                                                ? asset('storage/' . $category->image_laptop)
-                                                : asset('frontend-assets/imgs/category/category-thumb1_1.jpg') }}"
-                                        alt="{{ $category->name }}"
-                                        loading="lazy">
-                                </picture>
+                                            {{-- Desktop Image --}}
+                                            <img
+                                                src="{{ !empty($category->image_laptop)
+                                                        ? asset('storage/' . $category->image_laptop)
+                                                        : asset('frontend-assets/imgs/category/category-thumb1_1.jpg') }}"
+                                                alt="{{ $category->name }}"
+                                                loading="lazy">
+                                        </picture>
+                                    </div>
+
+                                    {{-- CATEGORY CONTENT (OVER IMAGE) --}}
+                                    <div class="category-content">
+                                      <h2 class="category-title">
+                                          <a href="{{ route('public.shop', ['category' => $category->slug]) }}">
+                                              {{ $category->name }}
+                                          </a>
+                                      </h2>
+                                    </div>
+
+                                </div>
+
                             </div>
 
-                            {{-- Optional Content --}}
-                            {{--
-                            <div class="category-content">
-                                <p class="category-tag">
-                                    {{ $index == 1 ? 'Trending' : 'Professional' }}
-                                </p>
-
-                                <h2 class="category-title">
-                                    <a href="{{ route('public.shop', ['category' => $category->slug]) }}">
-                                        {{ $category->name }}
-                                    </a>
-                                </h2>
-                            </div>
-                            --}}
-
-                        </div>
+                        @endforeach
 
                     </div>
 
-                @endforeach
+                    {{-- NAVIGATION BUTTONS --}}
+                    <div class="category-slider-nav" role="group" aria-label="Category carousel controls">
 
+                        <button type="button" id="prevCategory" class="category-slider-nav__btn" aria-label="Show previous category">
+                            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                            <span>Previous</span>
+                        </button>
+
+                        <button type="button" id="nextCategory" class="category-slider-nav__btn" aria-label="Show next category">
+                            <span>Next</span>
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                        </button>
+
+                    </div>
+
+                </div>
             </div>
-
-            <div class="category-slider-nav" role="group" aria-label="Category carousel controls">
-                <button
-                    type="button"
-                    id="prevCategory"
-                    class="category-slider-nav__btn"
-                    aria-label="Show previous category">
-
-                    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-                    <span>Previous</span>
-                </button>
-
-                <button
-                    type="button"
-                    id="nextCategory"
-                    class="category-slider-nav__btn"
-                    aria-label="Show next category">
-
-                    <span>Next</span>
-                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-                </button>
-            </div>
-
-        </div>
-    </div>
-</section>      
+        </section>    
 
         <section class="trending-product section-spacing-120 rr-ov-hidden">
           <div class="container rr-container-1350">

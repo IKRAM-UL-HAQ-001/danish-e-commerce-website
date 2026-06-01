@@ -12,11 +12,23 @@
            Set Background Image & Mask   
         -----------------------------------*/
   if (typeof $ !== "undefined") {
-    if ($("[data-bg-src]").length > 0) {
-      $("[data-bg-src]").each(function () {
-        var src = $(this).attr("data-bg-src");
-        $(this).css("background-image", "url(" + src + ")");
-        $(this).removeAttr("data-bg-src").addClass("background-image");
+    if ($("[data-bg-src], [data-bg-src-mobile]").length > 0) {
+      $("[data-bg-src], [data-bg-src-mobile]").each(function () {
+        var $el = $(this);
+        var desktopSrc = $el.attr("data-bg-src");
+        var mobileSrc = $el.attr("data-bg-src-mobile");
+        var src = desktopSrc;
+        try {
+          if (mobileSrc && window.innerWidth && window.innerWidth <= 767) {
+            src = mobileSrc;
+          }
+        } catch (e) {
+          // ignore
+        }
+        if (src) {
+          $el.css("background-image", "url(" + src + ")");
+        }
+        $el.removeAttr("data-bg-src").removeAttr("data-bg-src-mobile").addClass("background-image");
       });
     }
   }
