@@ -76,7 +76,7 @@
                         <div id="checkout-coupon-section" style="display:none; margin-bottom:20px;">
                             @if($couponApplied)
                                 <div class="alert alert-success d-flex align-items-center justify-content-between py-2 px-3">
-                                    <span>Coupon <strong>{{ $appliedCoupon['code'] }}</strong> applied — you save <strong>${{ number_format((float) ($appliedCoupon['discount_amount'] ?? 0), 2) }}</strong></span>
+                                    <span>Coupon <strong>{{ $appliedCoupon['code'] }}</strong> applied — you save <strong>£{{ number_format((float) ($appliedCoupon['discount_amount'] ?? 0), 2) }}</strong></span>
                                     <button type="button" id="checkout-coupon-remove-btn" class="btn btn-sm btn-outline-danger ms-3">Remove</button>
                                 </div>
                             @else
@@ -238,14 +238,14 @@
                                     @php $couponDiscount = floatval($appliedCoupon['discount_amount'] ?? 0); @endphp
                                     <div class="checkout-page__order-summary-totals-row" id="checkout-discount-row">
                                         <span class="checkout-page__order-summary-totals-label">Discount ({{ $appliedCoupon['code'] }})</span>
-                                        <span class="checkout-page__order-summary-totals-value" style="color:#28a745;">-${{ number_format($couponDiscount, 2) }}</span>
+                                        <span class="checkout-page__order-summary-totals-value" style="color:#28a745;">-£{{ number_format($couponDiscount, 2) }}</span>
                                     </div>
                                 @else
                                     @php $couponDiscount = 0; @endphp
                                 @endif
                                 <div class="checkout-page__order-summary-totals-row checkout-page__order-summary-totals-row--total">
                                     <span class="checkout-page__order-summary-totals-label">Total</span>
-                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--highlight">${{ number_format($subtotal + $shipping, 2) }}</span>
+                                    <span class="checkout-page__order-summary-totals-value checkout-page__order-summary-totals-value--highlight">£{{ number_format($subtotal + $shipping, 2) }}</span>
                                 </div>
                             </div>
                         </div>

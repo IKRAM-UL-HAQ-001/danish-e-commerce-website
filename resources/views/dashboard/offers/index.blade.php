@@ -36,7 +36,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $offer->title }}</td>
-                                <td>${{ number_format($offer->price, 2) }}</td>
+                                <td>£{{ number_format($offer->price, 2) }}</td>
                                 <td>
                                     <label class="badge {{ $offer->status ? 'badge-success' : 'badge-danger' }}">
                                         {{ $offer->status ? 'Active' : 'Inactive' }}

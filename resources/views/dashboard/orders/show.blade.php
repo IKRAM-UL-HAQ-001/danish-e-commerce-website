@@ -67,8 +67,8 @@
                                         </div>
                                     </td>
                                     <td class="text-center">{{ $item->quantity }}</td>
-                                    <td class="text-right">${{ number_format($item->price, 2) }}</td>
-                                    <td class="text-right">${{ number_format($itemSubtotal, 2) }}</td>
+                                    <td class="text-right">£{{ number_format($item->price, 2) }}</td>
+                                    <td class="text-right">£{{ number_format($itemSubtotal, 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -78,9 +78,9 @@
                 <div class="row">
                     <div class="col-md-6 offset-md-6">
                         <div class="border p-3 rounded bg-light">
-                            <div class="d-flex justify-content-between mb-2">
+                                <div class="d-flex justify-content-between mb-2">
                                 <span>Subtotal</span>
-                                <strong>${{ number_format($calculatedSubtotal, 2) }}</strong>
+                                <strong>£{{ number_format($calculatedSubtotal, 2) }}</strong>
                             </div>
                             
                             <!-- Fetch Shipping cost from overall total, default flat rate difference if available -->
@@ -94,13 +94,13 @@
                             @endphp
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Shipping</span>
-                                <strong>${{ number_format($shippingCost, 2) }}</strong>
+                                <strong>£{{ number_format($shippingCost, 2) }}</strong>
                             </div>
 
                             @if($order->coupon_code)
                                 <div class="d-flex justify-content-between text-success mb-2">
                                     <span>Coupon Code ({{ $order->coupon_code }})</span>
-                                    <strong>-${{ number_format($order->discount_amount ?? 0, 2) }}</strong>
+                                    <strong>-£{{ number_format($order->discount_amount ?? 0, 2) }}</strong>
                                 </div>
                             @endif
 
@@ -108,7 +108,7 @@
 
                             <div class="d-flex justify-content-between fs-5 fw-bold">
                                 <span>Total Price</span>
-                                <span class="text-primary">${{ number_format($order->total_price, 2) }}</span>
+                                <span class="text-primary">£{{ number_format($order->total_price, 2) }}</span>
                             </div>
                         </div>
                     </div>

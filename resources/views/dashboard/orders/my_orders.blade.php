@@ -29,7 +29,7 @@
                                 <td><strong>#{{ $order->id }}</strong></td>
                                 <td>{{ $order->created_at->format('M d, Y') }}</td>
                                 <td>{{ Str::limit($order->shipping_address, 30) }}</td>
-                                <td>${{ number_format($order->total_price, 2) }}</td>
+                                <td>£{{ number_format($order->total_price, 2) }}</td>
                                 <td>
                                     <label class="badge {{ $order->status == 'completed' ? 'badge-success' : ($order->status == 'cancelled' ? 'badge-danger' : 'badge-warning') }}">
                                         {{ ucfirst($order->status) }}

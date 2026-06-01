@@ -65,9 +65,9 @@
                     </div>
 
                     <div class="offer-pricing mb-5 d-flex align-items-center gap-3">
-                        <span class="current-price" style="font-size: 2rem; font-weight: 700; color: #EE2D7A;">${{ number_format($offer->price, 2) }}</span>
+                        <span class="current-price" style="font-size: 2rem; font-weight: 700; color: #EE2D7A;">£{{ number_format($offer->price, 2) }}</span>
                         @if($offer->old_price)
-                            <span class="old-price text-muted" style="text-decoration: line-through; font-size: 1.2rem;">${{ number_format($offer->old_price, 2) }}</span>
+                            <span class="old-price text-muted" style="text-decoration: line-through; font-size: 1.2rem;">£{{ number_format($offer->old_price, 2) }}</span>
                             <span class="discount-badge px-2 py-1 bg-danger-subtle text-danger rounded small fw-bold">
                                 {{ round((($offer->old_price - $offer->price) / $offer->old_price) * 100) }}% OFF
                             </span>

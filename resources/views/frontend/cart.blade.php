@@ -127,9 +127,9 @@
                             <p class="cart-page__coupon-text">Enter your coupon code if you have one.</p>
 
                             {{-- Banner: use d-none/d-flex (not inline display) — Bootstrap d-flex uses !important and overrides display:none --}}
-                            <div id="coupon-applied-banner"
+                                <div id="coupon-applied-banner"
                                  class="alert alert-success align-items-center justify-content-between py-2 px-3 mb-3 {{ $couponApplied ? 'd-flex' : 'd-none' }}">
-                                <span>Coupon <strong id="coupon-applied-code">{{ $appliedCoupon['code'] ?? '' }}</strong> applied — you save <strong id="coupon-applied-saving">{{ $couponApplied ? '$' . number_format((float) ($appliedCoupon['discount_amount'] ?? 0), 2) : '' }}</strong></span>
+                                <span>Coupon <strong id="coupon-applied-code">{{ $appliedCoupon['code'] ?? '' }}</strong> applied — you save <strong id="coupon-applied-saving">{{ $couponApplied ? '£' . number_format((float) ($appliedCoupon['discount_amount'] ?? 0), 2) : '' }}</strong></span>
                                 <button type="button" id="cart-coupon-remove-btn" class="btn btn-sm btn-outline-danger ms-3">Remove</button>
                             </div>
 
@@ -176,8 +176,8 @@
                                 <span class="cart-page__totals-label">Shipping</span>
                                 @php $shipping = floatval($settings['shipping_cost'] ?? 8.00); @endphp
                                 <span class="cart-page__totals-value cart-page__totals-value--muted text-end">
-                                    Flat rate: ${{ number_format($shipping, 2) }}
-                                </span>
+                                Flat rate: £{{ number_format($shipping, 2) }}
+                              </span>
                             </div>
                             @php
                                 $couponDiscount = $couponApplied ? floatval($appliedCoupon['discount_amount'] ?? 0) : 0;
@@ -186,18 +186,18 @@
                             <div class="cart-page__totals-row" id="coupon-discount-row"
                                  style="{{ $couponDiscount > 0 ? '' : 'display:none;' }}">
                                 <span class="cart-page__totals-label">Discount</span>
-                                <span class="cart-page__totals-value text-end"
+                                    <span class="cart-page__totals-value text-end"
                                       id="coupon-discount-value"
                                       data-value="{{ $couponDiscount }}"
                                       data-coupon-type="{{ $appliedCoupon['type'] ?? '' }}"
                                       data-coupon-value="{{ $appliedCoupon['value'] ?? 0 }}"
                                       style="color:#28a745;">
-                                    {{ $couponDiscount > 0 ? '-$' . number_format($couponDiscount, 2) : '' }}
+                                    {{ $couponDiscount > 0 ? '-£' . number_format($couponDiscount, 2) : '' }}
                                 </span>
                             </div>
                             <div class="cart-page__totals-row cart-page__totals-row--total">
                                 <span class="cart-page__totals-label">Total</span>
-                                <span class="cart-page__totals-value cart-page__totals-value--highlight" id="cart-total">${{ number_format($subtotal + $shipping, 2) }}</span>
+                                <span class="cart-page__totals-value cart-page__totals-value--highlight" id="cart-total">£{{ number_format($subtotal + $shipping, 2) }}</span>
                             </div>
                         </div>
                         <a href="{{ route('public.checkout') }}" class="cart-page__checkout-btn">
@@ -360,7 +360,7 @@
         discountValEl.dataset.couponType  = type || 'fixed';
         discountValEl.dataset.couponValue = parseFloat(couponValue) || amount;
         discountValEl.dataset.value       = amount.toFixed(2);
-        discountValEl.textContent         = '-$' + amount.toFixed(2);
+        discountValEl.textContent         = '-£' + amount.toFixed(2);
 
         discountRow.style.display = 'flex';
         banner.classList.remove('d-none');
@@ -368,7 +368,7 @@
         formWrapper.classList.add('d-none');
 
         document.getElementById('coupon-applied-code').textContent    = code;
-        document.getElementById('coupon-applied-saving').textContent  = '$' + amount.toFixed(2);
+        document.getElementById('coupon-applied-saving').textContent  = '£' + amount.toFixed(2);
         calculateCartTotals();
       }
 

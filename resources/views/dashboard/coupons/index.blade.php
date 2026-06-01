@@ -33,8 +33,8 @@
                             <tr>
                                 <td><strong>{{ $coupon->code }}</strong></td>
                                 <td>{{ ucfirst($coupon->type) }}</td>
-                                <td>{{ $coupon->type == 'percent' ? $coupon->value.'%' : '$'.$coupon->value }}</td>
-                                <td>${{ number_format($coupon->min_order_value, 2) }}</td>
+                                <td>{{ $coupon->type == 'percent' ? $coupon->value.'%' : '£'.$coupon->value }}</td>
+                                <td>£{{ number_format($coupon->min_order_value, 2) }}</td>
                                 <td>{{ $coupon->expiry_date ? \Carbon\Carbon::parse($coupon->expiry_date)->format('M d, Y') : 'Never' }}</td>
                                 <td>{{ $coupon->used_count }} / {{ $coupon->usage_limit ?? '∞' }}</td>
                                 <td>
@@ -91,7 +91,7 @@
                     <div class="col-md-6 mb-3">
                         <label>Discount Type</label>
                         <select name="type" class="form-select" required>
-                            <option value="fixed">Fixed Amount ($)</option>
+                            <option value="fixed">Fixed Amount (£)</option>
                             <option value="percent">Percentage (%)</option>
                         </select>
                     </div>
@@ -101,7 +101,7 @@
                     </div>
                 </div>
                 <div class="form-group mb-3">
-                    <label>Minimum Order Value ($)</label>
+                    <label>Minimum Order Value (£)</label>
                     <input type="number" step="0.01" name="min_order_value" class="form-control" value="0">
                 </div>
                 <div class="form-group mb-3">

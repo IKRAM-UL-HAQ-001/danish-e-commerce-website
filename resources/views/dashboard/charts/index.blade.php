@@ -9,7 +9,7 @@
         <div class="statistics-details d-flex align-items-center justify-content-between mb-4">
             <div>
                 <p class="statistics-title">Total Monthly Revenue</p>
-                <h3 class="rate-percentage">${{ number_format($currentMonthSales, 2) }}</h3>
+                <h3 class="rate-percentage">£{{ number_format($currentMonthSales, 2) }}</h3>
                 <p class="{{ $monthGrowth >= 0 ? 'text-success' : 'text-danger' }} d-flex">
                     <i class="mdi {{ $monthGrowth >= 0 ? 'mdi-menu-up' : 'mdi-menu-down' }}"></i>
                     <span>{{ number_format(abs($monthGrowth), 1) }}%</span>
@@ -17,7 +17,7 @@
             </div>
             <div>
                 <p class="statistics-title">Today's Sales</p>
-                <h3 class="rate-percentage">${{ number_format($dailySales->where('date', date('Y-m-d'))->first()->total ?? 0, 2) }}</h3>
+                <h3 class="rate-percentage">£{{ number_format($dailySales->where('date', date('Y-m-d'))->first()->total ?? 0, 2) }}</h3>
             </div>
             <div class="d-none d-md-block">
                 <p class="statistics-title">Active Customers</p>
@@ -67,7 +67,7 @@
                         <tbody>
                             <tr>
                                 <td>Monthly</td>
-                                <td>${{ number_format($currentMonthSales, 2) }}</td>
+                                <td>£{{ number_format($currentMonthSales, 2) }}</td>
                                 <td><span class="badge {{ $monthGrowth >= 0 ? 'badge-success' : 'badge-danger' }}">{{ number_format($monthGrowth, 1) }}%</span></td>
                             </tr>
                         </tbody>
@@ -89,7 +89,7 @@
             data: {
                 labels: {!! json_encode($dailySales->pluck('date')) !!},
                 datasets: [{
-                    label: 'Revenue ($)',
+                    label: 'Revenue (£)',
                     data: {!! json_encode($dailySales->pluck('total')) !!},
                     borderColor: '#4B49AC',
                     backgroundColor: 'rgba(75, 73, 172, 0.1)',

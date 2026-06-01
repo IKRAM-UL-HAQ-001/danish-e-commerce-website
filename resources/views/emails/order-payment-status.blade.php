@@ -15,7 +15,7 @@
 
     <p><strong>Order:</strong> {{ $order->order_number }}</p>
     <p><strong>Status:</strong> {{ ucfirst($order->status) }}</p>
-    <p><strong>Total:</strong> ${{ number_format($order->total_price, 2) }}</p>
+    <p><strong>Total:</strong> £{{ number_format($order->total_price, 2) }}</p>
 
     <h3>Receipt</h3>
     <table width="100%" cellpadding="8" cellspacing="0" border="1" style="border-collapse: collapse; border-color: #ddd;">
@@ -31,7 +31,7 @@
                 <tr>
                     <td>{{ $item->product->name ?? 'Product #' . $item->product_id }}</td>
                     <td align="center">{{ $item->quantity }}</td>
-                    <td align="right">${{ number_format($item->price * $item->quantity, 2) }}</td>
+                    <td align="right">£{{ number_format($item->price * $item->quantity, 2) }}</td>
                 </tr>
             @endforeach
         </tbody>

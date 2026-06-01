@@ -66,7 +66,7 @@
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
-                                <td>${{ number_format($product->price, 2) }}</td>
+                                <td>£{{ number_format($product->price, 2) }}</td>
                                 <td>{{ $product->stock }}</td>
                                 <td>
                                     <label class="badge {{ $product->status ? 'badge-success' : 'badge-danger' }}">

@@ -64,9 +64,9 @@
                         
                         <div class="offer-card__footer d-flex align-items-center justify-content-between mt-auto">
                             <div class="offer-card__price">
-                                <span class="fw-bold text-primary" style="font-size: 1.25rem;">${{ number_format($offer->price, 2) }}</span>
+                                <span class="fw-bold text-primary" style="font-size: 1.25rem;">£{{ number_format($offer->price, 2) }}</span>
                                 @if($offer->old_price)
-                                <span class="text-muted text-decoration-line-through ms-2" style="font-size: 0.9rem;">${{ number_format($offer->old_price, 2) }}</span>
+                                <span class="text-muted text-decoration-line-through ms-2" style="font-size: 0.9rem;">£{{ number_format($offer->old_price, 2) }}</span>
                                 @endif
                             </div>
                             <a href="{{ route('public.offer.details', $offer->id) }}" class="rr-btn-button" style="padding: 10px 20px; font-size: 0.85rem;">

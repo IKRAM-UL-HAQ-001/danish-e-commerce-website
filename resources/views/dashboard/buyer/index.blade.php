@@ -13,7 +13,7 @@
             </div>
             <div>
                 <p class="statistics-title">Total Spent</p>
-                <h3 class="rate-percentage">${{ number_format($totalSpent, 2) }}</h3>
+                <h3 class="rate-percentage">£{{ number_format($totalSpent, 2) }}</h3>
             </div>
             <div>
                 <p class="statistics-title">Pending Orders</p>
@@ -51,7 +51,7 @@
                             <tr>
                                 <td><strong>#{{ $order->id }}</strong></td>
                                 <td>{{ $order->created_at->format('M d, Y') }}</td>
-                                <td>${{ number_format($order->total_price, 2) }}</td>
+                                <td>£{{ number_format($order->total_price, 2) }}</td>
                                 <td>
                                     <label class="badge {{ $order->status == 'completed' ? 'badge-success' : ($order->status == 'cancelled' ? 'badge-danger' : 'badge-warning') }}">
                                         {{ ucfirst($order->status) }}

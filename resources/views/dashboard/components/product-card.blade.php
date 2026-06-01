@@ -6,7 +6,7 @@
         <h3 class="text-lg font-semibold text-gray-800">{{ $name ?? 'Product Name' }}</h3>
         <p class="text-gray-500 text-sm mt-1">Short description here.</p>
         <div class="mt-4 flex items-center justify-between">
-            <span class="text-indigo-600 font-bold">${{ $price ?? '0.00' }}</span>
+            <span class="text-indigo-600 font-bold">£{{ $price ?? '0.00' }}</span>
             <button class="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700">Add to Cart</button>
         </div>
     </div>

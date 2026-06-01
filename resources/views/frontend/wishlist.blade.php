@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 text-center">
-                                        <div class="cart-page__item-price">${{ number_format($item['price'], 2) }}</div>
+                                        <div class="cart-page__item-price">£{{ number_format($item['price'], 2) }}</div>
                                     </div>
                                     <div class="col-md-2 text-center">
                                         <button type="button"

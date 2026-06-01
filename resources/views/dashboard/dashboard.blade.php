@@ -21,7 +21,7 @@
             </div>
             <div class="d-none d-md-block">
                 <p class="statistics-title">Total Revenue</p>
-                <h3 class="rate-percentage">${{ number_format($totalRevenue, 2) }}</h3>
+                <h3 class="rate-percentage">£{{ number_format($totalRevenue, 2) }}</h3>
             </div>
         </div>
     </div>
@@ -94,7 +94,7 @@
                             <tr>
                                 <td>#{{ $order->id }}</td>
                                 <td>{{ $order->user->name ?? 'N/A' }}</td>
-                                <td>${{ number_format($order->total_price, 2) }}</td>
+                                <td>£{{ number_format($order->total_price, 2) }}</td>
                                 <td>
                                     <label class="badge {{ $order->status == 'completed' ? 'badge-success' : 'badge-warning' }}">
                                         {{ ucfirst($order->status) }}
@@ -162,7 +162,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Revenue ($)',
+                    label: 'Revenue (£)',
                     data: values,
                     borderColor: '#EE2D7A',
                     backgroundColor: 'rgba(238, 45, 122, 0.1)',
@@ -181,7 +181,7 @@
                         beginAtZero: true,
                         ticks: {
                             callback: function (value) {
-                                return '$' + value;
+                                return '£' + value;
                             }
                         }
                     }
