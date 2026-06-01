@@ -208,24 +208,29 @@
   /* Hero Banner Slider Styles */
   .hero-banner-slider {
       width: 100%;
-      max-height: 600px;
       border-radius: 12px;
       overflow: hidden;
       margin-bottom: 40px;
   }
 
   .hero-banner-slider .swiper-slide {
-      height: 600px;
+      aspect-ratio: 16 / 7;
+      min-height: 360px;
+      max-height: 620px;
       display: flex;
       align-items: center;
       justify-content: center;
   }
 
+  .hero-banner-slider picture,
   .hero-banner-slider .swiper-slide img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
       display: block;
+  }
+
+  .hero-banner-slider .swiper-slide img {
+      object-fit: cover;
   }
 
   .hero-banner-slider .swiper-button-next,
@@ -262,12 +267,13 @@
 
   @media (max-width: 991px) {
       .hero-banner-slider {
-          max-height: 400px;
           margin-bottom: 30px;
       }
 
       .hero-banner-slider .swiper-slide {
-          height: 400px;
+          aspect-ratio: 4 / 3;
+          min-height: 320px;
+          max-height: 480px;
       }
 
       .hero-banner-slider .swiper-button-next,
@@ -284,13 +290,14 @@
 
   @media (max-width: 575px) {
       .hero-banner-slider {
-        max-height: 320px;
           margin-bottom: 20px;
           border-radius: 8px;
       }
 
       .hero-banner-slider .swiper-slide {
-        height: 320px;
+        aspect-ratio: 4 / 5;
+        min-height: 320px;
+        max-height: 520px;
         background-color: #f5f5f5;
         background-position: center;
         background-repeat: no-repeat;
@@ -328,9 +335,17 @@
       <div class="swiper-wrapper">
         @foreach($sliders as $slider)
           @if($slider->status)
+          @php
+            $desktopImage = $slider->image_laptop ?? $slider->image;
+            $mobileImage = $slider->image_mobile ?? $desktopImage;
+          @endphp
           <div class="swiper-slide">
             <a href="{{ $slider->url ?? '#' }}" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%; height: 100%;">
-              <img src="{{ asset('storage/' . $slider->image) }}" alt="{{ $slider->title }}" loading="lazy">
+              <picture>
+                <source media="(max-width: 767px)" srcset="{{ asset('storage/' . $mobileImage) }}">
+                <source media="(min-width: 768px)" srcset="{{ asset('storage/' . $desktopImage) }}">
+                <img src="{{ asset('storage/' . $desktopImage) }}" alt="{{ $slider->title ?? 'Homepage slider' }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}">
+              </picture>
             </a>
           </div>
           @endif
@@ -399,51 +414,70 @@
 
                 @foreach($categories as $index => $category)
 
-                <div class="category-slide {{ $index == 1 ? 'active' : 'small' }}">
+                    <div class="category-slide {{ $index == 1 ? 'active' : 'small' }}">
 
-                    <div class="category1-item">
+                        <div class="category1-item">
 
-                        <div class="category1-item__thumb">
-                            <img
-                                src="{{ $category->image ? asset('storage/' . $category->image) : asset('frontend-assets/imgs/category/category-thumb1_1.jpg') }}"
-                                alt="{{ $category->name }}">
+                            <div class="category1-item__thumb">
+                                <picture>
+
+                                    {{-- Mobile Image --}}
+                                    @if(!empty($category->image_mobile))
+                                        <source
+                                            media="(max-width: 767px)"
+                                            srcset="{{ asset('storage/' . $category->image_mobile) }}">
+                                    @endif
+
+                                    {{-- Desktop / Laptop Image --}}
+                                    <img
+                                        src="{{ !empty($category->image_laptop)
+                                                ? asset('storage/' . $category->image_laptop)
+                                                : asset('frontend-assets/imgs/category/category-thumb1_1.jpg') }}"
+                                        alt="{{ $category->name }}"
+                                        loading="lazy">
+                                </picture>
+                            </div>
+
+                            {{-- Optional Content --}}
+                            {{--
+                            <div class="category-content">
+                                <p class="category-tag">
+                                    {{ $index == 1 ? 'Trending' : 'Professional' }}
+                                </p>
+
+                                <h2 class="category-title">
+                                    <a href="{{ route('public.shop', ['category' => $category->slug]) }}">
+                                        {{ $category->name }}
+                                    </a>
+                                </h2>
+                            </div>
+                            --}}
+
                         </div>
-
-                        <!-- @if($index == 1)
-                        <div class="category1-item__offer">
-                            Up to 20%
-                        </div>
-                        @endif -->
-
-                        <!-- <div class="category-content">
-
-                            <p class="category-tag">
-                                {{ $index == 1 ? 'Trending' : 'Professional' }}
-                            </p>
-                          {{$category->name }}
-                            <h2 class="category-title">
-                                <a href="{{ route('public.shop', ['category' => $category->slug]) }}">
-                                    {{ $category->name }}
-                                </a>
-                            </h2>
-
-
-                        </div> -->
 
                     </div>
-
-                </div>
 
                 @endforeach
 
             </div>
 
             <div class="category-slider-nav" role="group" aria-label="Category carousel controls">
-                <button type="button" id="prevCategory" class="category-slider-nav__btn" aria-label="Show previous category">
+                <button
+                    type="button"
+                    id="prevCategory"
+                    class="category-slider-nav__btn"
+                    aria-label="Show previous category">
+
                     <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
                     <span>Previous</span>
                 </button>
-                <button type="button" id="nextCategory" class="category-slider-nav__btn" aria-label="Show next category">
+
+                <button
+                    type="button"
+                    id="nextCategory"
+                    class="category-slider-nav__btn"
+                    aria-label="Show next category">
+
                     <span>Next</span>
                     <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                 </button>
