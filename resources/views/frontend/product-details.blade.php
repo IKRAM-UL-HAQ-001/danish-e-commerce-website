@@ -115,7 +115,7 @@
                       </div>
                     </div>
                     <p class="product-details-content__desc">
-                      {{ $product->description ?? 'No description available for this product.' }}
+                      {{ Str::limit(strip_tags($product->description ?? ''), 200) ?: 'No description available for this product.' }}
                     </p>
                     <div class="product-details-content__info">
                       <p class="label mb-3">Quantity</p>
