@@ -180,7 +180,8 @@
                     <div class="col-md-6 mb-3">
                         <label for="color_hex">Color (pick)</label>
                         <input type="hidden" name="color_hex" id="color_hex" value="#ffffff">
-                        <div id="colorPickerAdd"></div>
+                        <div id="colorPickerAdd" style="display:inline-block; vertical-align:middle;"></div>
+                        <button type="button" id="openColorAdd" class="btn btn-sm btn-outline-secondary" style="margin-left:8px; vertical-align:middle;">Open Picker</button>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="status">Status</label>
@@ -269,7 +270,8 @@
                     <div class="col-md-6 mb-3">
                         <label for="edit_color_hex">Color (pick)</label>
                         <input type="hidden" name="color_hex" id="edit_color_hex" value="#ffffff">
-                        <div id="colorPickerEdit"></div>
+                        <div id="colorPickerEdit" style="display:inline-block; vertical-align:middle;"></div>
+                        <button type="button" id="openColorEdit" class="btn btn-sm btn-outline-secondary" style="margin-left:8px; vertical-align:middle;">Open Picker</button>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="edit_status">Status</label>
@@ -480,6 +482,26 @@ $('#editProductModal').on('shown.bs.modal', function () {
         const hex = document.querySelector('#edit_color_hex').value || '#ffffff';
         try { pickrEdit.setColor(hex); } catch (e) {}
     }, 50);
+});
+</script>
+
+<style>
+/* Ensure Pickr popup is above modal and clickable */
+.pcr-app, .pcr-picker, .pickr, .pcr { z-index: 20000 !important; pointer-events: auto !important; }
+</style>
+
+<script>
+// Debug helpers and fallback open buttons
+document.addEventListener('DOMContentLoaded', function() {
+    $('#openColorAdd').on('click', function(){
+        if (pickrAdd) { pickrAdd.show(); console.log('pickrAdd.show() called'); }
+    });
+    $('#openColorEdit').on('click', function(){
+        if (pickrEdit) { pickrEdit.show(); console.log('pickrEdit.show() called'); }
+    });
+
+    // Log if pickr instances exist
+    console.log('Pickr instances initial state:', { pickrAdd: !!pickrAdd, pickrEdit: !!pickrEdit });
 });
 </script>
 @endpush
