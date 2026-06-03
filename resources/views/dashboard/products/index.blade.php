@@ -180,7 +180,7 @@
                     <div class="col-md-6 mb-3">
                         <label for="color_hex">Color (pick)</label>
                         <input type="hidden" name="color_hex" id="color_hex" value="">
-                        <div id="colorPickerAdd" style="display:inline-block; vertical-align:middle;">
+                        <div id="colorPickerAdd" style="display:inline-block; vertical-align:middle;"></div>
                             <select id="color_mode" class="form-select form-select-sm" style="width:120px; display:inline-block; margin-left:8px; vertical-align:middle;">
                                 <option value="">Select format</option>
                                 <option value="hex">HEX</option>
@@ -189,7 +189,7 @@
                             </select>
                             <input type="text" id="color_hex_input" class="form-control form-control-sm" placeholder="" style="width:160px; display:inline-block; margin-left:8px; vertical-align:middle;">
                             <button type="button" id="openColorAdd" class="btn btn-sm btn-outline-secondary" style="margin-left:8px; vertical-align:middle;">Open Picker</button>
-                        </div>
+                        
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="status">Status</label>
