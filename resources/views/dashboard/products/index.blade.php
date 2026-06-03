@@ -112,7 +112,7 @@
 
 <!-- Add Product Modal -->
 <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="modal-content">
             @csrf
             <div class="modal-header">
@@ -203,7 +203,7 @@
 
 <!-- Edit Product Modal -->
 <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <form id="editProductForm" action="{{ route('products.update') }}" method="POST" enctype="multipart/form-data" class="modal-content">
             @csrf
             <input type="hidden" name="slug" id="edit_slug">
@@ -494,6 +494,10 @@ $('#editProductModal').on('shown.bs.modal', function () {
 <style>
 /* Ensure Pickr popup is above modal and clickable */
 .pcr-app, .pcr-picker, .pickr, .pcr { z-index: 20000 !important; pointer-events: auto !important; }
+/* On small screens avoid translating modal dialog when keyboard opens */
+@media (max-width: 767.98px) {
+    .modal.show .modal-dialog { transform: none !important; top: 0 !important; }
+}
 </style>
 
 <script>
