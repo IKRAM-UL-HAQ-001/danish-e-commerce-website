@@ -181,6 +181,7 @@
                         <label for="color_hex">Color (pick)</label>
                         <input type="hidden" name="color_hex" id="color_hex" value="#ffffff">
                         <div id="colorPickerAdd" style="display:inline-block; vertical-align:middle;"></div>
+                        <input type="text" id="color_hex_input" class="form-control form-control-sm" placeholder="#rrggbb or rgba(...)" style="width:160px; display:inline-block; margin-left:8px; vertical-align:middle;">
                         <button type="button" id="openColorAdd" class="btn btn-sm btn-outline-secondary" style="margin-left:8px; vertical-align:middle;">Open Picker</button>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -271,6 +272,7 @@
                         <label for="edit_color_hex">Color (pick)</label>
                         <input type="hidden" name="color_hex" id="edit_color_hex" value="#ffffff">
                         <div id="colorPickerEdit" style="display:inline-block; vertical-align:middle;"></div>
+                        <input type="text" id="edit_color_hex_input" class="form-control form-control-sm" placeholder="#rrggbb or rgba(...)" style="width:160px; display:inline-block; margin-left:8px; vertical-align:middle;">
                         <button type="button" id="openColorEdit" class="btn btn-sm btn-outline-secondary" style="margin-left:8px; vertical-align:middle;">Open Picker</button>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -440,10 +442,12 @@ $('#addProductModal').on('shown.bs.modal', function () {
         pickrAdd.on('change', (color) => {
             const hex = color.toHEXA().toString();
             document.querySelector('#color_hex').value = hex;
+            const input = document.querySelector('#color_hex_input'); if (input) input.value = hex;
         });
         pickrAdd.on('save', (color) => {
             const hex = color.toHEXA().toString();
             document.querySelector('#color_hex').value = hex;
+            const input = document.querySelector('#color_hex_input'); if (input) input.value = hex;
             pickrAdd.hide();
         });
     } else {
@@ -469,10 +473,12 @@ $('#editProductModal').on('shown.bs.modal', function () {
         pickrEdit.on('change', (color) => {
             const hex = color.toHEXA().toString();
             document.querySelector('#edit_color_hex').value = hex;
+            const input = document.querySelector('#edit_color_hex_input'); if (input) input.value = hex;
         });
         pickrEdit.on('save', (color) => {
             const hex = color.toHEXA().toString();
             document.querySelector('#edit_color_hex').value = hex;
+            const input = document.querySelector('#edit_color_hex_input'); if (input) input.value = hex;
             pickrEdit.hide();
         });
     }
@@ -502,6 +508,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Log if pickr instances exist
     console.log('Pickr instances initial state:', { pickrAdd: !!pickrAdd, pickrEdit: !!pickrEdit });
+    // Manual input syncing
+    $('#color_hex_input').on('input', function(){
+        const val = $(this).val().trim();
+        if (!val) return;
+        $('#color_hex').val(val);
+        if (pickrAdd) {
+            try { pickrAdd.setColor(val); } catch (e) { console.warn('pickrAdd.setColor failed', e); }
+        }
+    });
+    $('#edit_color_hex_input').on('input', function(){
+        const val = $(this).val().trim();
+        if (!val) return;
+        $('#edit_color_hex').val(val);
+        if (pickrEdit) {
+            try { pickrEdit.setColor(val); } catch (e) { console.warn('pickrEdit.setColor failed', e); }
+        }
+    });
 });
 </script>
 @endpush
