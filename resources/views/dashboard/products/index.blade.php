@@ -179,9 +179,15 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="color_hex">Color (pick)</label>
-                        <input type="hidden" name="color_hex" id="color_hex" value="#ffffff">
+                        <input type="hidden" name="color_hex" id="color_hex" value="">
                         <div id="colorPickerAdd" style="display:inline-block; vertical-align:middle;"></div>
-                        <input type="text" id="color_hex_input" class="form-control form-control-sm" placeholder="#rrggbb or rgba(...)" style="width:160px; display:inline-block; margin-left:8px; vertical-align:middle;">
+                        <select id="color_mode" class="form-select form-select-sm" style="width:120px; display:inline-block; margin-left:8px; vertical-align:middle;">
+                            <option value="">Select format</option>
+                            <option value="hex">HEX</option>
+                            <option value="rgba">RGBA</option>
+                            <option value="hsla">HSLA</option>
+                        </select>
+                        <input type="text" id="color_hex_input" class="form-control form-control-sm" placeholder="" style="width:160px; display:inline-block; margin-left:8px; vertical-align:middle;">
                         <button type="button" id="openColorAdd" class="btn btn-sm btn-outline-secondary" style="margin-left:8px; vertical-align:middle;">Open Picker</button>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -270,9 +276,15 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="edit_color_hex">Color (pick)</label>
-                        <input type="hidden" name="color_hex" id="edit_color_hex" value="#ffffff">
+                        <input type="hidden" name="color_hex" id="edit_color_hex" value="">
                         <div id="colorPickerEdit" style="display:inline-block; vertical-align:middle;"></div>
-                        <input type="text" id="edit_color_hex_input" class="form-control form-control-sm" placeholder="#rrggbb or rgba(...)" style="width:160px; display:inline-block; margin-left:8px; vertical-align:middle;">
+                        <select id="edit_color_mode" class="form-select form-select-sm" style="width:120px; display:inline-block; margin-left:8px; vertical-align:middle;">
+                            <option value="">Select format</option>
+                            <option value="hex">HEX</option>
+                            <option value="rgba">RGBA</option>
+                            <option value="hsla">HSLA</option>
+                        </select>
+                        <input type="text" id="edit_color_hex_input" class="form-control form-control-sm" placeholder="" style="width:160px; display:inline-block; margin-left:8px; vertical-align:middle;">
                         <button type="button" id="openColorEdit" class="btn btn-sm btn-outline-secondary" style="margin-left:8px; vertical-align:middle;">Open Picker</button>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -385,6 +397,14 @@ $(document).ready(function () {
         // -----------------------------
         $('#edit_color_name').val(productData.color_name || '');
         $('#edit_color_hex').val(productData.color_hex || '');
+        // set edit color mode and visible input
+        if (productData.color_hex) {
+            $('#edit_color_mode').val('hex');
+            $('#edit_color_hex_input').val(productData.color_hex);
+        } else {
+            $('#edit_color_mode').val('');
+            $('#edit_color_hex_input').val('');
+        }
 
         // -----------------------------
         // Image Preview (Safe URLs)
@@ -425,11 +445,15 @@ let pickrAdd = null;
 let pickrEdit = null;
 
 $('#addProductModal').on('shown.bs.modal', function () {
+    // clear default values so user starts empty
+    $('#color_mode').val('');
+    $('#color_hex_input').val('');
+    $('#color_hex').val('');
     if (!pickrAdd) {
         pickrAdd = Pickr.create({
             el: '#colorPickerAdd',
             theme: 'classic',
-            default: document.querySelector('#color_hex')?.value || '#ffffff',
+            default: document.querySelector('#color_hex')?.value || null,
             appendTo: document.querySelector('#addProductModal .modal-body'),
             components: {
                 preview: true,
@@ -438,16 +462,27 @@ $('#addProductModal').on('shown.bs.modal', function () {
                 interaction: { hex: true, rgba: true, hsla: true, input: true, save: true }
             }
         });
-
         pickrAdd.on('change', (color) => {
-            const hex = color.toHEXA().toString();
-            document.querySelector('#color_hex').value = hex;
-            const input = document.querySelector('#color_hex_input'); if (input) input.value = hex;
+            const mode = $('#color_mode').val();
+            const input = document.querySelector('#color_hex_input');
+            if (mode === 'rgba') {
+                const rgba = color.toRGBA();
+                const str = `rgba(${Math.round(rgba[0])}, ${Math.round(rgba[1])}, ${Math.round(rgba[2])}, ${+rgba[3].toFixed(2)})`;
+                if (input) input.value = str;
+            } else if (mode === 'hsla') {
+                const hsla = color.toHSLA();
+                const str = `hsla(${Math.round(hsla[0])}, ${Math.round(hsla[1]*100)}%, ${Math.round(hsla[2]*100)}%, ${+hsla[3].toFixed(2)})`;
+                if (input) input.value = str;
+            } else {
+                const hex = color.toHEXA().toString();
+                if (input) input.value = hex;
+            }
+            // always update hidden hex value
+            const hexHidden = color.toHEXA().toString();
+            document.querySelector('#color_hex').value = hexHidden;
         });
         pickrAdd.on('save', (color) => {
-            const hex = color.toHEXA().toString();
-            document.querySelector('#color_hex').value = hex;
-            const input = document.querySelector('#color_hex_input'); if (input) input.value = hex;
+            pickrAdd.emit('change', color);
             pickrAdd.hide();
         });
     } else {
@@ -460,7 +495,7 @@ $('#editProductModal').on('shown.bs.modal', function () {
         pickrEdit = Pickr.create({
             el: '#colorPickerEdit',
             theme: 'classic',
-            default: document.querySelector('#edit_color_hex')?.value || '#ffffff',
+            default: document.querySelector('#edit_color_hex')?.value || null,
             appendTo: document.querySelector('#editProductModal .modal-body'),
             components: {
                 preview: true,
@@ -469,16 +504,26 @@ $('#editProductModal').on('shown.bs.modal', function () {
                 interaction: { hex: true, rgba: true, hsla: true, input: true, save: true }
             }
         });
-
         pickrEdit.on('change', (color) => {
-            const hex = color.toHEXA().toString();
-            document.querySelector('#edit_color_hex').value = hex;
-            const input = document.querySelector('#edit_color_hex_input'); if (input) input.value = hex;
+            const mode = $('#edit_color_mode').val();
+            const input = document.querySelector('#edit_color_hex_input');
+            if (mode === 'rgba') {
+                const rgba = color.toRGBA();
+                const str = `rgba(${Math.round(rgba[0])}, ${Math.round(rgba[1])}, ${Math.round(rgba[2])}, ${+rgba[3].toFixed(2)})`;
+                if (input) input.value = str;
+            } else if (mode === 'hsla') {
+                const hsla = color.toHSLA();
+                const str = `hsla(${Math.round(hsla[0])}, ${Math.round(hsla[1]*100)}%, ${Math.round(hsla[2]*100)}%, ${+hsla[3].toFixed(2)})`;
+                if (input) input.value = str;
+            } else {
+                const hex = color.toHEXA().toString();
+                if (input) input.value = hex;
+            }
+            const hexHidden = color.toHEXA().toString();
+            document.querySelector('#edit_color_hex').value = hexHidden;
         });
         pickrEdit.on('save', (color) => {
-            const hex = color.toHEXA().toString();
-            document.querySelector('#edit_color_hex').value = hex;
-            const input = document.querySelector('#edit_color_hex_input'); if (input) input.value = hex;
+            pickrEdit.emit('change', color);
             pickrEdit.hide();
         });
     }
@@ -513,21 +558,95 @@ document.addEventListener('DOMContentLoaded', function() {
     // Log if pickr instances exist
     console.log('Pickr instances initial state:', { pickrAdd: !!pickrAdd, pickrEdit: !!pickrEdit });
     // Manual input syncing
+    // Helper conversions
+    function componentToHex(c) {
+        const hex = Number(c).toString(16);
+        return hex.length == 1 ? '0' + hex : hex;
+    }
+    function rgbToHex(r,g,b) {
+        return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+    function hslToRgb(h, s, l){
+        s = s; l = l;
+        h /= 360;
+        let r, g, b;
+        if(s === 0){ r = g = b = l; }
+        else {
+            const hue2rgb = function(p, q, t){
+                if(t < 0) t += 1;
+                if(t > 1) t -= 1;
+                if(t < 1/6) return p + (q - p) * 6 * t;
+                if(t < 1/2) return q;
+                if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            };
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1/3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1/3);
+        }
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+
+    function parseAndSetHiddenFromInput(val, mode, hiddenSelector){
+        if(!val) return;
+        if(mode === 'hex'){
+            const m = val.trim();
+            if(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(m)){
+                // normalize to 6-digit
+                if(m.length === 4){
+                    const r = m[1], g = m[2], b = m[3];
+                    const full = '#' + r + r + g + g + b + b;
+                    $(hiddenSelector).val(full);
+                } else { $(hiddenSelector).val(m); }
+            }
+        } else if(mode === 'rgba'){
+            const m = val.replace(/\s+/g,'');
+            const rg = m.match(/^rgba?\((\d{1,3}),(\d{1,3}),(\d{1,3})(?:,(0|1|0?\.\d+))?\)$/i);
+            if(rg){ const r=+rg[1], g=+rg[2], b=+rg[3]; $(hiddenSelector).val(rgbToHex(r,g,b)); }
+        } else if(mode === 'hsla'){
+            const m = val.replace(/\s+/g,'');
+            const hs = m.match(/^hsla?\((\d{1,3}),(\d{1,3})%(?:,(\d{1,3})%)?(?:,(0|1|0?\.\d+))?\)$/i);
+            if(hs){ const h=+hs[1], s=+hs[2]/100, l=+(hs[3]||50)/100; const rgb = hslToRgb(h,s,l); $(hiddenSelector).val(rgbToHex(rgb[0],rgb[1],rgb[2])); }
+        }
+    }
+
     $('#color_hex_input').on('input', function(){
         const val = $(this).val().trim();
+        const mode = $('#color_mode').val();
         if (!val) return;
-        $('#color_hex').val(val);
+        parseAndSetHiddenFromInput(val, mode, '#color_hex');
         if (pickrAdd) {
             try { pickrAdd.setColor(val); } catch (e) { console.warn('pickrAdd.setColor failed', e); }
         }
     });
     $('#edit_color_hex_input').on('input', function(){
         const val = $(this).val().trim();
+        const mode = $('#edit_color_mode').val();
         if (!val) return;
-        $('#edit_color_hex').val(val);
+        parseAndSetHiddenFromInput(val, mode, '#edit_color_hex');
         if (pickrEdit) {
             try { pickrEdit.setColor(val); } catch (e) { console.warn('pickrEdit.setColor failed', e); }
         }
+    });
+
+    // Mode change handlers
+    $('#color_mode').on('change', function(){
+        const m = $(this).val();
+        const inp = $('#color_hex_input'); inp.val(''); $('#color_hex').val('');
+        if(m === 'hex') inp.attr('placeholder','#rrggbb');
+        else if(m === 'rgba') inp.attr('placeholder','rgba(255,255,255,1)');
+        else if(m === 'hsla') inp.attr('placeholder','hsla(210,50%,50%,1)');
+        else inp.attr('placeholder','');
+    });
+    $('#edit_color_mode').on('change', function(){
+        const m = $(this).val();
+        const inp = $('#edit_color_hex_input'); inp.val(''); $('#edit_color_hex').val('');
+        if(m === 'hex') inp.attr('placeholder','#rrggbb');
+        else if(m === 'rgba') inp.attr('placeholder','rgba(255,255,255,1)');
+        else if(m === 'hsla') inp.attr('placeholder','hsla(210,50%,50%,1)');
+        else inp.attr('placeholder','');
     });
 });
 </script>
