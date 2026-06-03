@@ -10,6 +10,11 @@
     </div>
     <h6 class="mb-0 fw-bold">{{ Auth::user()->name }}</h6>
     <small class="text-muted text-uppercase" style="font-size: 10px;">{{ Auth::user()->role }}</small>
+    <div class="mt-2">
+      <a href="{{ route('profile.index') }}" class="btn btn-sm btn-primary me-1">Profile</a>
+      <a href="#" class="btn btn-sm btn-outline-secondary" onclick="event.preventDefault(); document.getElementById('sidebar-logout-form').submit();">Logout</a>
+      <form id="sidebar-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+    </div>
   </div>
   <ul class="nav">
     <!-- Dashboard -->
