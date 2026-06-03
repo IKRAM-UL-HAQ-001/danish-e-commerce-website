@@ -179,7 +179,8 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="color_hex">Color (pick)</label>
-                        <input type="color" name="color_hex" class="form-control" style="height:45px; padding:3px;">
+                        <input type="hidden" name="color_hex" id="color_hex" value="#ffffff">
+                        <div id="colorPickerAdd"></div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="status">Status</label>
@@ -267,7 +268,8 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="edit_color_hex">Color (pick)</label>
-                        <input type="color" name="color_hex" id="edit_color_hex" class="form-control" style="height:45px; padding:3px;">
+                        <input type="hidden" name="color_hex" id="edit_color_hex" value="#ffffff">
+                        <div id="colorPickerEdit"></div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="edit_status">Status</label>
@@ -291,6 +293,9 @@
 <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<!-- Pickr color picker (shows hex, rgba, hsla inputs) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
 <script>
     // -----------------------------
     // CKEditor for Add Description
@@ -407,6 +412,79 @@ $(document).ready(function () {
         }
     });
 
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Pickr for Add form
+    const pickrAdd = Pickr.create({
+        el: '#colorPickerAdd',
+        theme: 'classic',
+        default: document.querySelector('#color_hex')?.value || '#ffffff',
+        components: {
+            preview: true,
+            opacity: true,
+            hue: true,
+            interaction: {
+                hex: true,
+                rgba: true,
+                hsla: true,
+                input: true,
+                save: true
+            }
+        }
+    });
+
+    pickrAdd.on('change', (color) => {
+        const hex = color.toHEXA().toString();
+        document.querySelector('#color_hex').value = hex;
+    });
+    pickrAdd.on('save', (color) => {
+        const hex = color.toHEXA().toString();
+        document.querySelector('#color_hex').value = hex;
+        pickrAdd.hide();
+    });
+
+    // Initialize Pickr for Edit form
+    const pickrEdit = Pickr.create({
+        el: '#colorPickerEdit',
+        theme: 'classic',
+        default: document.querySelector('#edit_color_hex')?.value || '#ffffff',
+        components: {
+            preview: true,
+            opacity: true,
+            hue: true,
+            interaction: {
+                hex: true,
+                rgba: true,
+                hsla: true,
+                input: true,
+                save: true
+            }
+        }
+    });
+
+    pickrEdit.on('change', (color) => {
+        const hex = color.toHEXA().toString();
+        document.querySelector('#edit_color_hex').value = hex;
+    });
+    pickrEdit.on('save', (color) => {
+        const hex = color.toHEXA().toString();
+        document.querySelector('#edit_color_hex').value = hex;
+        pickrEdit.hide();
+    });
+
+    // When edit modal is opened by edit-btn click, update pickrEdit color
+    $(document).on('click', '.edit-btn', function () {
+        setTimeout(function(){
+            const hex = document.querySelector('#edit_color_hex').value || '#ffffff';
+            try { pickrEdit.setColor(hex); } catch (e) { console.warn(e); }
+        }, 50);
+    });
+
+    // Ensure add pickr reflects hidden input
+    try { pickrAdd.setColor(document.querySelector('#color_hex').value || '#ffffff'); } catch (e) {}
 });
 </script>
 @endpush
