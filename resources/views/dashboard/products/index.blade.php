@@ -416,75 +416,70 @@ $(document).ready(function () {
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Pickr for Add form
-    const pickrAdd = Pickr.create({
-        el: '#colorPickerAdd',
-        theme: 'classic',
-        default: document.querySelector('#color_hex')?.value || '#ffffff',
-        components: {
-            preview: true,
-            opacity: true,
-            hue: true,
-            interaction: {
-                hex: true,
-                rgba: true,
-                hsla: true,
-                input: true,
-                save: true
+// Create Pickr when modals are shown to avoid rendering issues while hidden
+let pickrAdd = null;
+let pickrEdit = null;
+
+$('#addProductModal').on('shown.bs.modal', function () {
+    if (!pickrAdd) {
+        pickrAdd = Pickr.create({
+            el: '#colorPickerAdd',
+            theme: 'classic',
+            default: document.querySelector('#color_hex')?.value || '#ffffff',
+            appendTo: document.querySelector('#addProductModal .modal-body'),
+            components: {
+                preview: true,
+                opacity: true,
+                hue: true,
+                interaction: { hex: true, rgba: true, hsla: true, input: true, save: true }
             }
-        }
-    });
+        });
 
-    pickrAdd.on('change', (color) => {
-        const hex = color.toHEXA().toString();
-        document.querySelector('#color_hex').value = hex;
-    });
-    pickrAdd.on('save', (color) => {
-        const hex = color.toHEXA().toString();
-        document.querySelector('#color_hex').value = hex;
-        pickrAdd.hide();
-    });
+        pickrAdd.on('change', (color) => {
+            const hex = color.toHEXA().toString();
+            document.querySelector('#color_hex').value = hex;
+        });
+        pickrAdd.on('save', (color) => {
+            const hex = color.toHEXA().toString();
+            document.querySelector('#color_hex').value = hex;
+            pickrAdd.hide();
+        });
+    } else {
+        try { pickrAdd.setColor(document.querySelector('#color_hex').value || '#ffffff'); } catch (e) {}
+    }
+});
 
-    // Initialize Pickr for Edit form
-    const pickrEdit = Pickr.create({
-        el: '#colorPickerEdit',
-        theme: 'classic',
-        default: document.querySelector('#edit_color_hex')?.value || '#ffffff',
-        components: {
-            preview: true,
-            opacity: true,
-            hue: true,
-            interaction: {
-                hex: true,
-                rgba: true,
-                hsla: true,
-                input: true,
-                save: true
+$('#editProductModal').on('shown.bs.modal', function () {
+    if (!pickrEdit) {
+        pickrEdit = Pickr.create({
+            el: '#colorPickerEdit',
+            theme: 'classic',
+            default: document.querySelector('#edit_color_hex')?.value || '#ffffff',
+            appendTo: document.querySelector('#editProductModal .modal-body'),
+            components: {
+                preview: true,
+                opacity: true,
+                hue: true,
+                interaction: { hex: true, rgba: true, hsla: true, input: true, save: true }
             }
-        }
-    });
+        });
 
-    pickrEdit.on('change', (color) => {
-        const hex = color.toHEXA().toString();
-        document.querySelector('#edit_color_hex').value = hex;
-    });
-    pickrEdit.on('save', (color) => {
-        const hex = color.toHEXA().toString();
-        document.querySelector('#edit_color_hex').value = hex;
-        pickrEdit.hide();
-    });
+        pickrEdit.on('change', (color) => {
+            const hex = color.toHEXA().toString();
+            document.querySelector('#edit_color_hex').value = hex;
+        });
+        pickrEdit.on('save', (color) => {
+            const hex = color.toHEXA().toString();
+            document.querySelector('#edit_color_hex').value = hex;
+            pickrEdit.hide();
+        });
+    }
 
-    // When edit modal is opened by edit-btn click, update pickrEdit color
-    $(document).on('click', '.edit-btn', function () {
-        setTimeout(function(){
-            const hex = document.querySelector('#edit_color_hex').value || '#ffffff';
-            try { pickrEdit.setColor(hex); } catch (e) { console.warn(e); }
-        }, 50);
-    });
-
-    // Ensure add pickr reflects hidden input
-    try { pickrAdd.setColor(document.querySelector('#color_hex').value || '#ffffff'); } catch (e) {}
+    // update pickr color from hidden input when modal opens
+    setTimeout(function(){
+        const hex = document.querySelector('#edit_color_hex').value || '#ffffff';
+        try { pickrEdit.setColor(hex); } catch (e) {}
+    }, 50);
 });
 </script>
 @endpush
