@@ -645,7 +645,7 @@
                         @endphp
                         <div class="best-selling-product-card">
                           <div class="best-selling-product-card__thumb1">
-                            <img src="{{ $largeProduct->image ? asset('storage/' . $largeProduct->image) : asset('frontend-assets/imgs/best-selling-products/best-selling-products1_1.jpg') }}" alt="{{ $largeProduct->name }}">
+                            <img src="{{ $largeProduct->image_mobile ? asset('storage/' . $largeProduct->image_mobile) : asset('frontend-assets/imgs/best-selling-products/best-selling-products1_1.jpg') }}" alt="{{ $largeProduct->name }}">
                           </div>
                           <div class="best-selling-product-card__content1">
                             <h3 class="best-selling-product-card__content1-title">
