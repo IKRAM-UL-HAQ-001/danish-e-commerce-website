@@ -491,7 +491,7 @@
                 <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
                   <div class="trending-product-card">
                     <div class="trending-product-card__thumb">
-                      <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $product->name }}">
+                      <img src="{{ $product->image_mobile ? asset('storage/' . $product->image_mobile) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $product->name }}">
                       @if($product->is_new)
                         <div class="trending-product-card__thumb-offer">New</div>
                       @endif
