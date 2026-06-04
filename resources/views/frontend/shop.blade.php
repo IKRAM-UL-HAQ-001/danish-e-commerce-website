@@ -216,10 +216,15 @@
                                 </div>
                                 <div class="shop-card__content">
                                     <div class="shop-card__content-title"><a href="{{ route('public.product.details', $product->slug) }}">{{ $product->name }}</a></div>
+                                    @php
+                                        $avgRating = $product->reviews()->avg('rating') ?? 0;
+                                        $avgRatingFormatted = number_format($avgRating, 1);
+                                        $reviewsCount = $product->reviews()->count();
+                                    @endphp
                                     <ul class="shop-card__content-list">
                                         <li class="shop-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
-                                        <li class="shop-card__content-list-point">5.0</li>
-                                        <li class="shop-card__content-list-text">(135 Reviews)</li>
+                                        <li class="shop-card__content-list-point">{{ $avgRatingFormatted }}</li>
+                                        <li class="shop-card__content-list-text">({{ $reviewsCount }} {{ $reviewsCount == 1 ? 'Review' : 'Reviews' }})</li>
                                     </ul>
                                     <h4 class="shop-card__content-dollar">
                                         £{{ number_format($product->price, 2) }}
