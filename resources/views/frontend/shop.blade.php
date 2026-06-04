@@ -125,7 +125,7 @@
                                 <li class="shop-sidebar__categories-item">
                                     <a href="{{ route('public.shop', ['category' => $category->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $category->slug ? 'active' : '' }} d-flex align-items-center">
                                         @if($category->image)
-                                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
+                                            <img src="{{ asset('storage/' . $category->image_mobile) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
                                         @else
                                             <i class="fa-solid fa-chevron-right" style="margin-right: 10px;"></i>
                                         @endif
@@ -199,7 +199,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s" data-price="{{ $product->price }}" data-rating="5">
                             <div class="shop-card">
                                 <div class="shop-card__thumb">
-                                    <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $product->name }}">
+                                    <img src="{{ $product->image_mobile ? asset('storage/' . $product->image) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $product->name }}">
                                     @if($product->created_at->diffInDays() < 7)
                                     <div class="shop-card__thumb-offer">New</div>
                                     @endif
