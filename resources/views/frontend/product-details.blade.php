@@ -44,7 +44,7 @@
                       <div id="thumb-one" class="tab-pane fade show active" role="tabpanel">
                         <div class="product-details-thumb">
                           <div class="thumb">
-                            <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('frontend-assets/imgs/inner/product-details/product-details-thumb1_1.jpg') }}"
+                            <img src="{{ $product->image_mobile? asset('storage/' . $product->image_mobile) : asset('frontend-assets/imgs/inner/product-details/product-details-thumb1_1.jpg') }}"
                               alt="{{ $product->name }}">
                           </div>
                           <div class="content">
