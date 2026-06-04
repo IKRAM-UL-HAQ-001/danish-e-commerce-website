@@ -18,7 +18,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->integer('stock')->default(0);
-            $table->string('image')->nullable();
+            $table->string('image_mobile')->nullable();
+            $table->string('image_desktop')->nullable();
+            $table->string('mobile_banner')->nullable();
+            $table->string('laptop_banner')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->boolean('status')->default(1);
             $table->timestamps();
