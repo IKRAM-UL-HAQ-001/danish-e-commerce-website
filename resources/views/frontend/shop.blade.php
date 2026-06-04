@@ -196,7 +196,12 @@
                     </div>
                     <div class="row g-4" id="shop-product-grid">
                         @foreach($products as $product)
-                        <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s" data-price="{{ $product->price }}" data-rating="5">
+                        @php
+                            $avgRating = $product->reviews()->avg('rating') ?? 0;
+                            $avgRatingFormatted = number_format($avgRating, 1);
+                            $reviewsCount = $product->reviews()->count();
+                        @endphp
+                        <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s" data-price="{{ $product->price }}" data-rating="{{ $avgRating }}">
                             <div class="shop-card">
                                 <div class="shop-card__thumb">
                                     <img src="{{ $product->image_mobile ? asset('storage/' . $product->image) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $product->name }}">
@@ -216,13 +221,15 @@
                                 </div>
                                 <div class="shop-card__content">
                                     <div class="shop-card__content-title"><a href="{{ route('public.product.details', $product->slug) }}">{{ $product->name }}</a></div>
-                                    @php
-                                        $avgRating = $product->reviews()->avg('rating') ?? 0;
-                                        $avgRatingFormatted = number_format($avgRating, 1);
-                                        $reviewsCount = $product->reviews()->count();
-                                    @endphp
                                     <ul class="shop-card__content-list">
-                                        <li class="shop-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
+                                        @php $filled = floor($avgRating); @endphp
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= $filled)
+                                                <li class="shop-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
+                                            @else
+                                                <li class="shop-card__content-list-start"><i class="fa-regular fa-star fa-fw"></i></li>
+                                            @endif
+                                        @endfor
                                         <li class="shop-card__content-list-point">{{ $avgRatingFormatted }}</li>
                                         <li class="shop-card__content-list-text">({{ $reviewsCount }} {{ $reviewsCount == 1 ? 'Review' : 'Reviews' }})</li>
                                     </ul>
