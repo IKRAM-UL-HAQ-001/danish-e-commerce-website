@@ -198,7 +198,7 @@
                                     @php
                                         $subtotal += $details['price'] * $details['quantity'];
                                         $product = \App\Models\Product::find($id);
-                                        $productImage = $product ? ($product->image_mobile ?? $product->image_laptop ?? null) : null;
+                                        $productImage = $product ? ($product->image_mobile ?? $product->image_desktop ?? null) : null;
                                         $imagePath = $productImage ?? ($details['image'] ?? null);
                                     @endphp
                                     <div class="checkout-page__order-summary-item">

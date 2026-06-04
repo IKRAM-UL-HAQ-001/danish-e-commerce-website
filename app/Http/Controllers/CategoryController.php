@@ -33,7 +33,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_desktop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'status' => 'required|boolean',
         ]);
 
@@ -42,15 +42,15 @@ class CategoryController extends Controller
         if ($request->hasFile('image_mobile')) {
             $imageMobilePath = $request->file('image_mobile')->store('categories/mobile', 'public');
         }
-        if ($request->hasFile('image_laptop')) {
-            $imageLaptopPath = $request->file('image_laptop')->store('categories/laptop', 'public');
+        if ($request->hasFile('image_desktop')) {
+            $imageLaptopPath = $request->file('image_desktop')->store('categories/laptop', 'public');
         }
 
         Category::create([
             'name' => $request->name,
             'slug' => \Illuminate\Support\Str::slug($request->name),
             'image_mobile' => $imageMobilePath,
-            'image_laptop' => $imageLaptopPath,
+            'image_desktop' => $imageLaptopPath,
             'parent_id' => $request->parent_id,
             'status' => $request->status,
         ]);
@@ -84,7 +84,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_desktop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'status' => 'required|boolean',
         ]);
 
@@ -97,11 +97,11 @@ class CategoryController extends Controller
             $category->save();
         }
 
-        if ($request->hasFile('image_laptop')) {
-            if ($category->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image_laptop)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image_laptop);
+        if ($request->hasFile('image_desktop')) {
+            if ($category->image_desktop && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image_desktop)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image_desktop);
             }
-            $category->image_laptop = $request->file('image_laptop')->store('categories/laptop', 'public');
+            $category->image_desktop = $request->file('image_desktop')->store('categories/laptop', 'public');
             $category->save();
         }
 
@@ -126,8 +126,8 @@ class CategoryController extends Controller
         if ($category->image_mobile && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image_mobile)) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image_mobile);
         }
-        if ($category->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image_laptop)) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image_laptop);
+        if ($category->image_desktop && \Illuminate\Support\Facades\Storage::disk('public')->exists($category->image_desktop)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image_desktop);
         }
 
         $category->delete();

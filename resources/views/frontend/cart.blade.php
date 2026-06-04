@@ -63,7 +63,7 @@
                                   @foreach(session('cart') as $id => $details)
                                     @php
                                       $product = \App\Models\Product::find($id);
-                                      $productImage = $product ? ($product->image_mobile ?? $product->image_laptop ?? null) : null;
+                                      $productImage = $product ? ($product->image_mobile ?? $product->image_desktop ?? null) : null;
                                       $imagePath = $productImage ?? ($details['image'] ?? null);
                                     @endphp
                                     <div class="cart-page__item" data-id="{{ $id }}">

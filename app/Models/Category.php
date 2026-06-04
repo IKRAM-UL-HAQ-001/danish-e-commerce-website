@@ -9,7 +9,24 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'image_mobile', 'image_laptop', 'status', 'parent_id'];
+    protected $fillable = ['name', 'slug', 'image_desktop', 'image_mobile', 'status', 'parent_id'];
+
+    // virtual accessor — prefers mobile image (sidebar/breadcrumb mobile use)
+    public function getImageAttribute()
+    {
+        return $this->image_mobile ?? $this->image_desktop;
+    }
+
+    // views reference ->image_desktop for the desktop category slider
+    public function getImageLaptopAttribute()
+    {
+        return $this->image_desktop ?? $this->image_mobile;
+    }
+
+    public function getImageDesktopAttribute(?string $value)
+    {
+        return $value ?? $this->image_mobile;
+    }
 
     public function getRouteKeyName()
     {

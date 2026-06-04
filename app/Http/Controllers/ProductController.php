@@ -43,7 +43,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            // 'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            // 'image_desktop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'color_name' => 'nullable|string|max:100',
             'color_hex' => 'nullable|string|max:7',
             'status' => 'required|boolean',
@@ -55,8 +55,8 @@ class ProductController extends Controller
         if ($request->hasFile('image_mobile')) {
             $imageMobilePath = $request->file('image_mobile')->store('products/mobile', 'public');
         }
-        // if ($request->hasFile('image_laptop')) {
-        //     $imageLaptopPath = $request->file('image_laptop')->store('products/laptop', 'public');
+        // if ($request->hasFile('image_desktop')) {
+        //     $imageLaptopPath = $request->file('image_desktop')->store('products/laptop', 'public');
         // }
 
         Product::create([
@@ -68,7 +68,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'image_mobile' => $imageMobilePath,
-            // 'image_laptop' => $imageLaptopPath,
+            // 'image_desktop' => $imageLaptopPath,
             'color_name' => $request->color_name,
             'color_hex' => $request->color_hex,
             'category_id' => $request->category_id,
@@ -109,7 +109,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            // 'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            // 'image_desktop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'color_name' => 'nullable|string|max:100',
             'color_hex' => 'nullable|string|max:7',
             'status' => 'required|boolean',
@@ -130,11 +130,11 @@ class ProductController extends Controller
             $product->image_mobile = $request->file('image_mobile')->store('products/mobile', 'public');
         }
 
-        // if ($request->hasFile('image_laptop')) {
-        //     if ($product->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_laptop)) {
-        //         \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_laptop);
+        // if ($request->hasFile('image_desktop')) {
+        //     if ($product->image_desktop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_desktop)) {
+        //         \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_desktop);
         //     }
-        //     $product->image_laptop = $request->file('image_laptop')->store('products/laptop', 'public');
+        //     $product->image_desktop = $request->file('image_desktop')->store('products/laptop', 'public');
         // }
 
         // update color fields
@@ -152,7 +152,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'image_mobile' => $product->image_mobile,
-            // 'image_laptop' => $product->image_laptop,
+            // 'image_desktop' => $product->image_desktop,
             'color_name' => $product->color_name,
             'color_hex' => $product->color_hex,
             'category_id' => $request->category_id,
@@ -173,8 +173,8 @@ class ProductController extends Controller
         if ($product->image_mobile && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_mobile)) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_mobile);
         }
-        // if ($product->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_laptop)) {
-        //     \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_laptop);
+        // if ($product->image_desktop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_desktop)) {
+        //     \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_desktop);
         // }
         $product->delete();
         return back()->with('success', 'Product deleted successfully.');

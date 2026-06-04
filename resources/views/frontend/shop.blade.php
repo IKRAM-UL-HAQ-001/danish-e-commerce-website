@@ -6,8 +6,8 @@
 <div class="breadcumb">
     <div class="container rr-container-1895">
         @php
-            $desktopBreadImg = ($selectedCategory && ($selectedCategory->image_laptop || $selectedCategory->image)) ? asset('storage/' . ($selectedCategory->image_laptop ?? $selectedCategory->image)) : asset('frontend-assets/imgs/breadcumbBg.jpg');
-            $mobileBreadImg = ($selectedCategory && ($selectedCategory->image_mobile || $selectedCategory->image_laptop || $selectedCategory->image)) ? asset('storage/' . ($selectedCategory->image_mobile ?? $selectedCategory->image_laptop ?? $selectedCategory->image)) : $desktopBreadImg;
+            $desktopBreadImg = ($selectedCategory && $selectedCategory->image_desktop) ? asset('storage/' . $selectedCategory->image_desktop) : asset('frontend-assets/imgs/breadcumbBg.jpg');
+            $mobileBreadImg = ($selectedCategory && $selectedCategory->image) ? asset('storage/' . $selectedCategory->image) : $desktopBreadImg;
         @endphp
         <div class="breadcumb-wrapper section-spacing-120 fix" data-bg-src="{{ $desktopBreadImg }}" data-bg-src-mobile="{{ $mobileBreadImg }}">
             <div class="breadcumb-wrapper__title">
@@ -125,7 +125,7 @@
                                 <li class="shop-sidebar__categories-item">
                                     <a href="{{ route('public.shop', ['category' => $category->slug]) }}" class="shop-sidebar__categories-link {{ request('category') == $category->slug ? 'active' : '' }} d-flex align-items-center">
                                         @if($category->image)
-                                            <img src="{{ asset('storage/' . $category->image_mobile) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
+                                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 50%; margin-right: 10px;">
                                         @else
                                             <i class="fa-solid fa-chevron-right" style="margin-right: 10px;"></i>
                                         @endif

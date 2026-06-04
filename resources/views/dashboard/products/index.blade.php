@@ -87,7 +87,7 @@
                                         data-color_name="{{ $product->color_name }}"
                                         data-color_hex="{{ $product->color_hex }}"
                                         data-image_mobile="{{ $product->image_mobile ? asset('storage/' . $product->image_mobile) : '' }}"
-                                        data-image_laptop="{{ $product->image_laptop ? asset('storage/' . $product->image_laptop) : '' }}"
+                                        data-image_desktop="{{ $product->image_desktop ? asset('storage/' . $product->image_desktop) : '' }}"
                                         data-status="{{ $product->status }}"
                                         data-bs-toggle="modal" data-bs-target="#editProductModal">
                                         <i class="mdi mdi-pencil text-primary"></i>
@@ -170,8 +170,8 @@
                         <input type="file" name="image_mobile" class="form-control">
                     </div>
                     <!-- <div class="col-md-6 mb-3">
-                        <label for="image_laptop">Product Image (Laptop)</label>
-                        <input type="file" name="image_laptop" class="form-control">
+                        <label for="image_desktop">Product Image (Laptop)</label>
+                        <input type="file" name="image_desktop" class="form-control">
                     </div> -->
                     <div class="col-md-6 mb-3">
                         <label for="color_name">Color Name (optional)</label>
@@ -267,9 +267,9 @@
                         <div id="current_image_mobile_preview" class="mt-2"></div>
                     </div>
                     <!-- <div class="col-md-6 mb-3">
-                        <label for="image_laptop">Update Image (Laptop) (Leave blank to keep current)</label>
-                        <input type="file" name="image_laptop" id="edit_image_laptop" class="form-control">
-                        <div id="current_image_laptop_preview" class="mt-2"></div>
+                        <label for="image_desktop">Update Image (Laptop) (Leave blank to keep current)</label>
+                        <input type="file" name="image_desktop" id="edit_image_desktop" class="form-control">
+                        <div id="current_image_desktop_preview" class="mt-2"></div>
                     </div> -->
                     <div class="col-md-6 mb-3">
                         <label for="edit_color_name">Color Name (optional)</label>
@@ -414,8 +414,8 @@ $(document).ready(function () {
             ? ('{{ asset("storage") }}/' + productData.image_mobile).replace(/\\/g, '/')
             : '';
 
-        // let image_laptop = productData.image_laptop
-        //     ? ('{{ asset("storage") }}/' + productData.image_laptop).replace(/\\/g, '/')
+        // let image_desktop = productData.image_desktop
+        //     ? ('{{ asset("storage") }}/' + productData.image_desktop).replace(/\\/g, '/')
         //     : '';
 
         // Mobile image preview
@@ -428,12 +428,12 @@ $(document).ready(function () {
         }
 
         // Laptop image preview
-        // if (image_laptop) {
-        //     $('#current_image_laptop_preview').html(
-        //         `<img src="${image_laptop}" style="width:100px;height:100px;object-fit:cover;border-radius:5px;">`
+        // if (image_desktop) {
+        //     $('#current_image_desktop_preview').html(
+        //         `<img src="${image_desktop}" style="width:100px;height:100px;object-fit:cover;border-radius:5px;">`
         //     );
         // } else {
-        //     $('#current_image_laptop_preview').html('');
+        //     $('#current_image_desktop_preview').html('');
         // }
     });
 

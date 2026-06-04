@@ -5,7 +5,11 @@
 @section('content')
 <div class="breadcumb">
     <div class="container rr-container-1895">
-        <div class="breadcumb-wrapper section-spacing-120 fix" data-bg-src="{{ ($selectedCategory && $selectedCategory->image) ? asset('storage/' . $selectedCategory->image) : asset('frontend-assets/imgs/breadcumbBg.jpg') }}">
+        @php
+            $desktopBreadImg = ($selectedCategory && $selectedCategory->image_desktop) ? asset('storage/' . $selectedCategory->image_desktop) : asset('frontend-assets/imgs/breadcumbBg.jpg');
+            $mobileBreadImg = ($selectedCategory && $selectedCategory->image) ? asset('storage/' . $selectedCategory->image) : $desktopBreadImg;
+        @endphp
+        <div class="breadcumb-wrapper section-spacing-120 fix" data-bg-src="{{ $desktopBreadImg }}" data-bg-src-mobile="{{ $mobileBreadImg }}">
             <div class="breadcumb-wrapper__title">
                 @if($selectedCategory)
                     {{ $selectedCategory->name }}

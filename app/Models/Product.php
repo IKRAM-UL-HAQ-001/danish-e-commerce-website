@@ -20,13 +20,27 @@ class Product extends Model
         'discount',
         'stock',
         'image_mobile',
-        'image_laptop',
+        'image_desktop',
+        'mobile_banner',
+        'laptop_banner',
         'color_name',
         'color_hex',
         'category_id',
         'brand_id',
-        'status'
+        'status',
     ];
+
+    // virtual accessor — no `image` column; returns best available image
+    public function getImageAttribute()
+    {
+        return $this->image_desktop ?? $this->image_mobile;
+    }
+
+    // views/admin that reference ->image_desktop; proxy to image_desktop
+    public function getImageLaptopAttribute()
+    {
+        return $this->image_desktop ?? $this->image_mobile;
+    }
 
     public function getRouteKeyName()
     {

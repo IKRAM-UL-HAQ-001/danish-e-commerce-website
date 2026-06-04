@@ -336,7 +336,7 @@
         @foreach($sliders as $slider)
           @if($slider->status)
           @php
-            $desktopImage = $slider->image_laptop ?? $slider->image;
+            $desktopImage = $slider->image_desktop ?? $slider->image;
             $mobileImage = $slider->image_mobile ?? $desktopImage;
           @endphp
           <div class="swiper-slide">
@@ -431,9 +431,11 @@
 
                                             {{-- Desktop Image --}}
                                             <img
-                                                src="{{ !empty($category->image_laptop)
-                                                        ? asset('storage/' . $category->image_laptop)
-                                                        : asset('frontend-assets/imgs/category/category-thumb1_1.jpg') }}"
+                                                src="{{ !empty($category->image_desktop)
+                                                        ? asset('storage/' . $category->image_desktop)
+                                                        : (!empty($category->image_mobile)
+                                                            ? asset('storage/' . $category->image_mobile)
+                                                            : asset('frontend-assets/imgs/category/category-thumb1_1.jpg')) }}"
                                                 alt="{{ $category->name }}"
                                                 loading="lazy">
                                         </picture>
@@ -725,7 +727,7 @@
                       @endphp
                       <div class="best-selling-product-card">
                         <div class="best-selling-product-card__thumb1">
-                          <img src="{{ $largeProduct->image ? asset('storage/' . $largeProduct->image_mobile) : asset('frontend-assets/imgs/best-selling-products/best-selling-products1_1.jpg') }}" alt="{{ $largeProduct->name }}">
+                          <img src="{{ $largeProduct->image ? asset('storage/' . $largeProduct->image) : asset('frontend-assets/imgs/best-selling-products/best-selling-products1_1.jpg') }}" alt="{{ $largeProduct->name }}">
                         </div>
                         <div class="best-selling-product-card__content1">
                           <h3 class="best-selling-product-card__content1-title">
@@ -754,7 +756,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay=".3s">
                           <div class="best-selling-product-card">
                             <div class="best-selling-product-card__thumb">
-                              <img src="{{ $smallProduct->image ? asset('storage/' . $smallProduct->image_mobile) : asset('frontend-assets/imgs/best-selling-products/best-selling-products1_2.jpg') }}" alt="{{ $smallProduct->name }}">
+                              <img src="{{ $smallProduct->image ? asset('storage/' . $smallProduct->image) : asset('frontend-assets/imgs/best-selling-products/best-selling-products1_2.jpg') }}" alt="{{ $smallProduct->name }}">
                             </div>
                             <div class="best-selling-product-card__content2">
                               <h3 class="best-selling-product-card__content2-title">

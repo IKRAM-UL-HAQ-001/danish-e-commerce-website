@@ -62,7 +62,7 @@
                                         data-parent="{{ $category->parent_id ?? '' }}"
                                         data-status="{{ $category->status }}"
                                         data-image_mobile="{{ $category->image_mobile ? asset('storage/' . $category->image_mobile) : '' }}"
-                                        data-image_laptop="{{ $category->image_laptop ? asset('storage/' . $category->image_laptop) : '' }}"
+                                        data-image_desktop="{{ $category->image_desktop ? asset('storage/' . $category->image_desktop) : '' }}"
                                         data-bs-toggle="modal" data-bs-target="#editCategoryModal">
                                         <i class="mdi mdi-pencil text-primary"></i>
                                     </button>
@@ -120,8 +120,8 @@
                     <input type="file" name="image_mobile" class="form-control">
                 </div>
                 <div class="form-group mb-3">
-                    <label for="image_laptop">Category Image (Laptop)</label>
-                    <input type="file" name="image_laptop" class="form-control">
+                    <label for="image_desktop">Category Image (Laptop)</label>
+                    <input type="file" name="image_desktop" class="form-control">
                     <small class="text-muted">Recommended size: 300x300px.</small>
                 </div>
             </div>
@@ -170,9 +170,9 @@
                     <div id="current_image_mobile_preview" class="mt-2"></div>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="edit_image_laptop">Category Image (Laptop) (Leave blank to keep current)</label>
-                    <input type="file" name="image_laptop" id="edit_image_laptop" class="form-control">
-                    <div id="current_image_laptop_preview" class="mt-2"></div>
+                    <label for="edit_image_desktop">Category Image (Laptop) (Leave blank to keep current)</label>
+                    <input type="file" name="image_desktop" id="edit_image_desktop" class="form-control">
+                    <div id="current_image_desktop_preview" class="mt-2"></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -199,7 +199,7 @@
             var status = $(this).data('status');
             var image = $(this).data('image');
             var image_mobile = $(this).data('image_mobile') || '{{ isset($siteLogo) ? asset($siteLogo) : "" }}';
-            var image_laptop = $(this).data('image_laptop');
+            var image_desktop = $(this).data('image_desktop');
 
             // Set form action dynamically
             // No longer needed to set action with slug, but we populate the hidden slug field
@@ -223,10 +223,10 @@
                 $('#current_image_mobile_preview').html('');
             }
 
-            if (image_laptop) {
-                $('#current_image_laptop_preview').html('<img src="' + image_laptop + '" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">');
+            if (image_desktop) {
+                $('#current_image_desktop_preview').html('<img src="' + image_desktop + '" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">');
             } else {
-                $('#current_image_laptop_preview').html('');
+                $('#current_image_desktop_preview').html('');
             }
         });
     });
