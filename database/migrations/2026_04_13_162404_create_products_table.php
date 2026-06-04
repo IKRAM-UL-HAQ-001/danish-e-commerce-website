@@ -23,7 +23,12 @@ return new class extends Migration
             $table->string('mobile_banner')->nullable();
             $table->string('laptop_banner')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
+                        $table->foreignId('brand_id')->nullable()->constrained()->onDelete('set null');
             $table->boolean('status')->default(1);
+            $table->string('sku')->nullable();
+            $table->string('tags')->nullable();
+             $table->decimal('old_price', 10, 2)->nullable();
+            $table->integer('discount')->nullable();
             $table->timestamps();
         });
     }

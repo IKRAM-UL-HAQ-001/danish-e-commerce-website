@@ -16,7 +16,13 @@ return new class extends Migration
             $table->foreignId('product_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('image')->nullable();
             $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->decimal('old_price', 10, 2);
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->boolean('status')->default(true);
+            $table->string('title');
+;
+
             $table->timestamps();
         });
     }

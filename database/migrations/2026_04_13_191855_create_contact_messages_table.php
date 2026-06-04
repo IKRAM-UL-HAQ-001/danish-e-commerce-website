@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('subject')->nullable();
             $table->text('message');
+            $table->string('slug')->nullable()->unique();
             $table->boolean('is_read')->default(false);
             $table->timestamps();
         });

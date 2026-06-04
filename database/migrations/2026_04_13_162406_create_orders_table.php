@@ -20,6 +20,12 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->string('status')->default('pending');
             $table->text('shipping_address');
+            $table->string('order_number')->nullable()->unique();
+            $table->string('stripe_checkout_session_id')->nullable()->unique();
+            $table->string('stripe_payment_intent_id')->nullable();
+            $table->timestamp('payment_status_email_sent_at')->nullable();
+            $table->string('coupon_code')->nullable();
+            $table->decimal('discount_amount', 10, 2)->nullable();
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('question');
             $table->text('answer');
             $table->boolean('status')->default(1);
+            $table->string('slug')->nullable()->unique();
             $table->timestamps();
         });
     }
