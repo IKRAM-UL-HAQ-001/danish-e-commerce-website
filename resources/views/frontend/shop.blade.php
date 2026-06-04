@@ -204,7 +204,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s" data-price="{{ $product->price }}" data-rating="{{ $avgRating }}">
                             <div class="shop-card">
                                 <div class="shop-card__thumb">
-                                    <img src="{{ $product->image_mobile ? asset('storage/' . $product->image) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $product->name }}">
+                                    <img src="{{ $product->image_mobile ? asset('storage/' . $product->image_mobile) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $product->name }}">
                                     @if($product->created_at->diffInDays() < 7)
                                     <div class="shop-card__thumb-offer">New</div>
                                     @endif
