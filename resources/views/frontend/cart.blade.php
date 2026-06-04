@@ -66,7 +66,7 @@
                                                 <div class="col-md-5">
                                                     <div class="cart-page__item-product">
                                                         <div class="cart-page__item-product-image">
-                                                            <img src="{{ $details['image'] ? asset('storage/' . $details['image']) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $details['name'] }}">
+                                                            <img src="{{ $details['image_mobile'] ? asset('storage/' . $details['image_mobile']) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $details['name'] }}">
                                                         </div>
                                                         <div class="cart-page__item-product-info">
                                                             <div class="cart-page__item-product-title">

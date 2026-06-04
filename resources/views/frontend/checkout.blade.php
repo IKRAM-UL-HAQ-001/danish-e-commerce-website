@@ -166,7 +166,7 @@
                                 <input type="email" name="email" class="checkout-page__billing-form-input" placeholder="Enter Your Email" required>
                             </div>
 
-                            <div class="checkout-page__billing-form-group">
+                            <!-- <div class="checkout-page__billing-form-group">
                                 <label class="checkout-page__billing-form-checkbox">
                                     <input type="checkbox" class="checkout-page__billing-form-checkbox-input">
                                     <span class="checkout-page__billing-form-checkbox-label">Create an account?</span>
@@ -178,12 +178,12 @@
                                     <input type="checkbox" class="checkout-page__billing-form-checkbox-input">
                                     <span class="checkout-page__billing-form-checkbox-label">Ship to a different address?</span>
                                 </label>
-                            </div>
+                            </div> -->
 
-                            <div class="checkout-page__billing-form-group">
+                            <!-- <div class="checkout-page__billing-form-group">
                                 <label class="checkout-page__billing-form-label">Order Notes (Optional)</label>
                                 <textarea name="order_notes" class="checkout-page__billing-form-textarea" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
-                            </div>
+                            </div> -->
                     </div>
                 </div>
 
