@@ -43,7 +43,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            // 'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'color_name' => 'nullable|string|max:100',
             'color_hex' => 'nullable|string|max:7',
             'status' => 'required|boolean',
@@ -51,13 +51,13 @@ class ProductController extends Controller
 
 
         $imageMobilePath = null;
-        $imageLaptopPath = null;
+        // $imageLaptopPath = null;
         if ($request->hasFile('image_mobile')) {
             $imageMobilePath = $request->file('image_mobile')->store('products/mobile', 'public');
         }
-        if ($request->hasFile('image_laptop')) {
-            $imageLaptopPath = $request->file('image_laptop')->store('products/laptop', 'public');
-        }
+        // if ($request->hasFile('image_laptop')) {
+        //     $imageLaptopPath = $request->file('image_laptop')->store('products/laptop', 'public');
+        // }
 
         Product::create([
             'name' => $request->name,
@@ -68,7 +68,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'image_mobile' => $imageMobilePath,
-            'image_laptop' => $imageLaptopPath,
+            // 'image_laptop' => $imageLaptopPath,
             'color_name' => $request->color_name,
             'color_hex' => $request->color_hex,
             'category_id' => $request->category_id,
@@ -109,19 +109,19 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            // 'image_laptop' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'color_name' => 'nullable|string|max:100',
             'color_hex' => 'nullable|string|max:7',
             'status' => 'required|boolean',
         ]);
 
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($product->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image);
-            }
-            $product->image = $request->file('image')->store('products', 'public');
-        }
+        // if ($request->hasFile('image')) {
+        //     // Delete old image if exists
+        //     if ($product->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image)) {
+        //         \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image);
+        //     }
+        //     $product->image = $request->file('image')->store('products', 'public');
+        // }
 
         if ($request->hasFile('image_mobile')) {
             if ($product->image_mobile && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_mobile)) {
@@ -130,12 +130,12 @@ class ProductController extends Controller
             $product->image_mobile = $request->file('image_mobile')->store('products/mobile', 'public');
         }
 
-        if ($request->hasFile('image_laptop')) {
-            if ($product->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_laptop)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_laptop);
-            }
-            $product->image_laptop = $request->file('image_laptop')->store('products/laptop', 'public');
-        }
+        // if ($request->hasFile('image_laptop')) {
+        //     if ($product->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_laptop)) {
+        //         \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_laptop);
+        //     }
+        //     $product->image_laptop = $request->file('image_laptop')->store('products/laptop', 'public');
+        // }
 
         // update color fields
         if ($request->filled('color_name') || $request->filled('color_hex')) {
@@ -152,7 +152,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'image_mobile' => $product->image_mobile,
-            'image_laptop' => $product->image_laptop,
+            // 'image_laptop' => $product->image_laptop,
             'color_name' => $product->color_name,
             'color_hex' => $product->color_hex,
             'category_id' => $request->category_id,
@@ -173,9 +173,9 @@ class ProductController extends Controller
         if ($product->image_mobile && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_mobile)) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_mobile);
         }
-        if ($product->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_laptop)) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_laptop);
-        }
+        // if ($product->image_laptop && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_laptop)) {
+        //     \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image_laptop);
+        // }
         $product->delete();
         return back()->with('success', 'Product deleted successfully.');
     }

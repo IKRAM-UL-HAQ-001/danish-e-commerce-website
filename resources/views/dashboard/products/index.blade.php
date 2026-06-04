@@ -169,10 +169,10 @@
                         <label for="image_mobile">Product Image (Mobile)</label>
                         <input type="file" name="image_mobile" class="form-control">
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <!-- <div class="col-md-6 mb-3">
                         <label for="image_laptop">Product Image (Laptop)</label>
                         <input type="file" name="image_laptop" class="form-control">
-                    </div>
+                    </div> -->
                     <div class="col-md-6 mb-3">
                         <label for="color_name">Color Name (optional)</label>
                         <input type="text" name="color_name" class="form-control" placeholder="e.g. Midnight Blue">
@@ -266,11 +266,11 @@
                         <input type="file" name="image_mobile" id="edit_image_mobile" class="form-control">
                         <div id="current_image_mobile_preview" class="mt-2"></div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <!-- <div class="col-md-6 mb-3">
                         <label for="image_laptop">Update Image (Laptop) (Leave blank to keep current)</label>
                         <input type="file" name="image_laptop" id="edit_image_laptop" class="form-control">
                         <div id="current_image_laptop_preview" class="mt-2"></div>
-                    </div>
+                    </div> -->
                     <div class="col-md-6 mb-3">
                         <label for="edit_color_name">Color Name (optional)</label>
                         <input type="text" name="color_name" id="edit_color_name" class="form-control" placeholder="e.g. Midnight Blue">
@@ -414,9 +414,9 @@ $(document).ready(function () {
             ? ('{{ asset("storage") }}/' + productData.image_mobile).replace(/\\/g, '/')
             : '';
 
-        let image_laptop = productData.image_laptop
-            ? ('{{ asset("storage") }}/' + productData.image_laptop).replace(/\\/g, '/')
-            : '';
+        // let image_laptop = productData.image_laptop
+        //     ? ('{{ asset("storage") }}/' + productData.image_laptop).replace(/\\/g, '/')
+        //     : '';
 
         // Mobile image preview
         if (image_mobile) {
@@ -428,13 +428,13 @@ $(document).ready(function () {
         }
 
         // Laptop image preview
-        if (image_laptop) {
-            $('#current_image_laptop_preview').html(
-                `<img src="${image_laptop}" style="width:100px;height:100px;object-fit:cover;border-radius:5px;">`
-            );
-        } else {
-            $('#current_image_laptop_preview').html('');
-        }
+        // if (image_laptop) {
+        //     $('#current_image_laptop_preview').html(
+        //         `<img src="${image_laptop}" style="width:100px;height:100px;object-fit:cover;border-radius:5px;">`
+        //     );
+        // } else {
+        //     $('#current_image_laptop_preview').html('');
+        // }
     });
 
 });
