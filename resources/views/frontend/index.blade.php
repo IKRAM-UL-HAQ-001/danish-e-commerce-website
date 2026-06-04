@@ -511,13 +511,25 @@
                       </div>
                     </div>
                     <div class="trending-product-card__content">
+                      @php
+                        $avgRating = $product->reviews()->avg('rating') ?? 0;
+                        $avgRatingFormatted = number_format($avgRating, 1);
+                        $reviewsCount = $product->reviews()->count();
+                      @endphp
                       <h3 class="trending-product-card__content-title">
                         <a href="{{ route('public.product.details', $product->slug) }}">{{ $product->name }}</a>
                       </h3>
                       <ul class="trending-product-card__content-list">
-                        <li class="trending-product-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
-                        <li class="trending-product-card__content-list-point">5.0</li>
-                        <li class="trending-product-card__content-list-text">(0 Reviews)</li>
+                        @php $filled = floor($avgRating); @endphp
+                        @for($i = 1; $i <= 5; $i++)
+                          @if($i <= $filled)
+                            <li class="trending-product-card__content-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
+                          @else
+                            <li class="trending-product-card__content-list-start"><i class="fa-regular fa-star fa-fw"></i></li>
+                          @endif
+                        @endfor
+                        <li class="trending-product-card__content-list-point">{{ $avgRatingFormatted }}</li>
+                        <li class="trending-product-card__content-list-text">({{ $reviewsCount }} {{ $reviewsCount == 1 ? 'Review' : 'Reviews' }})</li>
                       </ul>
                       <h4 class="trending-product-card__content-dollar">
                         £{{ number_format($product->price, 2) }}
