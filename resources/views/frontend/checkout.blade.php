@@ -119,15 +119,8 @@
                             </div>
 
                             <div class="checkout-page__billing-form-group">
-                                <label class="checkout-page__billing-form-label">
-                                    Country / Region <span class="checkout-page__billing-form-required">*</span>
-                                </label>
-                                <select name="country" class="checkout-page__billing-form-select">
-                                    <option value="bangladesh">Bangladesh</option>
-                                    <option value="usa">United States</option>
-                                    <option value="uk">United Kingdom</option>
-                                    <option value="canada">Canada</option>
-                                </select>
+                                <label class="checkout-page__billing-form-label">Country / Region <span class="checkout-page__billing-form-required">*</span></label>
+                                <input type="text" name="country" class="checkout-page__billing-form-input" placeholder="Enter Country">
                             </div>
 
                             <div class="checkout-page__billing-form-group">
@@ -142,22 +135,14 @@
                                 <label class="checkout-page__billing-form-label">
                                     Town / City <span class="checkout-page__billing-form-required">*</span>
                                 </label>
-                                <select name="city" class="checkout-page__billing-form-select">
-                                    <option value="kota">Kota</option>
-                                    <option value="dhaka">Dhaka</option>
-                                    <option value="chittagong">Chittagong</option>
-                                </select>
+                                <input type="text" name="city" class="checkout-page__billing-form-input" placeholder="Enter Town / City" required>
                             </div>
 
                             <div class="checkout-page__billing-form-group">
                                 <label class="checkout-page__billing-form-label">
                                     State <span class="checkout-page__billing-form-required">*</span>
                                 </label>
-                                <select name="state" class="checkout-page__billing-form-select">
-                                    <option value="uk">Uk</option>
-                                    <option value="california">California</option>
-                                    <option value="texas">Texas</option>
-                                </select>
+                                <input type="text" name="state" class="checkout-page__billing-form-input" placeholder="Enter State" required>
                             </div>
 
                             <div class="checkout-page__billing-form-group">
