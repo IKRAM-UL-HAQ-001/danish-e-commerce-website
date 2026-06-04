@@ -105,13 +105,18 @@
                       <span class="product-details-content__badge-pill">{{ round((($product->old_price - $product->price) / $product->old_price) * 100) }}% OFF</span>
                       @endif
                       <div class="product-details-content__rating d-flex align-items-center">
-                        <div class="stars">
-                          <span class="star"><i class="fa-solid fa-star fa-fw"></i></span>
-                          <span class="star"><i class="fa-solid fa-star fa-fw"></i></span>
-                          <span class="star"><i class="fa-solid fa-star fa-fw"></i></span>
-                          <span class="star"><i class="fa-solid fa-star fa-fw"></i></span>
-                          <span class="star5"><i class="fa-solid fa-star fa-fw"></i></span>
+                        @php
+                            $avgRating = 0;
+                            if(isset($product->reviews) && $product->reviews->count()) {
+                                $avgRating = round($product->reviews->avg('rating'));
+                            }
+                        @endphp
+                        <div id="product-average-stars" class="stars" data-average="{{ number_format($product->reviews->avg('rating') ?? 0, 2) }}">
+                          @for($i = 0; $i < 5; $i++)
+                            <i class="fa-solid fa-star {{ $i < $avgRating ? 'text-warning' : 'text-muted' }}"></i>
+                          @endfor
                         </div>
+                        <span id="reviews-average-value" style="display:none">{{ number_format($product->reviews->avg('rating') ?? 0, 2) }}</span>
                       </div>
                     </div>
                     <p class="product-details-content__desc">
@@ -406,6 +411,8 @@
         const reviewsCountBadge = document.getElementById('reviews-count-badge');
         const reviewsCountNumber = document.getElementById('reviews-count-number');
         const noReviewsP = document.getElementById('no-reviews');
+        const reviewsAverageValue = document.getElementById('reviews-average-value');
+        const productAverageStars = document.getElementById('product-average-stars');
 
         if (reviewForm && reviewsList) {
             reviewForm.addEventListener('submit', async function (e) {
@@ -457,6 +464,19 @@
                         const next = current + 1;
                         if (reviewsCountBadge) reviewsCountBadge.textContent = next;
                         if (reviewsCountNumber) reviewsCountNumber.textContent = next;
+
+                        // update average rating value and stars
+                        if (reviewsAverageValue && productAverageStars) {
+                          const currentAvg = parseFloat(reviewsAverageValue.textContent) || 0;
+                          const newRating = parseInt(rev.rating) || 0;
+                          const nextAvg = ((currentAvg * current) + newRating) / next;
+                          reviewsAverageValue.textContent = nextAvg.toFixed(2);
+
+                          const rounded = Math.round(nextAvg);
+                          // rebuild stars
+                          const starsHtml = Array.from({ length: 5 }).map((_, i) => `<i class="fa-solid fa-star ${i < rounded ? 'text-warning' : 'text-muted'}"></i>`).join('');
+                          productAverageStars.innerHTML = starsHtml;
+                        }
 
                         reviewForm.reset();
                         document.getElementById('rating-value').value = 5;
