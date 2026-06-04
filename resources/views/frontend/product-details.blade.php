@@ -205,7 +205,7 @@
               </li>
               <li class="nav-item" role="presentation">
                 <button class="nav-link" id="three-tab" data-bs-toggle="tab" data-bs-target="#three-tab-pane"
-                  type="button" role="tab" aria-controls="three-tab-pane" aria-selected="false">Reviews ({{ $product->reviews_count ?? 0 }})</button>
+                  type="button" role="tab" aria-controls="three-tab-pane" aria-selected="false">Reviews (<span id="reviews-count-badge">{{ $product->reviews_count ?? 0 }}</span>)</button>
               </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -232,8 +232,9 @@
                   <div class="row g-4 d-flex justify-content-between">
                     <div class="col-xl-7">
                       <div class="product-tab-items">
-                        <p class="product-tab-items__text">{{ $product->reviews_count ?? 0 }} reviews for {{ $product->name }}</p>
+                        <p class="product-tab-items__text" id="reviews-summary"><span id="reviews-count-number">{{ $product->reviews_count ?? 0 }}</span> reviews for {{ $product->name }}</p>
                         
+                        <div id="reviews-list">
                         @if(isset($product->reviews) && $product->reviews->count() > 0)
                           @foreach($product->reviews as $review)
                             <div class="product-tab-items__card d-flex align-items-start justify-content-between gap-3">
@@ -256,8 +257,9 @@
                             </div>
                           @endforeach
                         @else
-                          <p>There are no reviews yet. Be the first to review "{{ $product->name }}"</p>
+                          <p id="no-reviews">There are no reviews yet. Be the first to review "{{ $product->name }}"</p>
                         @endif
+                        </div>
                       </div>
                     </div>
                     <div class="col-xl-5">
@@ -392,6 +394,81 @@
                         if (badge) badge.textContent = data.count;
                     }
                 });
+            });
+        }
+
+        // Default avatar for reviews (used when response doesn't include a URL)
+        const defaultReviewAvatar = "{{ asset('frontend-assets/imgs/inner/product-details/image-1.png') }}";
+
+        // Review form AJAX submission
+        const reviewForm = document.getElementById('review-form');
+        const reviewsList = document.getElementById('reviews-list');
+        const reviewsCountBadge = document.getElementById('reviews-count-badge');
+        const reviewsCountNumber = document.getElementById('reviews-count-number');
+        const noReviewsP = document.getElementById('no-reviews');
+
+        if (reviewForm && reviewsList) {
+            reviewForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const rating = document.getElementById('rating-value').value;
+                const comment = document.getElementById('review-message').value.trim();
+                if (!comment) return;
+
+                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                try {
+                    const res = await fetch(reviewForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token,
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ rating: rating, comment: comment })
+                    });
+                    const data = await res.json();
+                    if (data && data.success && data.review) {
+                        if (noReviewsP) noReviewsP.remove();
+                        const rev = data.review;
+                        const avatar = (rev.user && rev.user.profile_photo_url) ? rev.user.profile_photo_url : defaultReviewAvatar;
+                        const createdAt = rev.created_at ? new Date(rev.created_at).toLocaleDateString() : new Date().toLocaleDateString();
+                        const starsHtml = Array.from({ length: 5 }).map((_, i) => `<i class="fa-solid fa-star ${i < rev.rating ? 'text-warning' : 'text-muted'}"></i>`).join('');
+
+                        const html = `
+                            <div class="product-tab-items__card d-flex align-items-start justify-content-between gap-3">
+                              <div class="product-tab-items__card-info d-flex align-items-center justify-content-between gap-3">
+                                <div class="product-tab-items__card-thumb">
+                                  <img src="${avatar}" alt="${rev.user ? rev.user.name : 'User'}">
+                                </div>
+                                <div class="product-tab-items__card-info-content">
+                                  <p class="product-tab-items__card-info-content-text">${rev.user ? rev.user.name : 'User'} – ${createdAt}</p>
+                                  <div class="product-tab-items__card-info-content-name">${rev.comment}</div>
+                                </div>
+                              </div>
+                              <div class="product-tab-items__card-info-star">
+                                <div class="stars">
+                                  ${starsHtml}
+                                </div>
+                              </div>
+                            </div>`;
+
+                        reviewsList.insertAdjacentHTML('afterbegin', html);
+
+                        const current = parseInt((reviewsCountBadge && reviewsCountBadge.textContent) || (reviewsCountNumber && reviewsCountNumber.textContent) || '0');
+                        const next = current + 1;
+                        if (reviewsCountBadge) reviewsCountBadge.textContent = next;
+                        if (reviewsCountNumber) reviewsCountNumber.textContent = next;
+
+                        reviewForm.reset();
+                        document.getElementById('rating-value').value = 5;
+                        document.querySelectorAll('.star-select').forEach(s => {
+                            if (parseInt(s.dataset.value) <= 5) { s.classList.add('text-warning'); s.classList.remove('text-muted'); } else { s.classList.add('text-muted'); s.classList.remove('text-warning'); }
+                        });
+                    } else {
+                        reviewForm.submit(); // fallback to normal submit
+                    }
+                } catch (err) {
+                    reviewForm.submit(); // fallback
+                }
             });
         }
     });
