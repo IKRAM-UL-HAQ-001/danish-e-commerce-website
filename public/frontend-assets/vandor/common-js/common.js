@@ -17,7 +17,6 @@
 (function ($) {
     "use strict";
 
-    var windowOn = $(window);
     let mm = gsap.matchMedia();
 
     /* === Data Css Js (index 01) === */
@@ -29,26 +28,7 @@
     });
 
     /* === sticky header Js (index 02) === */
-    function pinned_header() {
-        var lastScrollTop = 0;
-
-        windowOn.on('scroll', function () {
-            var currentScrollTop = $(this).scrollTop();
-            if (currentScrollTop > lastScrollTop) {
-                $('.header-sticky').removeClass('sticky');
-                $('.header-sticky').addClass('transformed');
-            } else if ($(this).scrollTop() <= 500) {
-                $('.header-sticky').removeClass('sticky');
-                $('.header-sticky').removeClass('transformed');
-            } else {
-                // Scrolling up, remove the class
-                $('.header-sticky').addClass('sticky');
-                $('.header-sticky').removeClass('transformed');
-            }
-            lastScrollTop = currentScrollTop;
-        });
-    }
-    pinned_header();
+    // Handled by initStickyHeader() in main.js with a passive listener.
 
     /* === Register GSAP Plugins Js (index 02) === */
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother, CustomEase);
