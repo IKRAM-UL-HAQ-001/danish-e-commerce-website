@@ -637,7 +637,12 @@
                     @if($all_best_selling->count() > 0)
                       <!-- Large Product -->
                       <div class="col-xl-6 col-lg-5 wow fadeInUp" data-wow-delay=".3s">
-                        @php $largeProduct = $all_best_selling->first(); @endphp
+                        @php
+                          $largeProduct = $all_best_selling->first();
+                          $largeAvg = $largeProduct->reviews()->avg('rating') ?? 0;
+                          $largeAvgFormatted = number_format($largeAvg, 1);
+                          $largeCount = $largeProduct->reviews()->count();
+                        @endphp
                         <div class="best-selling-product-card">
                           <div class="best-selling-product-card__thumb1">
                             <img src="{{ $largeProduct->image ? asset('storage/' . $largeProduct->image) : asset('frontend-assets/imgs/best-selling-products/best-selling-products1_1.jpg') }}" alt="{{ $largeProduct->name }}">
@@ -647,9 +652,16 @@
                                 <a href="{{ route('public.product.details', $largeProduct->slug) }}">{{ $largeProduct->name }}</a>
                             </h3>
                             <ul class="best-selling-product-card__content1-list">
-                              <li class="best-selling-product-card__content1-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
-                              <li class="best-selling-product-card__content1-list-point">5.0</li>
-                              <li class="best-selling-product-card__content1-list-text">(0 Reviews)</li>
+                              @php $filledLarge = floor($largeAvg); @endphp
+                              @for($i = 1; $i <= 5; $i++)
+                                @if($i <= $filledLarge)
+                                  <li class="best-selling-product-card__content1-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
+                                @else
+                                  <li class="best-selling-product-card__content1-list-start"><i class="fa-regular fa-star fa-fw"></i></li>
+                                @endif
+                              @endfor
+                              <li class="best-selling-product-card__content1-list-point">{{ $largeAvgFormatted }}</li>
+                              <li class="best-selling-product-card__content1-list-text">({{ $largeCount }} {{ $largeCount == 1 ? 'Review' : 'Reviews' }})</li>
                             </ul>
                             <h4 class="best-selling-product-card__content1-dollar">£{{ number_format($largeProduct->price, 2) }}</h4>
                           </div>
@@ -668,10 +680,22 @@
                                 <h3 class="best-selling-product-card__content2-title">
                                     <a href="{{ route('public.product.details', $smallProduct->slug) }}">{{ $smallProduct->name }}</a>
                                 </h3>
+                                @php
+                                  $smallAvg = $smallProduct->reviews()->avg('rating') ?? 0;
+                                  $smallAvgFormatted = number_format($smallAvg, 1);
+                                  $smallCount = $smallProduct->reviews()->count();
+                                @endphp
                                 <ul class="best-selling-product-card__content2-list">
-                                  <li class="best-selling-product-card__content2-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
-                                  <li class="best-selling-product-card__content2-list-point">5.0</li>
-                                  <li class="best-selling-product-card__content2-list-text">(0 Reviews)</li>
+                                  @php $filledSmall = floor($smallAvg); @endphp
+                                  @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $filledSmall)
+                                      <li class="best-selling-product-card__content2-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
+                                    @else
+                                      <li class="best-selling-product-card__content2-list-start"><i class="fa-regular fa-star fa-fw"></i></li>
+                                    @endif
+                                  @endfor
+                                  <li class="best-selling-product-card__content2-list-point">{{ $smallAvgFormatted }}</li>
+                                  <li class="best-selling-product-card__content2-list-text">({{ $smallCount }} {{ $smallCount == 1 ? 'Review' : 'Reviews' }})</li>
                                 </ul>
                                 <h4 class="best-selling-product-card__content2-dollar">£{{ number_format($smallProduct->price, 2) }}</h4>
                               </div>
@@ -693,7 +717,12 @@
                   <div class="row g-4 d-flex justify-content-center">
                     <!-- Large Product -->
                     <div class="col-xl-6 col-lg-5 wow fadeInUp" data-wow-delay=".3s">
-                      @php $largeProduct = $category->products->first(); @endphp
+                      @php
+                        $largeProduct = $category->products->first();
+                        $largeAvg = $largeProduct->reviews()->avg('rating') ?? 0;
+                        $largeAvgFormatted = number_format($largeAvg, 1);
+                        $largeCount = $largeProduct->reviews()->count();
+                      @endphp
                       <div class="best-selling-product-card">
                         <div class="best-selling-product-card__thumb1">
                           <img src="{{ $largeProduct->image ? asset('storage/' . $largeProduct->image_mobile) : asset('frontend-assets/imgs/best-selling-products/best-selling-products1_1.jpg') }}" alt="{{ $largeProduct->name }}">
@@ -703,9 +732,16 @@
                               <a href="{{ route('public.product.details', $largeProduct->slug) }}">{{ $largeProduct->name }}</a>
                           </h3>
                           <ul class="best-selling-product-card__content1-list">
-                            <li class="best-selling-product-card__content1-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
-                            <li class="best-selling-product-card__content1-list-point">5.0</li>
-                            <li class="best-selling-product-card__content1-list-text">(0 Reviews)</li>
+                            @php $filledLarge = floor($largeAvg); @endphp
+                            @for($i = 1; $i <= 5; $i++)
+                              @if($i <= $filledLarge)
+                                <li class="best-selling-product-card__content1-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
+                              @else
+                                <li class="best-selling-product-card__content1-list-start"><i class="fa-regular fa-star fa-fw"></i></li>
+                              @endif
+                            @endfor
+                            <li class="best-selling-product-card__content1-list-point">{{ $largeAvgFormatted }}</li>
+                            <li class="best-selling-product-card__content1-list-text">({{ $largeCount }} {{ $largeCount == 1 ? 'Review' : 'Reviews' }})</li>
                           </ul>
                           <h4 class="best-selling-product-card__content1-dollar">£{{ number_format($largeProduct->price, 2) }}</h4>
                         </div>
@@ -724,10 +760,22 @@
                               <h3 class="best-selling-product-card__content2-title">
                                   <a href="{{ route('public.product.details', $smallProduct->slug) }}">{{ $smallProduct->name }}</a>
                               </h3>
+                              @php
+                                $smallAvg = $smallProduct->reviews()->avg('rating') ?? 0;
+                                $smallAvgFormatted = number_format($smallAvg, 1);
+                                $smallCount = $smallProduct->reviews()->count();
+                              @endphp
                               <ul class="best-selling-product-card__content2-list">
-                                <li class="best-selling-product-card__content2-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
-                                <li class="best-selling-product-card__content2-list-point">5.0</li>
-                                <li class="best-selling-product-card__content2-list-text">(0 Reviews)</li>
+                                @php $filledSmall = floor($smallAvg); @endphp
+                                @for($i = 1; $i <= 5; $i++)
+                                  @if($i <= $filledSmall)
+                                    <li class="best-selling-product-card__content2-list-start"><i class="fa-solid fa-star fa-fw"></i></li>
+                                  @else
+                                    <li class="best-selling-product-card__content2-list-start"><i class="fa-regular fa-star fa-fw"></i></li>
+                                  @endif
+                                @endfor
+                                <li class="best-selling-product-card__content2-list-point">{{ $smallAvgFormatted }}</li>
+                                <li class="best-selling-product-card__content2-list-text">({{ $smallCount }} {{ $smallCount == 1 ? 'Review' : 'Reviews' }})</li>
                               </ul>
                               <h4 class="best-selling-product-card__content2-dollar">£{{ number_format($smallProduct->price, 2) }}</h4>
                             </div>
