@@ -60,13 +60,18 @@
 
                             <div class="cart-page__table-body" id="cart-page__table-body">
                                 @if(session('cart'))
-                                    @foreach(session('cart') as $id => $details)
-                                        <div class="cart-page__item" data-id="{{ $id }}">
+                                  @foreach(session('cart') as $id => $details)
+                                    @php
+                                      $product = \App\Models\Product::find($id);
+                                      $productImage = $product ? ($product->image_mobile ?? $product->image_laptop ?? null) : null;
+                                      $imagePath = $productImage ?? ($details['image'] ?? null);
+                                    @endphp
+                                    <div class="cart-page__item" data-id="{{ $id }}">
                                             <div class="row align-items-center">
                                                 <div class="col-md-5">
                                                     <div class="cart-page__item-product">
                                                         <div class="cart-page__item-product-image">
-                                                            <img src="{{ $details['image'] ? asset('storage/' . $details['image']) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $details['name'] }}">
+                                              <img src="{{ $imagePath ? asset('storage/' . $imagePath) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $details['name'] }}">
                                                         </div>
                                                         <div class="cart-page__item-product-info">
                                                             <div class="cart-page__item-product-title">

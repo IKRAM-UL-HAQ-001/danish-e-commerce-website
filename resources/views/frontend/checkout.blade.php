@@ -195,10 +195,15 @@
                             @php $subtotal = 0; @endphp
                             @if(session('cart'))
                                 @foreach(session('cart') as $id => $details)
-                                    @php $subtotal += $details['price'] * $details['quantity']; @endphp
+                                    @php
+                                        $subtotal += $details['price'] * $details['quantity'];
+                                        $product = \App\Models\Product::find($id);
+                                        $productImage = $product ? ($product->image_mobile ?? $product->image_laptop ?? null) : null;
+                                        $imagePath = $productImage ?? ($details['image'] ?? null);
+                                    @endphp
                                     <div class="checkout-page__order-summary-item">
                                         <div class="checkout-page__order-summary-item-image">
-                                            <img src="{{ $details['image'] ? asset('storage/' . $details['image']) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $details['name'] }}">
+                                            <img src="{{ $imagePath ? asset('storage/' . $imagePath) : asset('frontend-assets/imgs/inner/shop/shop-thumb1_1.jpg') }}" alt="{{ $details['name'] }}">
                                         </div>
                                         <div class="checkout-page__order-summary-item-content">
                                             <div class="checkout-page__order-summary-item-title">{{ $details['name'] }}</div>
