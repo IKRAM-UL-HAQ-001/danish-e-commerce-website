@@ -22,12 +22,14 @@ return new class extends Migration
             $table->string('image_desktop')->nullable();
             $table->string('mobile_banner')->nullable();
             $table->string('laptop_banner')->nullable();
+            $table->string('color_name')->nullable();
+            $table->string('color_hex')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('brand_id')->nullable()->constrained()->onDelete('set null');
             $table->boolean('status')->default(1);
             $table->string('sku')->nullable();
             $table->string('tags')->nullable();
-             $table->decimal('old_price', 10, 2)->nullable();
+            $table->decimal('old_price', 10, 2)->nullable();
             $table->integer('discount')->nullable();
             $table->timestamps();
         });
