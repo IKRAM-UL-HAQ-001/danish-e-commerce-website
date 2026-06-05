@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class OrderPaymentStatusMail extends Mailable
 {
@@ -34,5 +35,32 @@ class OrderPaymentStatusMail extends Mailable
         return new Content(
             view: 'emails.order-payment-status',
         );
+    }
+
+    public function attachments(): array
+    {
+        // Try to generate a PDF receipt when dompdf is available.
+        try {
+            if (class_exists(\Barryvdh\DomPDF\Facade\Pdf::class)) {
+                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('emails.order-payment-receipt-pdf', [
+                    'order' => $this->order,
+                    'paymentStatus' => $this->paymentStatus,
+                ])->setPaper('a4', 'portrait');
+
+                return [
+                    [
+                        'data' => $pdf->output(),
+                        'name' => 'receipt-' . $this->order->order_number . '.pdf',
+                        'options' => [
+                            'mime' => 'application/pdf',
+                        ],
+                    ],
+                ];
+            }
+        } catch (\Throwable $e) {
+            Log::error('Failed to generate PDF receipt: ' . $e->getMessage(), ['order' => $this->order->order_number]);
+        }
+
+        return [];
     }
 }
