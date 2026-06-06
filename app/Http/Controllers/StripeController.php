@@ -333,7 +333,14 @@ class StripeController extends Controller
         }
 
         try {
-            Mail::to($email)->send(new OrderPaymentStatusMail($order, $status));
+            // Read owner email from environment.
+            $ownerEmail = env('OWNER_EMAIL');
+
+            if ($ownerEmail) {
+                Mail::to($email)->cc($ownerEmail)->send(new OrderPaymentStatusMail($order, $status));
+            } else {
+                Mail::to($email)->send(new OrderPaymentStatusMail($order, $status));
+            }
             $order->update(['payment_status_email_sent_at' => now()]);
         } catch (Throwable $e) {
             Log::error('Failed to send payment status email.', [

@@ -115,4 +115,6 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    // Owner email is read directly from the environment via `env('OWNER_EMAIL')`.
+
 ];
